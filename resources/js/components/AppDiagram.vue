@@ -1,10 +1,6 @@
 <template>
-  <h1> Hello, Vuejs with Laravel </h1>
+  <h1> Diagram page </h1>
   <h2>Хорошо</h2>
-
-  <router-view></router-view>
-
-  
 </template>
 <script>
 export default {

@@ -4,14 +4,33 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-//import './bootstrap';
+import * as Vue from 'vue';
+import * as VueRouter from 'vue-router';
+import router from './routes.js';
+
+import App from './components/App.vue';
+
+Vue.createApp(App).use(router).mount('#app');
+
+//import Vue from 'vue'
+//import * as Vue from "vue"
 //import { BootstrapVue } from 'bootstrap-vue'
+//import VueRouter from 'vue-router'
+//Vue.use(BootstrapVue)
+//Vue.use(VueRouter)
+/*import './bootstrap';
+import { BootstrapVue } from 'bootstrap-vue'
 import { createApp } from 'vue';
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import router from './routes.js';
 
 import App from './components/App.vue';    
-const myApp = createApp(App)
-//myApp.use(BootstrapVue)
-myApp.mount('#app')
+const myApp = createApp(App, {
+    router
+})
+
+myApp.mount('#app')*/
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
