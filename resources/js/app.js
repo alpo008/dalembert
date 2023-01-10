@@ -8,6 +8,8 @@ import './bootstrap';
 import * as Vue from 'vue';
 import * as VueRouter from 'vue-router';
 import router from './routes.js';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
 
 import App from './components/App.vue';
 
@@ -22,56 +24,10 @@ const vuetify = createVuetify({
   directives,
 })
 
-Vue.createApp(App).use(router).use(vuetify).mount('#app');
+Vue.createApp(App)
+    .use(router)
+    .use(vuetify)
+    .use(VueAxios, axios)
+    .mount('#app');
 
-//import Vue from 'vue'
-//import * as Vue from "vue"
-//import { BootstrapVue } from 'bootstrap-vue'
-//import VueRouter from 'vue-router'
-//Vue.use(BootstrapVue)
-//Vue.use(VueRouter)
-/*import './bootstrap';
-import { BootstrapVue } from 'bootstrap-vue'
-import { createApp } from 'vue';
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import router from './routes.js';
-
-import App from './components/App.vue';    
-const myApp = createApp(App, {
-    router
-})
-
-myApp.mount('#app')*/
-
-/**
- * Next, we will create a fresh Vue application instance. You may then begin
- * registering components with the application instance so they are ready
- * to use in your application's views. An example is included for you.
- */
-
-//const app = createApp({});
-
-
-//app.component('App', App);
-
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
-
-// Object.entries(import.meta.glob('./**/*.vue', { eager: true })).forEach(([path, definition]) => {
-//     app.component(path.split('/').pop().replace(/\.\w+$/, ''), definition.default);
-// });
-
-/**
- * Finally, we will attach the application instance to a HTML element with
- * an "id" attribute of "app". This element is included with the "auth"
- * scaffolding. Otherwise, you will need to add an element yourself.
- */
-
-//app.mount('#app');
 

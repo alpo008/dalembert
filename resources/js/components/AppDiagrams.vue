@@ -3,8 +3,17 @@
 </template>
 <script>
 export default {
-  setup() {
-
-   }
+  data: function () {
+    return {
+      diagrams: {}
+    }
+  },
+  mounted() {
+    axios
+      .get('/api/diagrams/')
+      .then(response => {
+        this.diagrams = response.data.diagrams;
+      });
+  } 
 }
 </script>
