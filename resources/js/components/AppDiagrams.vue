@@ -10,9 +10,9 @@ export default {
   },
   mounted() {
     axios
-      .get('/api/diagrams/')
+      .get('/diagrams')
       .then(response => {
-        this.diagrams = response.data.diagrams;
+        //console.log(response);
       });
   } 
 }

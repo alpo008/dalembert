@@ -6,10 +6,16 @@
 
 import './bootstrap';
 import * as Vue from 'vue';
+
+// Router
 import * as VueRouter from 'vue-router';
 import router from './routes.js';
+
+// Axios
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`;
+
 
 import App from './components/App.vue';
 

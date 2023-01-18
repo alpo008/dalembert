@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
-class DiagramController extends Controller
+class HomeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,10 +14,19 @@ class DiagramController extends Controller
      */
     public function index()
     {
+        $response = Http::get('https://api.open-meteo.com/v1/forecast' , [
+            'latitude' => 56.70,
+            'longitude' => 36.77,
+            'hourly' => ['temperature_2m', 'apparent_temperature', 'rain', 'showers', 'snowfall', 'snow_depth'],
+            'windspeed_unit'=> 'ms',
+            'timezone' => 'Europe/Moscow',
+            'current_weather' => true
+        ]);
+
         return response()->json(
             [
                 'status' => 'success',
-                'diagrams' => [1 => 'one', 2 => 'two']
+                'weather' => $response->json()
             ], 200
         );
     }
