@@ -12,7 +12,7 @@ export default {
     axios
       .get('/diagrams')
       .then(response => {
-        //console.log(response);
+        //
       });
   } 
 }

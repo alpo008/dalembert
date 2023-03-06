@@ -9,7 +9,12 @@
       >
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-        <v-toolbar-title>Dalembert</v-toolbar-title>
+        <v-toolbar-title v-if="weather.is_ready">
+          <i :class="weatherIconClass"></i>
+          {{ weather.description }}, 
+          {{ weather.temperature }} &#176;C,
+          <i class="wi wi-strong-wind"></i> {{ weather.windspeed }} m/s,
+        </v-toolbar-title>
 
         <v-spacer></v-spacer>
 
@@ -62,7 +67,125 @@ export default {
           title: 'Buzz',
           value: 'buzz',
         }
-      ]
+      ],
+      locationName: null,
+      weather: {
+        temperature: null,
+        time: null,
+        weathercode: null,
+        description: '',
+        winddirection: null,
+        windspeed: null,
+        weathertext: '',
+        sunrise: '',
+        sunset: '',
+        is_ready: false
+      },
+      weathercodes: {
+        0: 'Clear sky',
+        1: 'Mainly clear',
+        2: 'Partly cloudy', 
+        3: 'Overcast',
+        45: 'Fog',
+        48: 'Rime fog',
+        51: 'Light drizzle', 
+        53: 'Moderate drizzle', 
+        55: 'Dense drizzle',
+        56: 'Light freezing drizzle', 
+        57: 'Dense freezing drizzle',
+        61: 'Slight rain', 
+        63: 'Moderate rain',  
+        65: 'Heavy rain', 
+        66: 'Light freezing rain', 
+        67: 'Heavy freezing rain',
+        71: 'Slight snow fall', 
+        73: 'Moderate snow fall', 
+        75: 'Heavy snow fall',
+        77: 'Snow grains',
+        80: 'Slight rain showers', 
+        81: 'Moderate rain showers', 
+        82: 'Violent rain showers',
+        85: 'Slight snow showers', 
+        86: 'Heavy snow showers', 
+        95: 'Thunderstorm',
+        96: 'Thunderstorm with sligh hail', 
+        99: 'Thunderstorm with heavy hail'
+      },
+      weathericons: {
+        0: {'day': 'wi-day-sunny', 'night': 'wi-night-clear'},
+        1: {'day': 'wi-day-cloudy', 'night': 'wi-night-alt-cloudy'},
+        2: {'day': 'wi-day-cloudy', 'night': 'wi-night-alt-cloudy'},
+        3: {'day': 'wi-cloudy', 'night': 'wi-cloudy'},
+        45: {'day': 'wi-day-fog', 'night': 'wi-night-fog'},
+        48: {'day': 'wi-snowflake-cold', 'night': 'wi-snowflake-cold'},
+        51: {'day': 'wi-day-sprinkle', 'night': 'wi-night-sprinkle'}, 
+        53: {'day': 'wi-raindrops', 'night': 'wi-raindrops'},
+        55: {'day': 'wi-rain', 'night': 'wi-rain'},
+        56: {'day': 'wi-snowflake-cold', 'night': 'wi-snowflake-cold'},
+        57: {'day': 'wi-day-snow', 'night': 'wi-night-snow'},
+        61: {'day': 'wi-day-showers', 'night': 'wi-night-alt-showers'}, 
+        63: {'day': 'wi-day-rain', 'night': 'wi-night-alt-rain'},  
+        65: {'day': 'wi-rain', 'night': 'wi-rain'}, 
+        66: {'day': 'wi-day-rain-mix', 'night': 'wi-night-alt-rain-mix'}, 
+        67: {'day': 'wi-rain-mix', 'night': 'wi-rain-mix'},
+        71: {'day': 'wi-day-snow', 'night': 'wi-night-alt-snow'}, 
+        73: {'day': 'wi-day-snow-wind', 'night': 'wi-night-alt-snow-wind'}, 
+        75: {'day': 'wi-snow-wind', 'night': 'wi-snow-wind'},
+        77: {'day': 'wi-rain-mix', 'night': 'wi-rain-mix'},
+        80: {'day': 'wi-day-showers', 'night': 'wi-night-alt-showers'}, 
+        81: {'day': 'wi-showers', 'night': 'wi-showers'}, 
+        82: {'day': 'wi-day-rain-wind', 'night': 'wi-night-rain-wind'},
+        85: {'day': 'wi-day-snow-wind', 'night': 'wi-night-alt-snow-wind'}, 
+        86: {'day': 'wi-day-thunderstormtorm', 'night': 'wi-night-thunderstorm'}, 
+        95: {'day': 'wi-day-sleet-storm', 'night': 'wi-night-sleet-storm'}, 
+        99: {'day': 'wi-storm-showers', 'night': 'wi-storm-showers'}
+      }
+    }
+  },
+  mounted() {
+    axios.get('/home')
+      .then(response => {
+        let result = response.data;
+        if(typeof(result === 'object') && !_.isEmpty(result)) {
+          if(typeof(result.weather === 'object') && !_.isEmpty(result.weather)) {
+            if(typeof(result.weather.current_weather) === 'object' && !_.isEmpty(result.weather.current_weather)) {
+              this.weather.temperature = result.weather.current_weather.temperature;
+              this.weather.windspeed = result.weather.current_weather.windspeed;
+              this.weather.winddirection = result.weather.current_weather.winddirection;
+              this.weather.weathercode = result.weather.current_weather.weathercode;
+              this.weather.time = result.weather.current_weather.time;
+              this.weather.description = this.weathercodes[this.weather.weathercode];
+            }
+            let daily = result.weather.daily;
+            if(typeof(daily) === 'object' && !_.isEmpty(daily)) {
+              if(typeof(daily.sunrise) === 'object' && typeof(daily.sunrise[0]) === 'string') {
+                this.weather.sunrise = result.weather.daily.sunrise[0];
+              }
+              if(typeof(daily.sunset) === 'object' && typeof(daily.sunset[0]) === 'string') {
+                this.weather.sunset = result.weather.daily.sunset[0];
+              }
+            }
+            this.weather.is_ready = true;
+          }
+        }
+    });
+  },
+  computed: {
+    dayTime() {
+      let result = true;
+      if(typeof(this.weather.sunrise) === 'string' && typeof(this.weather.sunset) === 'string') {
+        let sunrise = new Date(this.weather.sunrise);
+        let sunset = new Date(this.weather.sunset);
+        let now = new Date();
+        result = (now > sunrise) && (now < sunset);
+      }
+      return result;  
+    },
+    weatherIconClass() {
+      let key, iconClass;
+      key = this.dayTime ? 'day' : 'night';
+      iconClass = this.weathericons[this.weather.weathercode][key];
+      return 'wi ' + iconClass;
     }
   }
 }

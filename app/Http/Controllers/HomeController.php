@@ -15,18 +15,21 @@ class HomeController extends Controller
     public function index()
     {
         $response = Http::get('https://api.open-meteo.com/v1/forecast' , [
-            'latitude' => 56.70,
-            'longitude' => 36.77,
-            'hourly' => ['temperature_2m', 'apparent_temperature', 'rain', 'showers', 'snowfall', 'snow_depth'],
+            'latitude' => 56.553830,
+            'longitude' => 36.435032,
+            //'hourly' => ['temperature_2m', 'apparent_temperature', 'rain', 'showers', 'snowfall', 'snow_depth'],
             'windspeed_unit'=> 'ms',
+            'daily' => ['sunrise', 'sunset'],
             'timezone' => 'Europe/Moscow',
             'current_weather' => true
         ]);
 
+        $weather = $response->json();
+
         return response()->json(
             [
                 'status' => 'success',
-                'weather' => $response->json()
+                'weather' => $weather
             ], 200
         );
     }
