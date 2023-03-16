@@ -14,9 +14,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $response = Http::get('https://api.open-meteo.com/v1/forecast' , [
-            'latitude' => 56.553830,
-            'longitude' => 36.435032,
+        $lattitude = 56.553830;
+        $longitude = 36.435032;
+
+        $lattitude = 55.763545;
+        $longitude = 37.587327;
+        
+        $latlng = $lattitude . ',' . $longitude;
+        $openMeteoApiUrl = env('OPEN_METEO_API_URL');
+        $forecast = Http::get($openMeteoApiUrl , [
+            'latitude' => $lattitude,
+            'longitude' => $longitude,
             //'hourly' => ['temperature_2m', 'apparent_temperature', 'rain', 'showers', 'snowfall', 'snow_depth'],
             'windspeed_unit'=> 'ms',
             'daily' => ['sunrise', 'sunset'],
@@ -24,7 +32,37 @@ class HomeController extends Controller
             'current_weather' => true
         ]);
 
-        $weather = $response->json();
+        $weather = $forecast->json();
+
+        $geocodingApiUrl = env('GM_API_URL');
+        $geocodingApiKey = env('GM_API_KEY');
+        $apiKey = 'AIzaSyCF8ntzB84KZbU051ePBW7-cmTzbCA79q0';
+
+        $location = Http::get($geocodingApiUrl , [
+            'latlng' => $latlng,
+            'key' => $geocodingApiKey,
+            'language' => 'ru'
+        ]);
+
+        $locationData = $location->json();
+
+        $city = 'Unknown';
+
+        if($addressComponents = array_get($locationData, 'results.0.address_components')) {
+            foreach($addressComponents as $val) {
+                $a = array_get($val, 'types.0');
+                $b = array_get($val, 'types.1');
+                if($a === 'locality' && $b === 'political') {
+                    if(!empty($val['short_name'])) {
+                        $city = $val['short_name'];
+                    } elseif (!empty($val['long_name'])) {
+                        $city = $val['long_name'];
+                    }
+                }
+            }
+        }
+
+        $weather['city'] = $city;
 
         return response()->json(
             [

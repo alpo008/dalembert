@@ -10,6 +10,7 @@
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
         <v-toolbar-title v-if="weather.is_ready">
+          {{ weather.city }} &nbsp;
           <i :class="weatherIconClass"></i>
           {{ weather.description }}, 
           {{ weather.temperature }} &#176;C,
@@ -70,6 +71,7 @@ export default {
       ],
       locationName: null,
       weather: {
+        city: '',
         temperature: null,
         time: null,
         weathercode: null,
@@ -143,11 +145,15 @@ export default {
     }
   },
   mounted() {
+
+    this.getLocation();
+
     axios.get('/home')
       .then(response => {
         let result = response.data;
         if(typeof(result === 'object') && !_.isEmpty(result)) {
           if(typeof(result.weather === 'object') && !_.isEmpty(result.weather)) {
+            this.weather.city = result.weather.city;
             if(typeof(result.weather.current_weather) === 'object' && !_.isEmpty(result.weather.current_weather)) {
               this.weather.temperature = result.weather.current_weather.temperature;
               this.weather.windspeed = result.weather.current_weather.windspeed;
@@ -169,6 +175,45 @@ export default {
           }
         }
     });
+  },
+  methods: {
+    getLocation() {
+      let location;
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          location = pos.coords;
+          let param = JSON.stringify(location)
+          axios.get('/home/' + param)
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          })
+          .finally(function () {
+            // always executed
+          });
+        }, 
+        err => {
+            location = {
+            lattitude: 55.75231282700813, 
+            longitude:37.61737361013978,
+            accuracy: null,
+            altitude: null,
+            altitudeAccuracy: null,
+            heading: null,
+            speed: null,
+            city: 'Moscow'
+          };
+          console.warn(`ERROR(${err.code}): ${err.message}`);
+        }, 
+        { 
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
+        }
+      ); 
+    }
   },
   computed: {
     dayTime() {
