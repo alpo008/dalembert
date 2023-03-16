@@ -36,7 +36,6 @@ class HomeController extends Controller
 
         $geocodingApiUrl = env('GM_API_URL');
         $geocodingApiKey = env('GM_API_KEY');
-        $apiKey = 'AIzaSyCF8ntzB84KZbU051ePBW7-cmTzbCA79q0';
 
         $location = Http::get($geocodingApiUrl , [
             'latlng' => $latlng,
