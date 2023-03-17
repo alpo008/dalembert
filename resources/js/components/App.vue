@@ -162,7 +162,7 @@ export default {
               this.weather.winddirection = result.weather.current_weather.winddirection;
               this.weather.weathercode = result.weather.current_weather.weathercode;
               this.weather.time = result.weather.current_weather.time;
-              this.weather.description = this.weathercodes[this.weather.weathercode];
+              this.weather.description = this.$t(this.weathercodes[this.weather.weathercode]);
             }
             let daily = result.weather.daily;
             if(typeof(daily) === 'object' && !_.isEmpty(daily)) {

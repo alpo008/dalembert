@@ -16,6 +16,19 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`;
 
+//import * as VueI18n from 'vue-i18n';
+import { createI18n } from 'vue-i18n'
+const messagesEn = require('../lang/en.json');
+const messagesRu = require('../lang/ru.json');
+const currentLocale = document.querySelector('html').getAttribute('lang');
+const i18n = createI18n({
+  locale: currentLocale,
+  messages: {
+    en: messagesEn,
+    ru: messagesRu
+  }
+});
+
 
 import App from './components/App.vue';
 
@@ -34,6 +47,7 @@ Vue.createApp(App)
     .use(router)
     .use(vuetify)
     .use(VueAxios, axios)
+    .use(i18n)
     .mount('#app');
 
 
