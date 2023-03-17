@@ -7,3 +7,27 @@
 .wi {
   font-size: 1.75rem;
 }
+
+
+/*    R U N N I N G  L I N E    */
+.ticker{
+  height: auto;
+  width:300px;
+  margin:0 auto;
+}
+.ticker p{
+  text-align:center;
+  color:#fff;
+  animation: text 8s infinite linear;
+  padding-left: 1000px;
+  white-space: nowrap;
+}
+@keyframes text {
+  0%{
+    transform: translate(0, 0);
+  }
+  
+  100%{
+    transform: translate(-160%, 0);
+  }
+}

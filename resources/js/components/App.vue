@@ -9,12 +9,14 @@
       >
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
 
-        <v-toolbar-title v-if="weather.is_ready">
-          {{ weather.city }} &nbsp;
-          <i :class="weatherIconClass"></i>
-          {{ weather.description }}, 
-          {{ weather.temperature }} &#176;C,
-          <i class="wi wi-strong-wind"></i> {{ weather.windspeed }} m/s,
+        <v-toolbar-title v-if="weather.is_ready" class="ticker">
+          <p>
+            {{ weather.city }} &nbsp;
+            <i :class="weatherIconClass"></i>
+            {{ weather.description }}, 
+            {{ weather.temperature }} &#176;C,
+            <i class="wi wi-strong-wind"></i> {{ weather.windspeed }} m/s,
+          </p>
         </v-toolbar-title>
 
         <v-spacer></v-spacer>
