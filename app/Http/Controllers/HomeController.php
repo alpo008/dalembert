@@ -14,17 +14,36 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $lattitude = 56.553830;
-        $longitude = 36.435032;
+        //
+    }
 
-        $lattitude = 55.763545;
-        $longitude = 37.587327;
-        
-        $latlng = $lattitude . ',' . $longitude;
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'lat' => 'required|numeric',
+            'lng' => 'required|numeric'
+        ]);
+        $latlng = $validated['lat'] . ',' . $validated['lng'];
         $openMeteoApiUrl = env('OPEN_METEO_API_URL');
         $forecast = Http::get($openMeteoApiUrl , [
-            'latitude' => $lattitude,
-            'longitude' => $longitude,
+            'latitude' => $validated['lat'],
+            'longitude' => $validated['lng'],
             //'hourly' => ['temperature_2m', 'apparent_temperature', 'rain', 'showers', 'snowfall', 'snow_depth'],
             'windspeed_unit'=> 'ms',
             'daily' => ['sunrise', 'sunset'],
@@ -69,27 +88,6 @@ class HomeController extends Controller
                 'weather' => $weather
             ], 200
         );
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**

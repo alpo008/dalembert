@@ -29,7 +29,10 @@ const i18n = createI18n({
   }
 });
 
+//  VueX
+import { store } from './store';
 
+//  App
 import App from './components/App.vue';
 
 // Vuetify
@@ -48,6 +51,7 @@ Vue.createApp(App)
     .use(vuetify)
     .use(VueAxios, axios)
     .use(i18n)
+    .use(store)
     .mount('#app');
 
 

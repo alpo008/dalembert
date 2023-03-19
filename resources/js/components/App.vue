@@ -71,7 +71,6 @@ export default {
           value: 'buzz',
         }
       ],
-      locationName: null,
       weather: {
         city: '',
         temperature: null,
@@ -147,66 +146,42 @@ export default {
     }
   },
   mounted() {
-
-    this.getLocation();
-
-    axios.get('/home')
-      .then(response => {
-        let result = response.data;
-        if(typeof(result === 'object') && !_.isEmpty(result)) {
-          if(typeof(result.weather === 'object') && !_.isEmpty(result.weather)) {
-            this.weather.city = result.weather.city;
-            if(typeof(result.weather.current_weather) === 'object' && !_.isEmpty(result.weather.current_weather)) {
-              this.weather.temperature = result.weather.current_weather.temperature;
-              this.weather.windspeed = result.weather.current_weather.windspeed;
-              this.weather.winddirection = result.weather.current_weather.winddirection;
-              this.weather.weathercode = result.weather.current_weather.weathercode;
-              this.weather.time = result.weather.current_weather.time;
-              this.weather.description = this.$t(this.weathercodes[this.weather.weathercode]);
-            }
-            let daily = result.weather.daily;
-            if(typeof(daily) === 'object' && !_.isEmpty(daily)) {
-              if(typeof(daily.sunrise) === 'object' && typeof(daily.sunrise[0]) === 'string') {
-                this.weather.sunrise = result.weather.daily.sunrise[0];
-              }
-              if(typeof(daily.sunset) === 'object' && typeof(daily.sunset[0]) === 'string') {
-                this.weather.sunset = result.weather.daily.sunset[0];
-              }
-            }
-            this.weather.is_ready = true;
-          }
-        }
-    });
+    this.getWeather();
   },
   methods: {
-    getLocation() {
-      let location;
+    getWeather() {
       navigator.geolocation.getCurrentPosition(
         pos => {
-          location = pos.coords;
-          let param = JSON.stringify(location)
-          axios.get('/home/' + param)
-          .then(function (response) {
-            console.log(response);
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-          .finally(function () {
-            // always executed
+          let coords = pos.coords;
+          axios.post('/home', {'lat': coords.latitude, 'lng': coords.longitude})
+          .then(response => {
+            let result = response.data;
+            if(typeof(result === 'object') && !_.isEmpty(result)) {
+              if(typeof(result.weather === 'object') && !_.isEmpty(result.weather)) {
+                this.weather.city = result.weather.city;
+                if(typeof(result.weather.current_weather) === 'object' && !_.isEmpty(result.weather.current_weather)) {
+                  this.weather.temperature = result.weather.current_weather.temperature;
+                  this.weather.windspeed = result.weather.current_weather.windspeed;
+                  this.weather.winddirection = result.weather.current_weather.winddirection;
+                  this.weather.weathercode = result.weather.current_weather.weathercode;
+                  this.weather.time = result.weather.current_weather.time;
+                  this.weather.description = this.$t(this.weathercodes[this.weather.weathercode]);
+                }
+                let daily = result.weather.daily;
+                if(typeof(daily) === 'object' && !_.isEmpty(daily)) {
+                  if(typeof(daily.sunrise) === 'object' && typeof(daily.sunrise[0]) === 'string') {
+                    this.weather.sunrise = result.weather.daily.sunrise[0];
+                  }
+                  if(typeof(daily.sunset) === 'object' && typeof(daily.sunset[0]) === 'string') {
+                    this.weather.sunset = result.weather.daily.sunset[0];
+                  }
+                }
+                this.weather.is_ready = true;
+              }
+            }
           });
         }, 
         err => {
-            location = {
-            lattitude: 55.75231282700813, 
-            longitude:37.61737361013978,
-            accuracy: null,
-            altitude: null,
-            altitudeAccuracy: null,
-            heading: null,
-            speed: null,
-            city: 'Moscow'
-          };
           console.warn(`ERROR(${err.code}): ${err.message}`);
         }, 
         { 
@@ -214,7 +189,7 @@ export default {
           timeout: 5000,
           maximumAge: 0,
         }
-      ); 
+      );
     }
   },
   computed: {

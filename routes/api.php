@@ -21,4 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('diagrams', DiagramController::class);
-Route::apiResource('home', HomeController::class)->except(['create', 'store', 'update', 'destroy']);
+Route::apiResource('home', HomeController::class)->except(['create', 'update', 'destroy']);
