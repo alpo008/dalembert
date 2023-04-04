@@ -1,9 +1,14 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
+
+import weather from './weather';
 
 export const store = createStore({
-  state () {
+/*  state () {
     return {
       count: 1
     }
-  }
-});
+  },*/
+	modules: {
+		weather
+	}
+})

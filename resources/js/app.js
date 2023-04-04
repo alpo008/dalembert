@@ -53,5 +53,3 @@ Vue.createApp(App)
     .use(i18n)
     .use(store)
     .mount('#app');
-
-
