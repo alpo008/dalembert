@@ -25,9 +25,17 @@
         location="start"
         temporary
       >
-        <v-list
-          :items="items"
-        ></v-list>
+        <v-list>
+          <v-list-item
+            v-for="item of items"
+            :key="item.title"
+            :to="item.url"
+            @click.prevent=""
+            exact
+          >
+            <router-link :to="item.url"> {{ item.title }} </router-link>
+          </v-list-item>
+        </v-list>
       </v-navigation-drawer>
 
       <v-main style="height: 100vh;">
@@ -51,22 +59,18 @@ export default {
       group: null,
       items: [
         {
-          title: 'Foo',
-          value: 'foo',
+          title: 'Home',
+          url: '/',
         },
         {
-          title: 'Bar',
-          value: 'bar',
+          title: 'Diagrams',
+          url: '/diagrams',
         },
         {
-          title: 'Fizz',
-          value: 'fizz',
-        },
-        {
-          title: 'Buzz',
-          value: 'buzz',
+          title: 'Diagram 1',
+          url: 'diagrams/1',
         }
-      ],
+      ]
     }
   },
   mounted() {
