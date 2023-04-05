@@ -106,7 +106,8 @@ export default {
 				state.iconClass = 'wi ' + iconClass;
 
 				state.is_ready = true;
-			}}
+			}
+		}
 	},
 	actions: {
 		async updateWeather(context, payload) {

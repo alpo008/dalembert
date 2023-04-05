@@ -4,9 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Arr;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
+    const EARTH_RADIUS = 6378;  //km
+    const MIN_PLACE_SIZE = 1;   //km
+
+
     /**
      * Display a listing of the resource.
      *
@@ -35,52 +41,63 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
+        $weather = $request->session()->get('weather');
+            $oldLat = Arr::get($weather, 'latitude');
+            $oldLng = Arr::get($weather, 'longitude');
+        $weather['updated'] = false;
+
         $validated = $request->validate([
             'lat' => 'required|numeric',
             'lng' => 'required|numeric'
         ]);
-        $latlng = $validated['lat'] . ',' . $validated['lng'];
-        $openMeteoApiUrl = env('OPEN_METEO_API_URL');
-        $forecast = Http::get($openMeteoApiUrl , [
-            'latitude' => $validated['lat'],
-            'longitude' => $validated['lng'],
-            //'hourly' => ['temperature_2m', 'apparent_temperature', 'rain', 'showers', 'snowfall', 'snow_depth'],
-            'windspeed_unit'=> 'ms',
-            'daily' => ['sunrise', 'sunset'],
-            'timezone' => 'Europe/Moscow',
-            'current_weather' => true
-        ]);
+        $lat = $validated['lat'];
+        $lng = $validated['lng'];
 
-        $weather = $forecast->json();
+        if ($this->locationWasChanged(compact('oldLat', 'oldLng', 'lat', 'lng')) || $this->forecastIsStale($weather)) {
+            $latlng = $lat . ',' . $lng;
+            $openMeteoApiUrl = env('OPEN_METEO_API_URL');
+            $forecast = Http::get($openMeteoApiUrl , [
+                'latitude' => $validated['lat'],
+                'longitude' => $validated['lng'],
+                //'hourly' => ['temperature_2m', 'apparent_temperature', 'rain', 'showers', 'snowfall', 'snow_depth'],
+                'windspeed_unit'=> 'ms',
+                'daily' => ['sunrise', 'sunset'],
+                'timezone' => 'Europe/Moscow',
+                'current_weather' => true
+            ]);
 
-        $geocodingApiUrl = env('GM_API_URL');
-        $geocodingApiKey = env('GM_API_KEY');
+            $weather = $forecast->json();
+            $weather['updated'] = true;
 
-        $location = Http::get($geocodingApiUrl , [
-            'latlng' => $latlng,
-            'key' => $geocodingApiKey,
-            'language' => 'ru'
-        ]);
+            $geocodingApiUrl = env('GM_API_URL');
+            $geocodingApiKey = env('GM_API_KEY');
 
-        $locationData = $location->json();
+            $location = Http::get($geocodingApiUrl , [
+                'latlng' => $latlng,
+                'key' => $geocodingApiKey,
+                'language' => 'ru'
+            ]);
 
-        $city = 'Unknown';
+            $locationData = $location->json();
 
-        if($addressComponents = array_get($locationData, 'results.0.address_components')) {
-            foreach($addressComponents as $val) {
-                $a = array_get($val, 'types.0');
-                $b = array_get($val, 'types.1');
-                if($a === 'locality' && $b === 'political') {
-                    if(!empty($val['short_name'])) {
-                        $city = $val['short_name'];
-                    } elseif (!empty($val['long_name'])) {
-                        $city = $val['long_name'];
+            $city = 'Unknown';
+
+            if($addressComponents = array_get($locationData, 'results.0.address_components')) {
+                foreach($addressComponents as $val) {
+                    $a = array_get($val, 'types.0');
+                    $b = array_get($val, 'types.1');
+                    if($a === 'locality' && $b === 'political') {
+                        if(!empty($val['short_name'])) {
+                            $city = $val['short_name'];
+                        } elseif (!empty($val['long_name'])) {
+                            $city = $val['long_name'];
+                        }
                     }
                 }
             }
+            $weather['city'] = $city;
+            $request->session()->put('weather', $weather);
         }
-
-        $weather['city'] = $city;
 
         return response()->json(
             [
@@ -133,5 +150,50 @@ class HomeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Checks if weather forecast hour was changed.
+     *
+     * @param  array|null $weather
+     * @return bool
+     */
+    private function forecastIsStale(array|null $weather) :bool
+    {
+        $result = !$weather;
+        if (!$result) {
+            $time = Arr::get($weather, 'current_weather.time');
+            $timeZone = Arr::get($weather, 'timezone');
+            if (!!$time && !!$timeZone) {
+                $forecastHour = Carbon::parse($time)->hour;
+                $currentHour = now($timeZone)->hour;
+                $result = ($forecastHour !== $currentHour);
+            }
+        }
+        return $result;
+    }
+
+    /**
+    * Checks if location was changed for more than MIN_PLACE_SIZE value
+    * @param array $locationData
+    * @return bool
+    */
+    private function locationWasChanged(array $locationData) :bool
+    {
+        $result = true;
+        if (!!$locationData['oldLat'] && !!$locationData['oldLng']) {
+            $toRad = pi() / 180;
+            $lat1 = $locationData['oldLat'] * $toRad;
+            $lng1 = $locationData['oldLng'] * $toRad;
+            $lat2 = $locationData['lat'] * $toRad;
+            $lng2 = $locationData['lng'] * $toRad;
+            $deltaLat = $lat2 - $lat1;
+            $deltaLng = $lng2 - $lng1;
+            $var1 = pow(sin($deltaLat / 2), 2) + cos($lat1) * cos($lat2) * pow(sin($deltaLng / 2), 2);
+            $var2 = 2 * atan2(sqrt($var1), sqrt(1 - $var1));
+            $shift = $var2 * self::EARTH_RADIUS;
+            $result = ($shift > self::MIN_PLACE_SIZE);
+        } 
+        return $result;
     }
 }
