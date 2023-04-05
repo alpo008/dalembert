@@ -42,16 +42,18 @@ class HomeController extends Controller
     public function store(Request $request)
     {
         $weather = $request->session()->get('weather');
-            $oldLat = Arr::get($weather, 'latitude');
-            $oldLng = Arr::get($weather, 'longitude');
+        $oldLat = Arr::get($weather, 'latitude');
+        $oldLng = Arr::get($weather, 'longitude');
         $weather['updated'] = false;
 
         $validated = $request->validate([
             'lat' => 'required|numeric',
-            'lng' => 'required|numeric'
+            'lng' => 'required|numeric',
+            'timezone' => 'required|string'
         ]);
         $lat = $validated['lat'];
         $lng = $validated['lng'];
+        $timeZone = $validated['timezone'];
 
         if ($this->locationWasChanged(compact('oldLat', 'oldLng', 'lat', 'lng')) || $this->forecastIsStale($weather)) {
             $latlng = $lat . ',' . $lng;
@@ -62,7 +64,7 @@ class HomeController extends Controller
                 //'hourly' => ['temperature_2m', 'apparent_temperature', 'rain', 'showers', 'snowfall', 'snow_depth'],
                 'windspeed_unit'=> 'ms',
                 'daily' => ['sunrise', 'sunset'],
-                'timezone' => 'Europe/Moscow',
+                'timezone' => $timeZone,
                 'current_weather' => true
             ]);
 

@@ -112,9 +112,11 @@ export default {
 	actions: {
 		async updateWeather(context, payload) {
 			let currentPosition = await context.dispatch('getCoords', 0);
+			let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 			let response = await axios.post('/home', {
 				'lat': currentPosition.coords.latitude, 
-				'lng': currentPosition.coords.longitude
+				'lng': currentPosition.coords.longitude,
+				'timezone': timeZone 
 			});
 			context.commit('setWeather', response.data.weather);
 		},
