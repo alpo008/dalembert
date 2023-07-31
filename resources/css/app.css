@@ -4,6 +4,8 @@
 
 @import "weather-icons.css";
 
+@import "materialdesignicons.css";
+
 .wi {
   font-size: 1.75rem;
 }

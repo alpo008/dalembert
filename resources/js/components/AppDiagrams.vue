@@ -1,5 +1,5 @@
 <template>
-  <h1> Diagrams page </h1>
+  <h1> Нечто ни о чем </h1>
 </template>
 <script>
 export default {

@@ -4,6 +4,7 @@
 /public/storage
 /public/js
 /public/css
+/public/fonts
 /storage/*.key
 /vendor
 .env
@@ -17,3 +18,9 @@ auth.json
 /.fleet
 /.idea
 /.vscode
+
+# Cordova
+/src-cordova/platforms
+/src-cordova/node_modules
+/src-cordova/plugins
+/public/cordova.js
