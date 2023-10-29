@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AppHome from './components/AppHome.vue';
 import AppDiagram from './components/AppDiagram.vue';
 import AppDiagrams from './components/AppDiagrams.vue';
+import AppAirmax from './components/AppAirmax.vue';
 
 export default VueRouter.createRouter({
     routes: [
@@ -21,6 +22,11 @@ export default VueRouter.createRouter({
             path: '/diagrams',
             name: 'Diagrams page',
             component: AppDiagrams,
+        },
+        {
+            path: '/Airmax',
+            name: 'Airmax clients page',
+            component: AppAirmax,
         },
     ],
     history: createWebHistory(),

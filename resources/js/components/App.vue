@@ -69,6 +69,10 @@ export default {
         {
           title: 'Diagram 1',
           url: 'diagrams/1',
+        },
+        {
+          title: 'Airmax Clients',
+          url: '/airmax',
         }
       ]
     }
