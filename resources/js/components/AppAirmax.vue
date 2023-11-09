@@ -19,7 +19,11 @@
         v-for="client in clients"
         :key="client.place"
       >
-        <td>{{ client.place }}</td>
+        <td>
+          <v-btn density="compact" :to="'/airmax/'+client.place">
+            {{ client.place }}
+          </v-btn>
+        </td>
         <td>{{ client.name }}</td>
       </tr>
     </tbody>

@@ -12,6 +12,15 @@
         <widget-weather/>
 
         <v-spacer></v-spacer>
+                <v-text-field 
+                  density="compact"
+                  variant="solo"
+                  label="Search templates"
+                  append-inner-icon="mdi-magnify"
+                  single-line
+                  hide-details
+                >
+                </v-text-field>
 
         <v-btn variant="text" icon="mdi-magnify"></v-btn>
 
@@ -68,7 +77,7 @@ export default {
         },
         {
           title: 'Diagram 1',
-          url: 'diagrams/1',
+          url: '/diagrams/1',
         },
         {
           title: 'Airmax Clients',
