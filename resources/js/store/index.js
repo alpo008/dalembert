@@ -2,6 +2,7 @@ import { createStore } from 'vuex';
 
 import weather from './weather';
 import airmax from './airmax';
+import general from './general';
 
 export const store = createStore({
 /*  state () {
@@ -11,6 +12,7 @@ export const store = createStore({
   },*/
 	modules: {
 		weather,
-    airmax
+    airmax,
+    general
 	}
 })
