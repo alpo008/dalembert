@@ -16,7 +16,7 @@
     </thead>
     <tbody>
       <tr
-        v-for="client in clients"
+        v-for="client in filteredClients"
         :key="client.place"
       >
         <td>
@@ -39,7 +39,15 @@ export default {
   created() {
     this.$store.dispatch('updateAirmaxClients');
     this.clients = this.$store.getters.airmaxClients;
-    console.log(this.clients)
+  },
+  computed: {
+    filteredClients() {
+      const searchString = this.$store.getters.searchKey.toLowerCase();
+      return this.clients.filter(client => {
+          return (!!client.name && client.name.toLowerCase().indexOf(searchString) !== -1) ||
+          (!!client.place && client.place.toLowerCase().indexOf(searchString) !== -1);
+      });
+    }
   }
 }
 </script>

@@ -16,7 +16,6 @@ export default {
     this.place = this.$route.params.place;
     this.$store.commit('setCurrentClient', this.place);
     this.clientData = this.$store.getters.currentAirmaxClient;
-    console.log(this.clientData)
   }
 }
 </script>

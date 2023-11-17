@@ -95,7 +95,6 @@
       },
       test(e) {
         this.$store.commit('setSearchKey', this.searchString);
-        console.log(this.$store.getters.searchKey)
       }
     }
   }
