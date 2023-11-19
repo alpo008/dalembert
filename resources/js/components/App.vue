@@ -29,7 +29,7 @@
               append-inner-icon="mdi-magnify"
               single-line
               hide-details
-              @keyup="test"
+              @keyup="updateSearchString"
               v-model="searchString"
             >
             </v-text-field>
@@ -89,11 +89,17 @@
     },
     mounted() {
     },
+    watch: {
+      $route(to, from) {
+        this.searchString = '';
+        this.$store.commit('setSearchKey', this.searchString);
+      }
+    },
     methods: {
       switchOff() {
         navigator.app.exitApp();
       },
-      test(e) {
+      updateSearchString(e) {
         this.$store.commit('setSearchKey', this.searchString);
       }
     }
