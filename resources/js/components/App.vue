@@ -47,7 +47,7 @@
         </v-list>
       </v-navigation-drawer>
 
-      <v-main style="height: 100vh;">
+      <v-main style="height: 300vh;">
         <v-card-text>
           <router-view></router-view>
         </v-card-text>
