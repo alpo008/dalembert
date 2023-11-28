@@ -40,7 +40,7 @@
     v-if="!!clientData.location|editable"
     v-model="clientData.location"
     :readonly="!editable"
-    append-icon="mdi-web"
+    append-icon="mdi-map"
     @click:append="openGeo(clientData.location)"
   >
   </v-text-field>
@@ -201,7 +201,7 @@ export default {
     },
     openGeo(coords) {
       let c = coords.replace('(', '').replace(')', '');
-      let url = 'geo:' + c + ";z=16";
+      let url = 'geo:' + c + ";z=16&q=" + c;
       //window.location.href = url;
       window.open(url, '_system').focus();
     }
