@@ -18,22 +18,11 @@
           >
           </v-text-field>
 
-
-
-        <v-btn variant="text" icon="mdi-filter"></v-btn>
-
         <v-btn variant="text" icon="mdi-dots-vertical"></v-btn>
       </v-app-bar>
 
       <v-system-bar color="primary" style="margin-top:1px;height:32px;">
         <widget-weather/>
-        <v-icon icon="mdi-wifi-strength-4" class="ms-2"></v-icon>
-
-        <v-icon icon="mdi-signal-cellular-outline" class="ms-2"></v-icon>
-
-        <v-icon icon="mdi-battery" class="ms-2"></v-icon>
-
-        <span class="ms-2">08:30</span>
       </v-system-bar>
 
       <v-navigation-drawer
