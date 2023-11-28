@@ -4,6 +4,11 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+document.addEventListener("deviceready", onDeviceReady, false);
+function onDeviceReady() {
+    window.open = cordova.InAppBrowser.open;
+}
+
 import './bootstrap';
 import * as Vue from 'vue';
 

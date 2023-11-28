@@ -6,15 +6,35 @@
         prominent
       >
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+          
+          <v-text-field 
+            density="compact"
+            label=""
+            append-inner-icon="mdi-magnify"
+            single-line
+            hide-details
+            @keyup="updateSearchString"
+            v-model="searchString"
+          >
+          </v-text-field>
 
-        <widget-weather/>
 
-        <v-spacer></v-spacer>
 
         <v-btn variant="text" icon="mdi-filter"></v-btn>
 
         <v-btn variant="text" icon="mdi-dots-vertical"></v-btn>
       </v-app-bar>
+
+      <v-system-bar color="primary" style="margin-top:1px;height:32px;">
+        <widget-weather/>
+        <v-icon icon="mdi-wifi-strength-4" class="ms-2"></v-icon>
+
+        <v-icon icon="mdi-signal-cellular-outline" class="ms-2"></v-icon>
+
+        <v-icon icon="mdi-battery" class="ms-2"></v-icon>
+
+        <span class="ms-2">08:30</span>
+      </v-system-bar>
 
       <v-navigation-drawer
         v-model="drawer"
@@ -22,18 +42,6 @@
         temporary
       >
         <v-list>
-          <v-list-item>
-            <v-text-field 
-              density="compact"
-              label=""
-              append-inner-icon="mdi-magnify"
-              single-line
-              hide-details
-              @keyup="updateSearchString"
-              v-model="searchString"
-            >
-            </v-text-field>
-          </v-list-item>
           <v-list-item
             v-for="item of items"
             :key="item.title"
@@ -84,7 +92,8 @@
             title: 'Airmax Clients',
             url: '/airmax',
           }
-        ]
+        ],
+        time: ''
       }
     },
     mounted() {

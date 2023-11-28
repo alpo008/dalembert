@@ -190,19 +190,20 @@ export default {
       document.execCommand('copy');
     },
     phoneCall(phoneNo) {
-      window.location.href = 'tel://' + phoneNo;
+      window.open('tel://' + phoneNo);
     },
     sendEmail(addr) {
-      window.location.href = 'mailto://' + addr;
+      window.open('mailto:' + addr, '_system');
     },
     openLink(ip_address) {
       let url = 'http://' + ip_address;
       window.open(url, '_blank').focus();
     },
     openGeo(coords) {
-      let c = coords.replace('(', '').replace(')', '').replace(',', '+');
-      let url = 'geo://' + c;
-      window.open(url, '_blank').focus();
+      let c = coords.replace('(', '').replace(')', '');
+      let url = 'geo:' + c + ";z=16";
+      //window.location.href = url;
+      window.open(url, '_system').focus();
     }
   }
 }
