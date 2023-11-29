@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class AirmaxClient extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'password' => 'encrypted',
+        'admin' => 'encrypted'
+    ];
 }

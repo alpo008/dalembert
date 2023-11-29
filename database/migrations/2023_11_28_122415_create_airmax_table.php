@@ -32,10 +32,10 @@ return new class extends Migration
             $table->string('router_model', 30)->nullable($value = true);
             $table->macAddress('router_mac')->nullable($value = true);
             $table->ipAddress('router_ip_address')->nullable($value = true);
-            $table->string('ssid', 30)->unique();
-            $table->string('password', 100)->unique();
+            $table->string('ssid', 30)->nullable($value = true);
+            $table->string('password', 255)->nullable($value = true);
             $table->timestampTz('installed_on', $precision = 0);
-            $table->string('admin', 50)->nullable($value = true);
+            $table->string('admin', 255)->nullable($value = true);
             $table->timestamps();
             $table->index(['place', 'ip_address']);
         });
