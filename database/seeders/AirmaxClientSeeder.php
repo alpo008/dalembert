@@ -65,6 +65,7 @@ class AirmaxClientSeeder extends Seeder
         }
         return $result;
     }
+    
     /** 
      * Format date string as valid timestamp
      * 

@@ -18,8 +18,12 @@ export default {
 	},
 	actions: {
 		updateAirmaxClients(context, payload) {
-			let allClients = require('../../data/clients.json');  
-			context.commit('setClients', allClients);
+		    return axios.get('/airmax-clients')
+	        .then(response => {
+	            context.commit('setClients', response.data.clients);
+	        }).catch(err => {
+		        console.error(err);
+		    });
 		}
 	},
 	getters: {

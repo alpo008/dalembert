@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiagramController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AirmaxClientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('diagrams', DiagramController::class);
 Route::apiResource('home', HomeController::class)->except(['create', 'update', 'destroy']);
+Route::apiResource('airmax-clients', AirmaxClientController::class);

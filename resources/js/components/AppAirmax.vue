@@ -2,7 +2,7 @@
   <h1> Клиенты </h1>
     <v-table
     fixed-header
-    height="300px"
+    height="90%"
   >
     <thead>
       <tr>
@@ -14,7 +14,7 @@
         </th>
       </tr>
     </thead>
-    <tbody>
+    <tbody v-if="clients.length">
       <tr
         v-for="client in filteredClients"
         :key="client.place"
@@ -36,8 +36,8 @@ export default {
       clients: []
     }
   },
-  created() {
-    this.$store.dispatch('updateAirmaxClients');
+  async created() {
+    await this.$store.dispatch('updateAirmaxClients');
     this.clients = this.$store.getters.airmaxClients;
   },
   computed: {

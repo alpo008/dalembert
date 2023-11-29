@@ -173,9 +173,9 @@ export default {
       clientData: {}
     }
   },
-  created() {
+  async created() {
     if (!this.$store.getters.airmaxClients.length) {
-      this.$store.dispatch('updateAirmaxClients');
+      await this.$store.dispatch('updateAirmaxClients');
     }
     this.place = this.$route.params.place;
     this.$store.commit('setCurrentClient', this.place);
