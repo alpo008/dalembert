@@ -38,10 +38,10 @@
     label="Location"
     ref="location"
     v-if="!!clientData.location|editable"
-    v-model="clientData.location"
+    v-model="formattedLocation"
     :readonly="!editable"
     append-icon="mdi-map"
-    @click:append="openGeo(clientData.location)"
+    @click:append="openGeo(formattedLocation)"
   >
   </v-text-field>
   <v-text-field 
@@ -69,12 +69,12 @@
   <v-text-field 
     type="text"
     label="Bridge model"
-    ref="model"
-    v-if="!!clientData.model|editable"
-    v-model="clientData.model"
+    ref="ap_model"
+    v-if="!!clientData.ap_model|editable"
+    v-model="clientData.ap_model"
     :readonly="!editable"
     append-icon="mdi-web"
-    @click:append="openLink('google.com/search?q=' + clientData.model)"
+    @click:append="openLink('google.com/search?q=' + clientData.ap_model)"
   >
   </v-text-field>
   <v-text-field 
@@ -100,7 +100,7 @@
   <v-text-field 
     type="text"
     label="Bridge WLAN MAC"
-    ref="lan_mac"
+    ref="wlan_mac"
     v-if="!!clientData.lan_mac|editable"
     v-model="clientData.lan_mac"
     :readonly="!editable"
@@ -111,7 +111,7 @@
   <v-text-field 
     type="text"
     label="Bridge LAN MAC"
-    ref="wlan_mac"
+    ref="lan_mac"
     v-if="!!clientData.wlan_mac|editable"
     v-model="clientData.wlan_mac"
     :readonly="!editable"
@@ -122,12 +122,12 @@
   <v-text-field 
     type="text"
     label="Router model"
-    ref="router"
-    v-if="!!clientData.router|editable"
-    v-model="clientData.router"
+    ref="router_model"
+    v-if="!!clientData.router_model|editable"
+    v-model="clientData.router_model"
     :readonly="!editable"
     append-icon="mdi-web"
-    @click:append="openLink('google.com/search?q=' + clientData.router)"
+    @click:append="openLink('google.com/search?q=' + clientData.router_model)"
   >
   </v-text-field>
   <v-text-field 
@@ -144,12 +144,12 @@
   <v-text-field 
     type="text"
     label="Router LAN IP"
-    ref="router_lan_ip"
-    v-if="!!clientData.router_lan_ip|editable"
-    v-model="clientData.router_lan_ip"
+    ref="router_ip_address"
+    v-if="!!clientData.router_ip_address|editable"
+    v-model="clientData.router_ip_address"
     :readonly="!editable"
     append-icon="mdi-web"
-    @click:append="openLink(clientData.router_lan_ip)"
+    @click:append="openLink(clientData.router_ip_address)"
   >
   </v-text-field>
   <v-text-field 
@@ -202,8 +202,17 @@ export default {
     openGeo(coords) {
       let c = coords.replace('(', '').replace(')', '');
       let url = 'geo:' + c + ";z=16&q=" + c;
-      //window.location.href = url;
       window.open(url, '_system').focus();
+    }
+  },
+  computed: {
+    formattedLocation () {
+      let loc = this.clientData.location;
+      let result = null;
+      if (typeof(loc) === 'object' && typeof(loc.lat) !== 'undefined' && typeof(loc.lng) !== 'undefined') {
+        result = '(' + loc.lat + ',' + loc.lng + ')';
+      }
+      return result;
     }
   }
 }

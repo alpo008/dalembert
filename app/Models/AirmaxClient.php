@@ -14,6 +14,7 @@ class AirmaxClient extends Model
         'password' => 'encrypted',
         'admin' => 'encrypted',
         'installed_on' => 'datetime:Y-m-d',
+        'location' => 'array'
     ];
 
     /**
