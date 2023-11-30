@@ -209,7 +209,7 @@ export default {
     formattedLocation () {
       let loc = this.clientData.location;
       let result = null;
-      if (typeof(loc) === 'object' && typeof(loc.lat) !== 'undefined' && typeof(loc.lng) !== 'undefined') {
+      if (typeof(loc) === 'object' && loc !== null && typeof(loc.lat) !== 'undefined' && typeof(loc.lng) !== 'undefined') {
         result = '(' + loc.lat + ',' + loc.lng + ')';
       }
       return result;

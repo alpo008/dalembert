@@ -11,7 +11,6 @@
 </template>
 
 <script>
-//import { useStore } from 'vuex'
 export default {
   data() {
     return {
@@ -21,11 +20,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('updateWeather').then(
-      () => {
-        this.weather = this.$store.getters.weather;
-      }
-    ).catch(err => console.warn(`ERROR(${err.code}): ${err.message}`));
+    this.weather = this.$store.getters.weather;
   },
    methods: { 
   },

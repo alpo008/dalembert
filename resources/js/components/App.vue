@@ -21,7 +21,7 @@
         <v-btn variant="text" icon="mdi-dots-vertical"></v-btn>
       </v-app-bar>
 
-      <v-system-bar color="primary" style="margin-top:1px;height:32px;">
+      <v-system-bar color="primary" style="margin-top:1px;height:32px;" v-if="showWeather">
         <widget-weather/>
       </v-system-bar>
 
@@ -64,6 +64,7 @@
         drawer: false,
         group: null,
         searchString: '',
+        showWeather: false,
         items: [
           {
             title: 'Home',
@@ -86,6 +87,13 @@
       }
     },
     mounted() {
+      this.showWeather = false;
+      this.$store.dispatch('updateWeather').then(
+        () => {
+          let weather = this.$store.getters.weather;
+          this.showWeather = weather.is_ready;
+        }
+      ).catch(err => console.warn(`ERROR(${err.code}): ${err.message}`));
     },
     watch: {
       $route(to, from) {
