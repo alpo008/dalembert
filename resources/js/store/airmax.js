@@ -24,6 +24,22 @@ export default {
 	        }).catch(err => {
 		        console.error(err);
 		    });
+		},
+		saveClient(context, payload) {
+			if (!isNaN(payload.id)) {
+				return axios.put('/airmax-clients/' + payload.id, payload)
+		        .then(response => {
+		            console.log(response);
+		        }).catch(err => {
+			        console.error(err);
+			    });	
+			}
+			return axios.post('/airmax-clients', payload)
+	        .then(response => {
+	            console.log(response);
+	        }).catch(err => {
+		        console.error(err);
+		    });
 		}
 	},
 	getters: {

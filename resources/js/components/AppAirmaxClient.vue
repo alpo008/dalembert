@@ -1,5 +1,13 @@
 <template>
-  <h1> Клиент {{ place }}</h1>
+  <div style="display:inline-flex;justify-content:space-between;width:100%;">
+    <h2 class="pa-1 d-inline"> Клиент {{ place }}</h2>
+    <v-btn
+      icon="mdi-note-edit"
+      @click="swapEditionMode"
+    >
+    </v-btn>
+  </div>
+    <v-divider></v-divider>
   <v-text-field 
     type="text"
     label="Name"
@@ -38,10 +46,10 @@
     label="Location"
     ref="location"
     v-if="!!clientData.location|editable"
-    v-model="formattedLocation"
+    v-model="clientData.location"
     :readonly="!editable"
     append-icon="mdi-map"
-    @click:append="openGeo(formattedLocation)"
+    @click:append="openGeo(clientData.location)"
   >
   </v-text-field>
   <v-text-field 
@@ -163,12 +171,18 @@
     @click:append="copyText('router_mac')"
   >
   </v-text-field>
+  <v-btn
+    icon="mdi-content-save"
+    v-if="editable"
+    @click="save"
+  >
+  </v-btn>
 </template>
 <script>
 export default {
   data: function () {
     return {
-      editable: true,
+      editable: false,
       place: '',
       clientData: {}
     }
@@ -203,6 +217,12 @@ export default {
       let c = coords.replace('(', '').replace(')', '');
       let url = 'geo:' + c + ";z=16&q=" + c;
       window.open(url, '_system').focus();
+    },
+    swapEditionMode() {
+      this.editable = !this.editable;
+    },
+    save() {
+      this.$store.dispatch('saveClient', this.clientData);
     }
   },
   computed: {
