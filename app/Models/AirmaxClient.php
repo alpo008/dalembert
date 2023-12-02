@@ -14,8 +14,12 @@ class AirmaxClient extends Model
         'password' => 'encrypted',
         'admin' => 'encrypted',
         'installed_on' => 'datetime:Y-m-d',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
         //'location' => 'array'
     ];
+
+    //protected $dateFormat = 'U';
 
     /**
      * Get the user's first name.

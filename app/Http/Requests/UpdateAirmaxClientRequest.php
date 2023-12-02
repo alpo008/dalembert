@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpdateAirmaxClientRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, mixed>
+     */
+    public function rules():array
+    {
+        $phoneRE = '/^\+*\d{10,11}?$/';
+        return [
+            'place' => 'required|max:30|unique:airmax_clients,place,' . ($this->id ?? 0),
+            'location' => 'json|nullable',
+            'name' => 'string|max:30|nullable',
+            'email' => 'email:rfc,dns|nullable|unique:airmax_clients,email,' . ($this->id ?? 0),
+            'phone' => 'nullable|regex:/^\+\d{11,12}?$/|unique:airmax_clients,phone,' . ($this->id ?? 0),
+            'ap_model' => 'string|max:30|nullable',
+            'wlan_mac' => 'mac_address|nullable',
+            'lan_mac' => 'mac_address|nullable',
+            'ap_mac' => 'mac_address|nullable',
+            'ip_address' => 'ipv4|unique:airmax_clients,ip_address,' . ($this->id ?? 0),
+            'router_model' => 'string|max:30|nullable',
+            'router_mac' => 'mac_address|nullable',
+            'router_ip_address' => 'ipv4|nullable',
+            'ssid' => 'string|max:30|nullable',
+            'password' => 'current_password|nullable',
+            'installed_on' => 'date|nullable'
+        ];
+    }
+
+    /**
+     * Get the error messages for validation rules.
+     *
+     * @return array
+     */
+    public function messages():array
+    {
+        return [
+            'regex' => __('The :attribute format is invalid'),
+            'email' => __('The :attribute must be a valid email address'),
+            'required' => __('The :attribute field is required'),
+            'unique' => __('The :attribute has already been taken'),
+            'string' => __('The :attribute must be a text string')
+        ];
+    }
+}

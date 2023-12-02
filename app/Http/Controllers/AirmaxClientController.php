@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AirmaxClient;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateAirmaxClientRequest;
 
 class AirmaxClientController extends Controller
 {
@@ -69,13 +70,19 @@ class AirmaxClientController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\UpdateAirmaxClientRequest  $request
      * @param  \App\Models\AirmaxClient  $airmaxClient
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AirmaxClient $airmaxClient)
+    public function update(UpdateAirmaxClientRequest $request, AirmaxClient $airmaxClient)
     {
-        //
+        $result = AirmaxClient::whereId($request->id)->update($request->all());
+        return response()->json(
+            [
+                'status' => 'success',
+                'updated' => $result
+            ], 200
+        );
     }
 
     /**
