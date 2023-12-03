@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\AirmaxClient;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateAirmaxClientRequest;
+use Illuminate\Support\Facades\Crypt;
 
 class AirmaxClientController extends Controller
 {
+    const MAX_ADMIN_FIELD_LENGTH = 50;
+
     /**
      * Display a listing of the resource.
      *
@@ -75,7 +78,10 @@ class AirmaxClientController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateAirmaxClientRequest $request, AirmaxClient $airmaxClient)
-    {
+    {       
+        if(strlen($request->admin) < self::MAX_ADMIN_FIELD_LENGTH && strlen($request->admin) > 0) {
+            $request->merge(['admin' => Crypt::encryptString($request->admin)]);
+        }
         $result = AirmaxClient::whereId($request->id)->update($request->all());
         return response()->json(
             [
