@@ -222,7 +222,15 @@ export default {
       this.editable = !this.editable;
     },
     save() {
-      this.$store.dispatch('saveClient', this.clientData);
+        this.$store.dispatch('httpRequest', {
+          url: '/airmax-clients/' + this.clientData.id,
+          method: 'PUT',
+          data: this.clientData,
+          mutation: ''
+        }).then(() => {
+          console.log('put');
+          this.$store.dispatch('updateAirmaxClients');
+        });
     }
   },
   computed: {

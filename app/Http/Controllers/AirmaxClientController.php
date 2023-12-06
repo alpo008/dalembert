@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Crypt;
 
 class AirmaxClientController extends Controller
 {
-    const MAX_ADMIN_FIELD_LENGTH = 50;
+    const MAX_ENCRYPTING_FIELD_LENGTH = 50;
 
     /**
      * Display a listing of the resource.
@@ -79,8 +79,11 @@ class AirmaxClientController extends Controller
      */
     public function update(UpdateAirmaxClientRequest $request, AirmaxClient $airmaxClient)
     {       
-        if(strlen($request->admin) < self::MAX_ADMIN_FIELD_LENGTH && strlen($request->admin) > 0) {
+        if(strlen($request->admin) < self::MAX_ENCRYPTING_FIELD_LENGTH && strlen($request->admin) > 0) {
             $request->merge(['admin' => Crypt::encryptString($request->admin)]);
+        }
+        if(strlen($request->password) < self::MAX_ENCRYPTING_FIELD_LENGTH && strlen($request->password) > 0) {
+            $request->merge(['password' => Crypt::encryptString($request->password)]);
         }
         $result = AirmaxClient::whereId($request->id)->update($request->all());
         return response()->json(

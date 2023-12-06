@@ -18,11 +18,12 @@ export default {
 	},
 	actions: {
 		updateAirmaxClients(context, payload) {
+			console.log('updating')
 		    return axios.get('/airmax-clients')
 	        .then(response => {
 	            context.commit('setClients', response.data.clients);
 	        }).catch(err => {
-		        console.error(err);
+		        context.commit('updateErrors', err);
 		    });
 		},
 		saveClient(context, payload) {
@@ -31,14 +32,14 @@ export default {
 		        .then(response => {
 		            console.log(response);
 		        }).catch(err => {
-			        console.error(err);
+			        context.commit('updateErrors', err);
 			    });	
 			}
 			return axios.post('/airmax-clients', payload)
 	        .then(response => {
 	            console.log(response);
 	        }).catch(err => {
-		        console.error(err);
+		        context.commit('updateErrors', err);
 		    });
 		}
 	},
