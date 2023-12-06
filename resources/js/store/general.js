@@ -7,9 +7,6 @@ export default {
 		setSearchKey(state, payload) {
 			state.searchString = payload;
 		},
-		updateErrors(state, payload) {
-			console.log(payload.response);
-		},
 		setHttpErrors(state, payload) {
 			if (typeof payload === 'object') {
 				state.httpErrors = payload;
@@ -48,7 +45,6 @@ export default {
 		                        error.response = response;
 		                        throw error
 		                    }
-		                 
 		                    return response.data;
 		                }).then(json => {
 			                if (!!mutation) {

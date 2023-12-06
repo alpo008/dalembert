@@ -6,42 +6,26 @@ export default {
 		},
 	mutations : {
 		setClients(state, payload) {
-			state.all = payload;
+			if(typeof(payload.clients) === 'object') {
+				state.all = payload.clients;
+			}		
 		},
 		setCurrentClient(state, payload) {
 			state.place = payload;
 			if(!state.all.length) {
 
 			}
-
 		}
 	},
 	actions: {
 		updateAirmaxClients(context, payload) {
-			console.log('updating')
-		    return axios.get('/airmax-clients')
-	        .then(response => {
-	            context.commit('setClients', response.data.clients);
-	        }).catch(err => {
-		        context.commit('updateErrors', err);
-		    });
+        	return context.dispatch('httpRequest', {
+              url: '/airmax-clients',
+              method: 'GET',
+              data: null,
+              mutation: 'setClients'
+            });
 		},
-		saveClient(context, payload) {
-			if (!isNaN(payload.id)) {
-				return axios.put('/airmax-clients/' + payload.id, payload)
-		        .then(response => {
-		            console.log(response);
-		        }).catch(err => {
-			        context.commit('updateErrors', err);
-			    });	
-			}
-			return axios.post('/airmax-clients', payload)
-	        .then(response => {
-	            console.log(response);
-	        }).catch(err => {
-		        context.commit('updateErrors', err);
-		    });
-		}
 	},
 	getters: {
 		airmaxClients(state) {
