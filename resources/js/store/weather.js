@@ -16,6 +16,7 @@ export default {
 	},
 	mutations: {
 		setWeather(state, payload) {
+			let wx = payload.weather;
 			const weatherCodes = {
 		        0:  'Clear sky',
 		        1:  'Mainly clear',
@@ -75,22 +76,22 @@ export default {
 				95: {'day': 'wi-day-sleet-storm', 'night': 'wi-night-sleet-storm'}, 
 				99: {'day': 'wi-storm-showers', 'night': 'wi-storm-showers'}
 			};  
-			if(typeof(payload.current_weather) === 'object' && !_.isEmpty(payload.current_weather)) {
-				state.temperature = payload.current_weather.temperature;
-				state.windspeed = payload.current_weather.windspeed;
-				state.winddirection = payload.current_weather.winddirection;
-				state.weathercode = payload.current_weather.weathercode;
-				state.time = payload.current_weather.time;
-				state.description = weatherCodes[payload.current_weather.weathercode];
-				state.icon = weatherIcons[payload.current_weather.weathercode];
-				state.city = payload.city;
+			if(typeof(wx.current_weather) === 'object' && !_.isEmpty(wx.current_weather)) {
+				state.temperature = wx.current_weather.temperature;
+				state.windspeed = wx.current_weather.windspeed;
+				state.winddirection = wx.current_weather.winddirection;
+				state.weathercode = wx.current_weather.weathercode;
+				state.time = wx.current_weather.time;
+				state.description = weatherCodes[wx.current_weather.weathercode];
+				state.icon = weatherIcons[wx.current_weather.weathercode];
+				state.city = wx.city;
 			}
-			if(typeof(payload.daily) === 'object' && !_.isEmpty(payload.daily)) {
-				if(typeof(payload.daily.sunrise) === 'object' && typeof(payload.daily.sunrise[0]) === 'string') {
-					state.sunrise = payload.daily.sunrise[0];
+			if(typeof(wx.daily) === 'object' && !_.isEmpty(wx.daily)) {
+				if(typeof(wx.daily.sunrise) === 'object' && typeof(wx.daily.sunrise[0]) === 'string') {
+					state.sunrise = wx.daily.sunrise[0];
 				}
-				if(typeof(payload.daily.sunset) === 'object' && typeof(payload.daily.sunset[0]) === 'string') {
-					state.sunset = payload.daily.sunset[0];
+				if(typeof(wx.daily.sunset) === 'object' && typeof(wx.daily.sunset[0]) === 'string') {
+					state.sunset = wx.daily.sunset[0];
 				}
 			}
 
@@ -113,12 +114,22 @@ export default {
 		async updateWeather(context, payload) {
 			let currentPosition = await context.dispatch('getCoords', 0);
 			let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-			let response = await axios.post('/home', {
+        	return context.dispatch('httpRequest', {
+              url: '/home',
+              method: 'POST',
+              data: {
+				'lat': currentPosition.coords.latitude, 
+				'lng': currentPosition.coords.longitude,
+				'timezone': timeZone 
+				},
+              mutation: 'setWeather'
+            });
+/*			let response = await axios.post('/home', {
 				'lat': currentPosition.coords.latitude, 
 				'lng': currentPosition.coords.longitude,
 				'timezone': timeZone 
 			});
-			context.commit('setWeather', response.data.weather);
+			context.commit('setWeather', response.data.weather);*/
 		},
 		async getCoords() {
 			return new Promise((resolve, reject) => {
