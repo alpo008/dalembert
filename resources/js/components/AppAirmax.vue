@@ -1,6 +1,16 @@
 <template>
-  <h1> Клиенты </h1>
-    <v-table
+  <v-system-bar color="lightgrey" 
+    style="height:50px;width: calc((100% - 10px) - 20px);top:120px;left:16px;"
+    class="rounded"
+  >
+    <h2 class="pa-1 d-inline" style="margin-right: auto;"> Клиенты</h2>
+    <v-btn
+      icon="mdi-account-plus-outline"
+      to="/airmax/new"
+    >
+    </v-btn>
+  </v-system-bar>
+  <v-table
     fixed-header
     height="90%"
   >

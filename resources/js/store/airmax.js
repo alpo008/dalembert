@@ -33,9 +33,10 @@ export default {
 		},
 		currentAirmaxClient(state) {
 			if (state.all.length) {
-				return state.all.find(el => el.place === state.place);
+				let result = state.all.find(el => el.place === state.place);
+				return typeof(result) === 'undefined' ? {} : result;
 			}
-			return '';
+			return {};
 		}
 	}
 }

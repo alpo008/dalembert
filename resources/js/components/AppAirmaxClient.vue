@@ -1,13 +1,34 @@
 <template>
-  <div style="display:inline-flex;justify-content:space-between;width:100%;">
-    <h2 class="pa-1 d-inline"> Клиент {{ place }}</h2>
+  <v-system-bar color="lightgrey" 
+    style="height:50px;width: calc((100% - 10px) - 60px);top:120px;left:16px;"
+    class="rounded"
+  >
+    <h2 class="pa-1 d-inline" style="margin-right: auto;"> Клиент {{ place }}</h2>
+    <v-btn
+      icon="mdi-content-save"
+      v-if="editable"
+      @click="save"
+    >
+    </v-btn>
     <v-btn
       icon="mdi-note-edit"
       @click="swapEditionMode"
+      style="margin: 0 1%;"
     >
     </v-btn>
-  </div>
-    <v-divider></v-divider>
+  </v-system-bar>
+  <div style="width:100%; margin-top:65px;"></div>
+  <v-text-field 
+    type="text"
+    label="Place"
+    ref="place"
+    v-if="isNew"
+    v-model="clientData.place"
+    :readonly="!editable"
+    append-icon="mdi-content-copy"
+    @click:append="copyText('place')"
+  >
+  </v-text-field>
   <v-text-field 
     type="text"
     label="Name"
@@ -183,6 +204,7 @@ export default {
   data: function () {
     return {
       editable: false,
+      isNew: false,
       place: '',
       clientData: {}
     }
@@ -192,6 +214,10 @@ export default {
       await this.$store.dispatch('updateAirmaxClients');
     }
     this.place = this.$route.params.place;
+    if (this.place === 'new') {
+      this.isNew = true;
+      this.editable = true;
+    }
     this.$store.commit('setCurrentClient', this.place);
     this.clientData = this.$store.getters.currentAirmaxClient;
     console.log(this.clientData)
@@ -222,15 +248,19 @@ export default {
       this.editable = !this.editable;
     },
     save() {
-        this.$store.dispatch('httpRequest', {
-          url: '/airmax-clients/' + this.clientData.id,
-          method: 'PUT',
-          data: this.clientData,
-          mutation: ''
-        }).then(() => {
-          console.log('put');
-          this.$store.dispatch('updateAirmaxClients');
-        });
+      let url, method;
+      url = this.isNew ? '/airmax-clients/' : '/airmax-clients/' + this.clientData.id;
+      method = this.isNew ? 'POST' : 'PUT';
+
+      this.$store.dispatch('httpRequest', {
+        url: url,
+        method: method,
+        data: this.clientData,
+        mutation: ''
+      }).then(() => {
+        console.log('saving');
+        this.$store.dispatch('updateAirmaxClients');
+      });
     }
   },
   computed: {
