@@ -108,6 +108,16 @@ class AirmaxClientController extends Controller
      */
     public function destroy(AirmaxClient $airmaxClient)
     {
-        //
+        $status = 'error';
+        $code = 422;
+        $deleted = false;
+        if (!empty($airmaxClient->id)) {
+            $deleted = AirmaxClient::find($airmaxClient->id)->delete();
+            $status = 'success';
+            $code = 200;
+        }
+        return response()->json(
+            compact('status', 'deleted'), $code
+        );
     }
 }

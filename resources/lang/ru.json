@@ -1,5 +1,6 @@
 {
 	"403 Access denied": "403 Недостаточно прав",
+	"Are you sure?": "Точно-преточно?",
 	"Access": "Доступ",
 	"Bridge IP": "IP адрес моста",
 	"Bridge LAN MAC": "MAC адрес LAN моста",
@@ -7,6 +8,7 @@
 	"Bridge WLAN MAC": "MAC адрес WLAN моста",
 	"Clear sky": "Ясно",
 	"Client": "Клиент",
+	"Deletion": "Удаление",
 	"Dense drizzle": "Густая морось",
 	"Dense freezing drizzle": "Густая изморозь",
     "Fog": "Туман",
@@ -25,6 +27,7 @@
 	"Moderate rain showers": "Ливни",
 	"Moderate snow fall": "Снегопад",
     "Name": "Имя",			
+    "No": "нет",			
     "Overcast": "Пасмурно",			
     "Partly cloudy": "Переменная облачность",
     "Password": "Пароль",
@@ -58,5 +61,6 @@
 	"Violent rain shower": "Сильный ливень",
 	"Weak password": "Пароль слабоват",
 	"Username": "Логин",
-	"User": "Пользователь"
+	"User": "Пользователь",
+	"Yes": "Да"
 }

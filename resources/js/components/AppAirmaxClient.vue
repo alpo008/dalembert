@@ -5,9 +5,17 @@
   >
     <h2 class="pa-1 d-inline" style="margin-right: auto;"> {{ $t('Client') }} {{ place }}</h2>
     <v-btn
+      icon="mdi-delete-alert-outline"
+      v-if="editable"
+      @click="deleteClient"
+      style="margin: 0 1%;"
+    >
+    </v-btn>
+    <v-btn
       icon="mdi-content-save"
       v-if="editable"
       @click="save"
+      style="margin: 0 1%;"
     >
     </v-btn>
     <v-btn
@@ -214,90 +222,108 @@
     :error-messages="errors.router_mac"
   >
   </v-text-field>
-  <v-btn
-    icon="mdi-content-save"
-    v-if="editable"
-    @click="save"
-  >
-  </v-btn>
+  <widget-confirm ref="confirm"></widget-confirm>
 </template>
 <script>
-export default {
-  data: function () {
-    return {
-      editable: false,
-      isNew: false,
-      place: '',
-      clientData: {},
-      errors: {}
-    }
-  },
-  async created() {
-    if (!this.$store.getters.airmaxClients.length) {
-      await this.$store.dispatch('updateAirmaxClients');
-    }
-    this.place = this.$route.params.place;
-    if (this.place === 'new') {
-      this.isNew = true;
-      this.editable = true;
-    }
-    this.$store.commit('setCurrentClient', this.place);
-    this.clientData = this.$store.getters.currentAirmaxClient;
-    console.log(this.clientData)
-  },
-  methods:{
-    copyText(txt){
-      const element = this.$refs[txt];
-      element.select();
-      element.setSelectionRange(0, 99999);
-      document.execCommand('copy');
+  import WidgetConfirm from './widgets/WidgetConfirm.vue'
+  export default {
+    components: {
+      WidgetConfirm
     },
-    phoneCall(phoneNo) {
-      window.open('tel://' + phoneNo);
-    },
-    sendEmail(addr) {
-      window.open('mailto:' + addr, '_system');
-    },
-    openLink(ip_address) {
-      let url = 'http://' + ip_address;
-      window.open(url, '_blank').focus();
-    },
-    openGeo(coords) {
-      let c = coords.replace('(', '').replace(')', '');
-      let url = 'geo:' + c + ";z=16&q=" + c;
-      window.open(url, '_system').focus();
-    },
-    swapEditionMode() {
-      this.editable = !this.editable;
-    },
-    save() {
-      let url, method;
-      url = this.isNew ? '/airmax-clients/' : '/airmax-clients/' + this.clientData.id;
-      method = this.isNew ? 'POST' : 'PUT';
-      this.$store.dispatch('httpRequest', {
-        url: url,
-        method: method,
-        data: this.clientData,
-        mutation: ''
-      }).then(() => {
-        this.errors = this.$store.getters.httpErrors;
-        this.$store.dispatch('updateAirmaxClients');
-        this.isNew = false;
-        this.editable = false;
-        this.$store.commit('setCurrentClient', this.place);
-        this.clientData = this.$store.getters.currentAirmaxClient;
-      });
-    }
-  },
-  computed: {
-    formattedLocation () {
-      let loc = this.clientData.location;
-      let result = null;
-      if (typeof(loc) === 'object' && loc !== null && typeof(loc.lat) !== 'undefined' && typeof(loc.lng) !== 'undefined') {
-        result = '(' + loc.lat + ',' + loc.lng + ')';
+    data: function () {
+      return {
+        editable: false,
+        isNew: false,
+        place: '',
+        clientData: {},
+        errors: {}
       }
-      return result;
+    },
+    async created() {
+      if (!this.$store.getters.airmaxClients.length) {
+        await this.$store.dispatch('updateAirmaxClients');
+      }
+      this.place = this.$route.params.place;
+      if (this.place === 'new') {
+        this.isNew = true;
+        this.editable = true;
+      }
+      this.$store.commit('setCurrentClient', this.place);
+      this.clientData = this.$store.getters.currentAirmaxClient;
+      console.log(this.clientData)
+    },
+    methods:{
+      copyText(txt){
+        const element = this.$refs[txt];
+        element.select();
+        element.setSelectionRange(0, 99999);
+        document.execCommand('copy');
+      },
+      phoneCall(phoneNo) {
+        window.open('tel://' + phoneNo);
+      },
+      sendEmail(addr) {
+        window.open('mailto:' + addr, '_system');
+      },
+      openLink(ip_address) {
+        let url = 'http://' + ip_address;
+        window.open(url, '_blank').focus();
+      },
+      openGeo(coords) {
+        let c = coords.replace('(', '').replace(')', '');
+        let url = 'geo:' + c + ";z=16&q=" + c;
+        window.open(url, '_system').focus();
+      },
+      swapEditionMode() {
+        this.editable = !this.editable;
+      },
+      save() {
+        let url, method;
+        url = this.isNew ? '/airmax-clients/' : '/airmax-clients/' + this.clientData.id;
+        method = this.isNew ? 'POST' : 'PUT';
+        this.$store.dispatch('httpRequest', {
+          url: url,
+          method: method,
+          data: this.clientData,
+          mutation: ''
+        }).then(() => {
+          this.errors = this.$store.getters.httpErrors;
+          this.$store.dispatch('updateAirmaxClients');
+          this.isNew = false;
+          this.editable = false;
+          this.$store.commit('setCurrentClient', this.place);
+          this.clientData = this.$store.getters.currentAirmaxClient;
+        });
+      },
+      deleteClient() {
+        if (!isNaN(this.clientData.id)) {
+          this.$refs.confirm.open(this.$t('Deletion'), 
+            this.$t('Are you sure?'), { color: '#ff0266' }).then((confirm) => {
+            if(confirm) {
+              this.$store.dispatch('httpRequest', {
+              url:'/airmax-clients/' + this.clientData.id,
+              method: 'DELETE',
+              data: this.clientData,
+              mutation: ''
+              }).then(() => {
+                this.errors = this.$store.getters.httpErrors;
+                this.$store.dispatch('updateAirmaxClients');
+                this.$router.push('/airmax')
+              });
+            }
+          });
+        }
+      }
+    },
+    computed: {
+      formattedLocation () {
+        let loc = this.clientData.location;
+        let result = null;
+        if (typeof(loc) === 'object' && loc !== null && typeof(loc.lat) !== 'undefined' && typeof(loc.lng) !== 'undefined') {
+          result = '(' + loc.lat + ',' + loc.lng + ')';
+        }
+        return result;
+      }
     }
   }
-}
 </script>
