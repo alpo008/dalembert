@@ -45,7 +45,13 @@ class AirmaxClientController extends Controller
      */
     public function store(UpdateAirmaxClientRequest $request)
     {
-        //
+        $created = AirmaxClient::create($request->all());
+        return response()->json(
+            [
+                'status' => 'success',
+                'current' => $created
+            ], 200
+        );
     }
 
     /**

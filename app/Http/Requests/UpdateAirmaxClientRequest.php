@@ -23,18 +23,17 @@ class UpdateAirmaxClientRequest extends FormRequest
      */
     public function rules():array
     {
-        $phoneRE = '/^\+*\d{10,11}?$/';
         return [
             'place' => 'required|max:30|unique:airmax_clients,place,' . ($this->id ?? 0),
             'location' => 'json|nullable',
-            'name' => 'string|max:30|nullable',
+            'name' => 'required|string|max:30|nullable',
             'email' => 'email:rfc,dns|nullable|unique:airmax_clients,email,' . ($this->id ?? 0),
             'phone' => 'nullable|regex:/^\+?\d{11,12}?$/|unique:airmax_clients,phone,' . ($this->id ?? 0),
             'ap_model' => 'string|max:30|nullable',
             'wlan_mac' => 'mac_address|nullable',
             'lan_mac' => 'mac_address|nullable',
             'ap_mac' => 'mac_address|nullable',
-            'ip_address' => 'ipv4|unique:airmax_clients,ip_address,' . ($this->id ?? 0),
+            'ip_address' => '|required|ipv4|unique:airmax_clients,ip_address,' . ($this->id ?? 0),
             'router_model' => 'string|max:30|nullable',
             'router_mac' => 'mac_address|nullable',
             'router_ip_address' => 'ipv4|nullable',

@@ -10,6 +10,16 @@ class AirmaxClient extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'place', 'name', 'email', 'location', 'phone', 'ap_model', 'wlan_mac', 'lan_mac', 'ap_mac', 'ip_address', 
+        'router_model', 'router_mac', 'router_ip_address', 'ssid', 'password', 'installed_on', 'admin'
+    ];
+
     protected $casts = [
         'password' => 'encrypted',
         'admin' => 'encrypted',
@@ -19,10 +29,9 @@ class AirmaxClient extends Model
         //'location' => 'array'
     ];
 
-    //protected $dateFormat = 'U';
 
     /**
-     * Get the user's first name.
+     * Format installed_on date.
      */
     protected function installedOn(): Attribute
     {

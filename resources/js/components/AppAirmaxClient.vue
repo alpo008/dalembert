@@ -146,7 +146,7 @@
     :label="$t('Bridge WLAN MAC')"
     ref="wlan_mac"
     v-if="!!clientData.lan_mac|editable"
-    v-model="clientData.lan_mac"
+    v-model="clientData.wlan_mac"
     :readonly="!editable"
     append-icon="mdi-content-copy"
     @click:append="copyText('lan_mac')"
@@ -157,11 +157,11 @@
     type="text"
     :label="$t('Bridge LAN MAC')"
     ref="lan_mac"
-    v-if="!!clientData.wlan_mac|editable"
-    v-model="clientData.wlan_mac"
+    v-if="!!clientData.lan_mac|editable"
+    v-model="clientData.lan_mac"
     :readonly="!editable"
     append-icon="mdi-content-copy"
-    @click:append="copyText('wlan_mac')"
+    @click:append="copyText('lan_mac')"
     :error-messages="errors.lan_mac"
   >
   </v-text-field>
@@ -274,7 +274,6 @@ export default {
       let url, method;
       url = this.isNew ? '/airmax-clients/' : '/airmax-clients/' + this.clientData.id;
       method = this.isNew ? 'POST' : 'PUT';
-
       this.$store.dispatch('httpRequest', {
         url: url,
         method: method,
@@ -283,6 +282,10 @@ export default {
       }).then(() => {
         this.errors = this.$store.getters.httpErrors;
         this.$store.dispatch('updateAirmaxClients');
+        this.isNew = false;
+        this.editable = false;
+        this.$store.commit('setCurrentClient', this.place);
+        this.clientData = this.$store.getters.currentAirmaxClient;
       });
     }
   },
