@@ -3,7 +3,7 @@
     style="height:50px;width: calc((100% - 10px) - 60px);top:120px;left:16px;"
     class="rounded"
   >
-    <h2 class="pa-1 d-inline" style="margin-right: auto;"> Клиент {{ place }}</h2>
+    <h2 class="pa-1 d-inline" style="margin-right: auto;"> {{ $t('Client') }} {{ place }}</h2>
     <v-btn
       icon="mdi-content-save"
       v-if="editable"
@@ -20,35 +20,40 @@
   <div style="width:100%; margin-top:65px;"></div>
   <v-text-field 
     type="text"
-    label="Place"
+    :label="$t('Place')"
     ref="place"
     v-if="isNew"
     v-model="clientData.place"
     :readonly="!editable"
     append-icon="mdi-content-copy"
     @click:append="copyText('place')"
+    :error-messages="errors.place"
+    counter="30"
   >
   </v-text-field>
   <v-text-field 
     type="text"
-    label="Name"
+    :label="$t('Name')"
     ref="name"
     v-if="!!clientData.name|editable"
     v-model="clientData.name"
     :readonly="!editable"
     append-icon="mdi-content-copy"
     @click:append="copyText('name')"
+    :error-messages="errors.name"
+    counter="30"
   >
   </v-text-field>
   <v-text-field 
     type="tel"
-    label="Phone"
+    :label="$t('Phone')"
     ref="phone"
     v-if="!!clientData.phone|editable"
     v-model="clientData.phone"
     :readonly="!editable"
     append-icon="mdi-phone"
     @click:append="phoneCall(clientData.phone)"
+    :error-messages="errors.phone"
   >
   </v-text-field>
   <v-text-field 
@@ -60,17 +65,29 @@
     :readonly="!editable"
     append-icon="mdi-email"
     @click:append="sendEmail(clientData.email)"
+    :error-messages="errors.email"
   >
   </v-text-field>
   <v-text-field 
     type="text"
-    label="Location"
+    :label="$t('Location')"
     ref="location"
     v-if="!!clientData.location|editable"
     v-model="clientData.location"
     :readonly="!editable"
     append-icon="mdi-map"
     @click:append="openGeo(clientData.location)"
+    :error-messages="errors.location"
+  >
+  </v-text-field>
+  <v-text-field 
+    type="date"
+    :label="$t('Installed on')"
+    ref="installed_on"
+    v-if="!!clientData.installed_on|editable"
+    v-model="clientData.installed_on"
+    :readonly="!editable"
+    :error-messages="errors.installed_on"
   >
   </v-text-field>
   <v-text-field 
@@ -82,114 +99,119 @@
     :readonly="!editable"
     append-icon="mdi-content-copy"
     @click:append="copyText('ssid')"
+    :error-messages="errors.ssid"
+    counter="30"
   >
   </v-text-field>
   <v-text-field 
     type="text"
-    label="Password"
+    :label="$t('Password')"
     ref="password"
     v-if="!!clientData.password|editable"
     v-model="clientData.password"
     :readonly="!editable"
     append-icon="mdi-content-copy"
     @click:append="copyText('password')"
+    :error-messages="errors.password"
+    counter="8"
   >
   </v-text-field>
   <v-text-field 
     type="text"
-    label="Bridge model"
+    :label="$t('Bridge model')"
     ref="ap_model"
     v-if="!!clientData.ap_model|editable"
     v-model="clientData.ap_model"
     :readonly="!editable"
     append-icon="mdi-web"
     @click:append="openLink('google.com/search?q=' + clientData.ap_model)"
-  >
-  </v-text-field>
-  <v-text-field 
-    type="date"
-    label="Installed on"
-    ref="installed_on"
-    v-if="!!clientData.installed_on|editable"
-    v-model="clientData.installed_on"
-    :readonly="!editable"
+    :error-messages="errors.ap_model"
+    counter="30"
   >
   </v-text-field>
   <v-text-field 
     type="text"
-    label="Bridge IP"
+    :label="$t('Bridge IP')"
     ref="ip_address"
     v-if="!!clientData.ip_address|editable"
     v-model="clientData.ip_address"
     :readonly="!editable"
     append-icon="mdi-web"
     @click:append="openLink(clientData.ip_address)"
+    :error-messages="errors.ip_address"
   >
   </v-text-field>
   <v-text-field 
     type="text"
-    label="Bridge WLAN MAC"
+    :label="$t('Bridge WLAN MAC')"
     ref="wlan_mac"
     v-if="!!clientData.lan_mac|editable"
     v-model="clientData.lan_mac"
     :readonly="!editable"
     append-icon="mdi-content-copy"
     @click:append="copyText('lan_mac')"
+    :error-messages="errors.wlan_mac"
   >
   </v-text-field>
   <v-text-field 
     type="text"
-    label="Bridge LAN MAC"
+    :label="$t('Bridge LAN MAC')"
     ref="lan_mac"
     v-if="!!clientData.wlan_mac|editable"
     v-model="clientData.wlan_mac"
     :readonly="!editable"
     append-icon="mdi-content-copy"
     @click:append="copyText('wlan_mac')"
+    :error-messages="errors.lan_mac"
   >
   </v-text-field>
   <v-text-field 
     type="text"
-    label="Router model"
+    :label="$t('Router model')"
     ref="router_model"
     v-if="!!clientData.router_model|editable"
     v-model="clientData.router_model"
     :readonly="!editable"
     append-icon="mdi-web"
     @click:append="openLink('google.com/search?q=' + clientData.router_model)"
+    :error-messages="errors.router_model"
+    counter="30"
   >
   </v-text-field>
   <v-text-field 
     type="text"
-    label="Router admin"
+    :label="$t('Router admin')"
     ref="admin"
     v-if="!!clientData.admin|editable"
     v-model="clientData.admin"
     :readonly="!editable"
     append-icon="mdi-content-copy"
     @click:append="copyText('admin')"
+    :error-messages="errors.admin"
   >
   </v-text-field>
   <v-text-field 
     type="text"
-    label="Router LAN IP"
+    :label="$t('Router LAN IP')"
     ref="router_ip_address"
     v-if="!!clientData.router_ip_address|editable"
     v-model="clientData.router_ip_address"
     :readonly="!editable"
     append-icon="mdi-web"
     @click:append="openLink(clientData.router_ip_address)"
+    :error-messages="errors.router_ip_address"
   >
   </v-text-field>
   <v-text-field 
     type="text"
-    label="Router MAC"
+    :label="$t('Router MAC')"
     ref="router_mac"
     v-if="!!clientData.router_mac|editable"
     v-model="clientData.router_mac"
     :readonly="!editable"
     append-icon="mdi-content-copy"
     @click:append="copyText('router_mac')"
+    :error-messages="errors.router_mac"
   >
   </v-text-field>
   <v-btn
@@ -206,7 +228,8 @@ export default {
       editable: false,
       isNew: false,
       place: '',
-      clientData: {}
+      clientData: {},
+      errors: {}
     }
   },
   async created() {
@@ -258,7 +281,7 @@ export default {
         data: this.clientData,
         mutation: ''
       }).then(() => {
-        console.log('saving');
+        this.errors = this.$store.getters.httpErrors;
         this.$store.dispatch('updateAirmaxClients');
       });
     }

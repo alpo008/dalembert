@@ -27,3 +27,7 @@ auth.json
 
 # Data files
 /resources/data
+
+# translations symlinks
+/lang/en/en.json
+/lang/ru/ru.json
