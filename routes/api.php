@@ -24,3 +24,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('diagrams', DiagramController::class);
 Route::apiResource('home', HomeController::class)->except(['create', 'update', 'destroy']);
 Route::apiResource('airmax-clients', AirmaxClientController::class);
+
+Route::prefix('auth')->group(function () {
+        Route::post('register', 'AuthController@register');
+        Route::post('login', 'AuthController@login');
+        Route::get('refresh', 'AuthController@refresh');
+        Route::group(['middleware' => 'auth:api'], function(){
+        Route::get('user', 'AuthController@user');
+        Route::post('logout', 'AuthController@logout');
+    });
+});
