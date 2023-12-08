@@ -1,7 +1,8 @@
 {
 	"403 Access denied": "403 Недостаточно прав",
-	"Are you sure?": "Точно-преточно?",
 	"Access": "Доступ",
+	"Are you sure?": "Точно-преточно?",
+	"Authorization": "Авторизация",
 	"Bridge IP": "IP адрес моста",
 	"Bridge LAN MAC": "MAC адрес LAN моста",
 	"Bridge model": "Модель моста",
@@ -21,6 +22,7 @@
 	"Light freezing drizzle": "Легкая изморозь",
 	"Light freezing rain": "Слабый ледяной дождь", 
     "Location": "Координаты",
+    "Login": "Имя пользователя",
     "Mainly clear": "Преимущественно ясно",
 	"Moderate drizzle": "Морось",
 	"Moderate rain": "Дождь",

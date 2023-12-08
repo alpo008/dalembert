@@ -2,6 +2,7 @@ import * as VueRouter from 'vue-router';
 import { createRouter, createWebHistory } from 'vue-router'
 
 import AppHome from './components/AppHome.vue';
+import AppLogin from './components/AppLogin.vue';
 import AppDiagram from './components/AppDiagram.vue';
 import AppDiagrams from './components/AppDiagrams.vue';
 import AppAirmax from './components/AppAirmax.vue';
@@ -13,6 +14,11 @@ export default VueRouter.createRouter({
             path: '/',
             name: 'home',
             component: AppHome,
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: AppLogin,
         },
         {
             path: '/diagrams/:id(\\d+)',
