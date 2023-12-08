@@ -225,7 +225,8 @@
   <widget-confirm ref="confirm"></widget-confirm>
 </template>
 <script>
-  import WidgetConfirm from './widgets/WidgetConfirm.vue'
+  import WidgetConfirm from './widgets/WidgetConfirm.vue';
+  const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
   export default {
     components: {
       WidgetConfirm
@@ -288,11 +289,11 @@
           mutation: ''
         }).then(() => {
           this.errors = this.$store.getters.httpErrors;
-          this.$store.dispatch('updateAirmaxClients');
-          this.isNew = false;
-          this.editable = false;
-          this.$store.commit('setCurrentClient', this.place);
-          this.clientData = this.$store.getters.currentAirmaxClient;
+          if(isEmpty(this.errors)) {
+            this.$store.dispatch('updateAirmaxClients');
+            this.isNew = false;
+            this.editable = false;
+          }
         });
       },
       deleteClient() {

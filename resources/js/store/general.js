@@ -8,7 +8,6 @@ export default {
 			state.searchString = payload;
 		},
 		setHttpErrors(state, payload) {
-			console.log(payload);
 			if (typeof payload === 'object') {
 				state.httpErrors = payload;
 			}
