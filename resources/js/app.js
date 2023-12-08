@@ -11,6 +11,7 @@ function onDeviceReady() {
 
 import './bootstrap';
 import * as Vue from 'vue';
+import 'es6-promise/auto';
 
 // Router
 import * as VueRouter from 'vue-router';
@@ -51,10 +52,13 @@ const vuetify = createVuetify({
   directives,
 });
 
+import auth from './auth.js';
+
 Vue.createApp(App)
     .use(router)
     .use(vuetify)
     .use(VueAxios, axios)
     .use(i18n)
     .use(store)
+    .use(auth)
     .mount('#app');
