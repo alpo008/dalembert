@@ -18,7 +18,8 @@
           >
           </v-text-field>
 
-        <v-btn variant="text" icon="mdi-dots-vertical"></v-btn>
+        <v-btn variant="text" icon="mdi-login" to="/login" v-if="!$auth.check()"></v-btn>
+        <v-btn variant="text" icon="mdi-logout" @click="logout" v-if="$auth.check()"></v-btn>
       </v-app-bar>
 
       <v-system-bar color="primary" style="margin-top:1px;height:32px;" v-if="showWeather">
@@ -107,6 +108,12 @@
       },
       updateSearchString(e) {
         this.$store.commit('setSearchKey', this.searchString);
+      },
+      logout() {
+        this.$auth.logout({
+            makeRequest: true,
+            redirect: {name: 'login'},
+        });
       }
     }
   }

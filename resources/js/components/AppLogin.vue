@@ -1,6 +1,6 @@
 <template>
   <v-system-bar color="lightgrey" 
-    style="height:50px;width: calc((100% - 10px) - 60px);top:120px;left:16px;"
+    style="height:50px;width: calc((100% - 10px) - 22px);top:120px;left:16px;"
     class="rounded"
   >
     <h2 class="pa-1 d-inline" style="margin-right: auto;"> {{ $t('Authorization') }}</h2>
@@ -17,13 +17,17 @@
     :label="$t('Login')"
     ref="name"
     v-model="loginData.name"
+    :error-messages="errors.login"
   >
   </v-text-field>
   <v-text-field 
-    type="password"
+    :type="showPassword ? 'text' : 'password'"
     :label="$t('Password')"
     ref="password"
     v-model="loginData.password"
+    :append-inner-icon="showPassword ? 'mdi-eye-outline' : 'mdi-eye-off-outline'"
+    @click:append-inner="showPassword=!showPassword"
+    :error-messages="errors.login"
   >
   </v-text-field>
 <v-checkbox
@@ -45,7 +49,8 @@
         	name: '',
         	password: '',
         	remember_me: 0 
-        }
+        },
+        errors: {}
       }
     },
     mounted() {
@@ -58,8 +63,12 @@
             success: function () {},
             error: function () {},
             rememberMe: this.loginData.remember_me,
-            redirect: '/home',
+            redirect: '/',
             fetchUser: true,
+        }).catch(e => {
+          if(typeof(e.response) === 'object' && typeof(e.response.data) === 'object') {
+            this.errors = e.response.data;
+          }
         });
       }
     }
