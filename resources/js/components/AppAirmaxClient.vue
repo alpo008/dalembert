@@ -30,7 +30,7 @@
     type="text"
     :label="$t('Place')"
     ref="place"
-    v-if="isNew"
+    v-if="isNew|!!clientData.place|editable"
     v-model="clientData.place"
     :readonly="!editable"
     append-icon="mdi-content-copy"
@@ -249,9 +249,8 @@
         this.isNew = true;
         this.editable = true;
       }
-      this.$store.commit('setCurrentClient', this.place);
+      this.$store.commit('setCurrentPlace', this.place);
       this.clientData = this.$store.getters.currentAirmaxClient;
-      console.log(this.clientData)
     },
     methods:{
       copyText(txt){
@@ -286,13 +285,14 @@
           url: url,
           method: method,
           data: this.clientData,
-          mutation: ''
+          mutation: 'setCurrentClient'
         }).then(() => {
           this.errors = this.$store.getters.httpErrors;
           if(isEmpty(this.errors)) {
-            this.$store.dispatch('updateAirmaxClients');
             this.isNew = false;
-            this.editable = false;
+            this.$store.dispatch('updateAirmaxClients');
+            this.place = this.clientData.place;
+            this.$router.push('/airmax/' + this.clientData.place);
           }
         });
       },

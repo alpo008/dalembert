@@ -1,7 +1,6 @@
 export default {
 	state : {
 		    all: [],
-		    currentClient: {},
 		    place: ''
 		},
 	mutations : {
@@ -10,10 +9,14 @@ export default {
 				state.all = payload.clients;
 			}		
 		},
+		setCurrentPlace(state, payload) {
+			if(typeof(payload) === 'string') {
+				state.place = payload;
+			}
+		},
 		setCurrentClient(state, payload) {
-			state.place = payload;
-			if(!state.all.length) {
-
+			if(typeof(payload.current) === 'object') {
+				state.all.push(payload.current);
 			}
 		}
 	},

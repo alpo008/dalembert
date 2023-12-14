@@ -18,6 +18,7 @@ class AirmaxClientController extends Controller
      */
     public function index()
     {
+        $this->authorize('viewAny', AirmaxClient::class);
         $allClients = AirmaxClient::all()->toArray();
         return response()->json(
             [
@@ -45,6 +46,7 @@ class AirmaxClientController extends Controller
      */
     public function store(UpdateAirmaxClientRequest $request)
     {
+        $this->authorize('create', AirmaxClient::class);
         $created = AirmaxClient::create($request->all());
         return response()->json(
             [
@@ -85,6 +87,7 @@ class AirmaxClientController extends Controller
      */
     public function update(UpdateAirmaxClientRequest $request, AirmaxClient $airmaxClient)
     {       
+        $this->authorize('update', $airmaxClient);
         if(strlen($request->admin) < self::MAX_ENCRYPTING_FIELD_LENGTH && strlen($request->admin) > 0) {
             $request->merge(['admin' => Crypt::encryptString($request->admin)]);
         }
@@ -95,7 +98,7 @@ class AirmaxClientController extends Controller
         return response()->json(
             [
                 'status' => 'success',
-                'updated' => $result
+                'current' => AirmaxClient::find($request->id)
             ], 200
         );
     }
@@ -108,6 +111,7 @@ class AirmaxClientController extends Controller
      */
     public function destroy(AirmaxClient $airmaxClient)
     {
+        $this->authorize('delete', $airmaxClient);
         $status = 'error';
         $code = 422;
         $deleted = false;

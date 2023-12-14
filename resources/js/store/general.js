@@ -55,6 +55,10 @@ export default {
 			                if (typeof error.response.data === 'object') {
 			                  if (typeof error.response.data.errors === 'object') {
 			                    context.commit('setHttpErrors', error.response.data.errors);
+			                  } else {
+			                  	if (typeof error.response.data.message === 'string') {
+			                    	context.commit('setHttpErrors', error.response.data.message);
+			                  	}	
 			                  }
 			                }
 			               } else {

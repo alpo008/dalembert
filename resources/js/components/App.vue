@@ -1,4 +1,13 @@
 <template>
+  <v-alert
+  v-if="showAlert"
+  color="warning"
+  style="z-index:1005;"
+  icon="$warning"
+  :title="$t('Alert')"
+  :text="genericErrors.toString()"
+  closable
+  ></v-alert>
   <v-card>
     <v-layout>
       <v-app-bar
@@ -55,6 +64,7 @@
 </template>
 
 <script>
+  const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
   import WidgetWeather from './widgets/WidgetWeather.vue'
   export default {
     components: {
@@ -113,7 +123,20 @@
         this.$auth.logout({
             makeRequest: true,
             redirect: {name: 'login'},
-        });
+        }).catch(e => console.log(e));
+      }
+    },
+    computed: {
+      genericErrors() {
+        let errors = this.$store.getters.httpErrors;
+        if (typeof(errors.generic) === 'object') {
+          return errors.generic.map(message => this.$t(message));
+        } else {
+          return [];
+        }
+      },
+      showAlert() {
+        return !isEmpty(this.genericErrors);
       }
     }
   }

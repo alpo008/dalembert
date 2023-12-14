@@ -43,12 +43,14 @@
 export default {
   data: function () {
     return {
-      clients: []
+      clients: [],
+      errors: {}
     }
   },
   async created() {
     await this.$store.dispatch('updateAirmaxClients');
     this.clients = this.$store.getters.airmaxClients;
+    this.errors = this.$store.getters.httpErrors;
   },
   computed: {
     filteredClients() {

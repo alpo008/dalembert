@@ -61,11 +61,14 @@
         this.$auth.login({
             params: app.loginData, 
             success: function () {},
-            error: function () {},
+            error: function (e) {
+              console.log(e)
+            },
             rememberMe: this.loginData.remember_me,
             redirect: '/',
             fetchUser: true,
         }).catch(e => {
+          console.log(e)
           if(typeof(e.response) === 'object' && typeof(e.response.data) === 'object') {
             this.errors = e.response.data;
           }

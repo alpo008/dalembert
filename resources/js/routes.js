@@ -41,5 +41,8 @@ export default VueRouter.createRouter({
             component: AppAirmaxClient,
         },
     ],
+    scrollBehavior(to, from, savedPosition) {
+        return { top: 0 };
+    },
     history: createWebHistory(),
 });
