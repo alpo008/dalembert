@@ -16,7 +16,7 @@ export default (app) => {
             router: driverRouterVueRouter,
         },
         options: {
-            rolesKey: 'type',
+            rolesKey: 'role',
             notFoundRedirect: {name: 'user-account'},
         }
     }));

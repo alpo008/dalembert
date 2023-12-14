@@ -8,16 +8,18 @@
   :text="genericErrors.toString()"
   closable
   ></v-alert>
-  <v-card>
+  <v-card v-if="$auth.ready()">
     <v-layout>
       <v-app-bar
         color="primary"
         prominent
       >
-        <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" v-if="$auth.check(['admin', 'super'])">
+        </v-app-bar-nav-icon>
           
           <v-text-field 
             density="compact"
+            class="ml-1"
             label=""
             append-inner-icon="mdi-magnify"
             single-line
@@ -39,6 +41,7 @@
         v-model="drawer"
         location="start"
         temporary
+        v-if="$auth.check(['admin', 'super'])"
       >
         <v-list>
           <v-list-item
@@ -130,7 +133,7 @@
       genericErrors() {
         let errors = this.$store.getters.httpErrors;
         if (typeof(errors.generic) === 'object') {
-          return errors.generic.map(message => this.$t(message));
+          return errors.generic;
         } else {
           return [];
         }

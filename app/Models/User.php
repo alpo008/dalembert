@@ -45,6 +45,29 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Get the role as string.
+     *
+     * @param  integer  $value
+     * @return string
+     */
+    public function getRoleAttribute(int $value) :string
+    {
+        $result = '';
+        switch ($value) {
+            case self::ROLE_SUPERADMIN :
+                $result = 'super';
+                break;
+            case self::ROLE_ADMIN :
+                $result = 'admin';
+                break;
+            case self::ROLE_USER :
+                $result = 'user';
+                break;
+        }
+        return $result;
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -61,6 +84,6 @@ class User extends Authenticatable implements JWTSubject
      */
     public function isAdministrator() :bool
     {
-        return in_array($this->role, [self::ROLE_ADMIN, self::ROLE_SUPERADMIN]);
+        return in_array($this->role, ['super', 'admin']);
     }
 }

@@ -34,12 +34,24 @@ export default VueRouter.createRouter({
             path: '/airmax',
             name: 'Airmax clients page',
             component: AppAirmax,
+            meta: {
+                    auth: {
+                    roles: ['super', 'admin'],
+                    redirect: '/'
+                }
+            }
         },
         {
             path: '/airmax/:place',
             name: 'Airmax client page',
             component: AppAirmaxClient,
-        },
+            meta: {
+                    auth: {
+                    roles: ['super', 'admin'],
+                    redirect: '/'
+                }
+            }
+        }
     ],
     scrollBehavior(to, from, savedPosition) {
         return { top: 0 };
