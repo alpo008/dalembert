@@ -26,6 +26,7 @@
     </v-btn>
   </v-system-bar>
   <div style="width:100%; margin-top:65px;"></div>
+  <div @dblclick="swapEditionMode">
   <v-text-field 
     type="text"
     :label="$t('Place')"
@@ -222,6 +223,7 @@
     :error-messages="errors.router_mac"
   >
   </v-text-field>
+  </div>
   <widget-confirm ref="confirm"></widget-confirm>
 </template>
 <script>
@@ -241,6 +243,7 @@
       }
     },
     async created() {
+      this.$store.commit('setCurrentClient', {});
       if (!this.$store.getters.airmaxClients.length) {
         await this.$store.dispatch('updateAirmaxClients');
       }
@@ -278,8 +281,16 @@
         this.editable = !this.editable;
       },
       save() {
-        let url, method;
-        url = this.isNew ? '/airmax-clients/' : '/airmax-clients/' + this.clientData.id;
+        let url, method, id;
+        if(!!this.clientData.id) {
+          id = this.clientData.id;
+        } else {
+          id = this.$store.getters.currentAirmaxClientId;
+          if(!!id){
+            this.clientData.id = id;
+          } 
+        }
+        url = this.isNew ? '/airmax-clients/' : '/airmax-clients/' + id;
         method = this.isNew ? 'POST' : 'PUT';
         this.$store.dispatch('httpRequest', {
           url: url,
@@ -289,10 +300,11 @@
         }).then(() => {
           this.errors = this.$store.getters.httpErrors;
           if(isEmpty(this.errors)) {
-            this.isNew = false;
             this.$store.dispatch('updateAirmaxClients');
             this.place = this.clientData.place;
+            this.isNew = false;
             this.$router.push('/airmax/' + this.clientData.place);
+            //window.location.replace('/airmax/' + this.place);
           }
         });
       },

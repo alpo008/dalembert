@@ -48,6 +48,7 @@ export default {
     }
   },
   async created() {
+    this.$store.commit('setCurrentClient', {'current' : {}});
     await this.$store.dispatch('updateAirmaxClients');
     this.clients = this.$store.getters.airmaxClients;
     this.errors = this.$store.getters.httpErrors;
