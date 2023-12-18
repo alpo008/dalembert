@@ -62,13 +62,13 @@
             params: app.loginData, 
             success: function () {},
             error: function (e) {
-              console.log(e)
+              console.warn(e)
             },
             rememberMe: this.loginData.remember_me,
             redirect: '/',
             fetchUser: true,
         }).catch(e => {
-          console.log(e)
+          console.warn(e)
           if(typeof(e.response) === 'object' && typeof(e.response.data) === 'object') {
             this.errors = e.response.data;
           }

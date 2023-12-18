@@ -57,7 +57,7 @@
         </v-list>
       </v-navigation-drawer>
 
-      <v-main style="height: 300vh;">
+      <v-main style="height: auto;">
         <v-card-text>
           <router-view></router-view>
         </v-card-text>
@@ -126,7 +126,7 @@
         this.$auth.logout({
             makeRequest: true,
             redirect: {name: 'login'},
-        }).catch(e => console.log(e));
+        }).catch(e => console.warn(e));
       }
     },
     computed: {
