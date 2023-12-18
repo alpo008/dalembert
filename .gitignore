@@ -18,6 +18,8 @@ auth.json
 *.log
 /.fleet
 /.idea
+/.well-known
+/public/.well-known
 /.vscode
 
 # Cordova
