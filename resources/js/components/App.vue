@@ -29,9 +29,6 @@
           >
           </v-text-field>
 
-        <v-btn variant="text" icon="mdi-login" to="/login" v-if="!$auth.check()"></v-btn>
-        <v-btn variant="text" icon="mdi-logout" @click="logout" v-if="$auth.check()"></v-btn>
-
         <v-menu location="bottom">
           <template v-slot:activator="{ props }">
             <v-btn
@@ -168,7 +165,7 @@
         let user = this.$auth.user();
         let result = 'mdi-account-outline';
         if (!!user && (user.role === 'admin' || user.role === 'super')) {
-          result = 'mdi-account-cowboy-hat';
+          result = 'mdi-account-star';
         }
         if (!!user && user.role === 'user') {
           result = 'mdi-account-check';
