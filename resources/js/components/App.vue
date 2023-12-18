@@ -31,6 +31,29 @@
 
         <v-btn variant="text" icon="mdi-login" to="/login" v-if="!$auth.check()"></v-btn>
         <v-btn variant="text" icon="mdi-logout" @click="logout" v-if="$auth.check()"></v-btn>
+
+        <v-menu location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              variant="text" 
+              :icon="userIcon"
+              v-bind="props"
+            >
+            </v-btn>
+          </template>
+
+          <v-list>
+            <v-list-item @click="logout" prependIcon="account-lock" v-if="$auth.check()">
+              <v-list-item-title>{{ $t('Logout') }}</v-list-item-title>
+            </v-list-item>
+            <v-list-item to="/login" prependIcon="account-lock-open" v-if="!$auth.check()">
+              <v-list-item-title>{{ $t('Log in') }}</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="switchOff" prependIcon="close-circle-outline">
+              <v-list-item-title>{{ $t('Close') }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </v-app-bar>
 
       <v-system-bar color="primary" style="margin-top:1px;height:32px;" v-if="showWeather">
@@ -140,6 +163,17 @@
       },
       showAlert() {
         return !isEmpty(this.genericErrors);
+      },
+      userIcon() {
+        let user = this.$auth.user();
+        let result = 'mdi-account-outline';
+        if (!!user && (user.role === 'admin' || user.role === 'super')) {
+          result = 'mdi-account-star';
+        }
+        if (!!user && user.role === 'user') {
+          result = 'mdi-account-check';
+        }
+        return result;
       }
     }
   }
