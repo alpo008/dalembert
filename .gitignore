@@ -20,6 +20,9 @@ auth.json
 /.idea
 /.vscode
 
+# DEV config files
+sftp-config.json
+
 # Cordova
 /src-cordova/platforms
 /src-cordova/node_modules
