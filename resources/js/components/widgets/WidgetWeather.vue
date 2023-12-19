@@ -5,7 +5,9 @@
       <i :class="weather.iconClass"></i>
       {{ $t(weather.description) }}, 
       {{ weather.temperature }} &#176;C,
-      <i class="wi wi-windy wi-rotate-45"></i> {{ windRumb  }} {{ weather.windspeed }} m/s,
+      <i class="wi wi-windy wi-rotate-45"></i> 
+      &nbsp; <i class="wi wi-wind-direction" id="wind-arrow" :style="windArrowStyle"></i>
+      &nbsp; {{ windRumb  }} {{ weather.windspeed }} m/s,
     </p>
   </v-toolbar-title>
 </template>
@@ -16,7 +18,8 @@ export default {
     return {
       weather: {
         is_ready: false,
-      }
+      },
+      windArrowStyle: 'transform:rotate(180deg);'
     }
   },
   created() {
@@ -29,6 +32,7 @@ export default {
       let result = '';
       let dir = this.weather.winddirection;
       if (!isNaN(dir)) {
+        this.windArrowStyle = 'transform:rotate(90' + (180 + dir) + 'deg);'
         if ((dir > 354.375 || dir > 0) && dir <= 5.625) {
           result = 'N';
         }

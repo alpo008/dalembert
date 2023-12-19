@@ -10,7 +10,7 @@
     <content src="index.html" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
-    <platform name="android">    
+    <platform name="android">
     <icon src="assets/mdpi.png" density="mdpi" />
     <icon src="assets/ldpi.png" density="ldpi" />
     <icon src="assets/hdpi.png" density="hdpi" />
