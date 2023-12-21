@@ -34,3 +34,5 @@ Route::prefix('auth')->group(function () {
         Route::post('logout', 'App\Http\Controllers\AuthController@logout');
     });
 });
+
+Route::post('upload', App\Http\Controllers\UploadController::class)->name('upload');

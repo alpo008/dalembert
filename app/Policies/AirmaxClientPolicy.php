@@ -16,7 +16,6 @@ class AirmaxClientPolicy
      */
     public function before(User $user, string $ability): Response
     {
-        //dump($user);die();
         return $user->isAdministrator() ? Response::allow() : Response::deny(__('Log in required'));
     }
 
