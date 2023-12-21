@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('disk')->default('local');
             $table->string('file_hash', 64)->unique();
             $table->string('collection')->nullable();
-            $table->text('description')->nullble();         
+            $table->text('description')->nullable();         
             $table->unsignedBigInteger('size');
             $table->bigInteger('uploaded_by')->unsigned();         
             $table->timestamps();

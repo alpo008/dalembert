@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Media;
 
 class UploadController extends Controller
 {
@@ -18,31 +21,32 @@ class UploadController extends Controller
  
         $file = $request->file('file');
         $name = $file->hashName();
+        
+        Storage::disk('local')->put("documents", $file);
  
-        $upload = Storage::put("documents/{$name}", $file);
- 
-        Media::query()->create(
+        $result = Media::query()->create(
             attributes: [
-                'name' => "{$name}",
+                'name' => $request->get('name'),
                 'file_name' => $file->getClientOriginalName(),
                 'mime_type' => $file->getClientMimeType(),
-                'path' => "documents/{$name}"
-,
-                'disk' => config('uploaded'),
+                'path' => "documents/{$name}",                
+                'disk' => 'uploaded',
                 'file_hash' => hash_file(
-                    config('sha256'),
+                    'sha256',
                     storage_path(
-                        path: "documents/{$name}",
+                        path: "app/documents/{$name}",
                     ),
                 ),
                 'collection' => $request->get('collection'),
                 'size' => $file->getSize(),
+                'uploaded_by' => Auth::id(),
+                'description' => $request->get('description')
             ],
         );
         return response()->json(
             [
                 'status' => 'success',
-                'uploaded' => 1
+                'uploaded' => $result
             ], 200
         );
     }

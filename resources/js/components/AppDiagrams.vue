@@ -1,11 +1,17 @@
 <template>
-  <h1> Нечто ни о чем </h1>
+  <h1> Temporary test page</h1>
+  <app-media-upload-form></app-media-upload-form>
 </template>
 <script>
+import AppMediaUploadForm from './AppMediaUploadForm';
 export default {
+  components: {
+    AppMediaUploadForm
+  },
   data: function () {
     return {
-      diagrams: {}
+      diagrams: {},
+      _file: null
     }
   },
   mounted() {
@@ -14,6 +20,7 @@ export default {
       .then(response => {
         //
       });
-  } 
+  },
 }
+
 </script>
