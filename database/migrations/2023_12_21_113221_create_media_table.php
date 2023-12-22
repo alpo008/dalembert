@@ -27,6 +27,7 @@ return new class extends Migration
             $table->bigInteger('uploaded_by')->unsigned();         
             $table->timestamps();
 
+            $table->index('collection');
             $table->index('uploaded_by');
         });
     }

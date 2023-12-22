@@ -43,6 +43,7 @@ class UploadController extends Controller
                 'description' => $request->get('description')
             ],
         );
+        dump($result);die();
         return response()->json(
             [
                 'status' => 'success',
