@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Media extends Model
 {
@@ -18,4 +19,17 @@ class Media extends Model
         'name', 'collection', 'file_name', 'mime_type', 'path', 'disk', 'file_hash',
         'description', 'size', 'uploaded_by'
     ];
+
+    /**
+     * Delete the model from the database.
+     *
+     * @return bool|null
+     *
+     * @throws \Exception
+     */
+    public function delete()
+    {
+        Storage::disk($this->disk)->delete($this->path);
+        return parent::delete();
+    }
 }

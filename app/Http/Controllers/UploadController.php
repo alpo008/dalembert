@@ -22,7 +22,7 @@ class UploadController extends Controller
         $file = $request->file('file');
         $name = $file->hashName();
         
-        Storage::disk('local')->put("documents", $file);
+        Storage::disk('local')->put('documents', $file);
  
         $result = Media::query()->create(
             attributes: [
@@ -30,7 +30,7 @@ class UploadController extends Controller
                 'file_name' => $file->getClientOriginalName(),
                 'mime_type' => $file->getClientMimeType(),
                 'path' => "documents/{$name}",                
-                'disk' => 'uploaded',
+                'disk' => 'local',
                 'file_hash' => hash_file(
                     'sha256',
                     storage_path(
@@ -43,7 +43,7 @@ class UploadController extends Controller
                 'description' => $request->get('description')
             ],
         );
-        dump($result);die();
+
         return response()->json(
             [
                 'status' => 'success',
