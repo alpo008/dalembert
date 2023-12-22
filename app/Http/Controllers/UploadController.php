@@ -17,7 +17,7 @@ class UploadController extends Controller
      */
     public function __invoke(Request $request)
     {
-        //Gate::authorize('upload-files');
+        $this->authorize('create', Media::class);
  
         $file = $request->file('file');
         $name = $file->hashName();
