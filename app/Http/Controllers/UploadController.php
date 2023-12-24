@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Media;
+use Illuminate\Validation\Rules\File;
 
 class UploadController extends Controller
 {
@@ -18,6 +19,12 @@ class UploadController extends Controller
     public function __invoke(Request $request)
     {
         $this->authorize('create', Media::class);
+
+        $request->validate([
+            'file' => ['required', File::types(['jpg', 'png' , 'jpeg', 'tiff', 'pdf'])->max(1024)],
+            'name' => 'required|max:50',
+            'collection' => 'required|max:50',
+        ]);
  
         $file = $request->file('file');
         $name = $file->hashName();

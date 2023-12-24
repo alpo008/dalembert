@@ -8,22 +8,27 @@
     counter="30"
   >
   </v-text-field>
-  <v-text-field 
-    type="text"
+  <v-select
     :label="$t('Collection')"
     v-model="collection"
     :error-messages="errors.collection"
-    counter="30"
-  >
-  </v-text-field>
+    :items="enabledCollections"
+  >    
+  </v-select>
   <v-textarea 
     :label="$t('Description')"
     v-model="description"
     :error-messages="errors.description"
   >   
   </v-textarea>
-  <v-file-input :label="$t('File')" @change="uploadFile" ref="file"></v-file-input>
-  <v-btn @click="submitFile">Upload</v-btn>
+  <v-file-input 
+    :label="$t('File')" 
+    @change="uploadFile"
+    show-size
+    ref="file"
+    :error-messages="errors.file"
+  ></v-file-input>
+  <v-btn @click="submitFile">{{ $t('Save') }}</v-btn>
 </template>
 <script>
 export default {
@@ -33,10 +38,14 @@ export default {
       name: '',
       collection: '',
       description: '',
-      errors: {}
+      errors: {},
+      enabledCollections: []
     }
   },
   mounted() {
+    const enabledMediaCollections = `${process.env.MIX_ENABLED_MEDIA_COLLECTIONS}`;
+    let enabledCollections = JSON.parse(enabledMediaCollections);
+    this.enabledCollections = enabledCollections.map(i => this.$t(i));
   },
   methods: {
     uploadFile() {
