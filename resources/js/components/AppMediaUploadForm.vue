@@ -1,5 +1,4 @@
 <template>
-  <h1> {{ $t('Upload file') }} </h1>
     <v-text-field 
     type="text"
     :label="$t('Name')"
@@ -60,7 +59,7 @@ export default {
         url: '/upload',
         method: 'POST',
         data: formData,
-        mutation: ''
+        mutation: 'setUploaded'
       });
       this.errors = this.$store.getters.httpErrors;
     }

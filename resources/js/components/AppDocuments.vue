@@ -11,19 +11,31 @@
 			>
 		</v-btn>
 	</v-system-bar>
-      <v-dialog
-        v-model="modal"
-        width="auto"
-      >
-        <v-card>
-          <v-card-text>
-            <app-media-upload-form/>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn color="primary" block @click="modal = false">{{ $t('Close') }}</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+  <v-dialog
+    v-model="modal"
+    width="auto"
+  >
+    <v-card
+	    elevation="4"
+	    rounded
+    >
+	    <v-toolbar
+	      dark
+	      prominent
+	    >
+	      <v-toolbar-title>{{ $t('Uploads page') }}</v-toolbar-title>
+
+	      <v-spacer></v-spacer>
+
+	      <v-btn icon @click="modal = false">
+	        <v-icon>mdi-close</v-icon>
+	      </v-btn>
+	    </v-toolbar>
+      <v-card-text>
+        <app-media-upload-form/>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
@@ -39,15 +51,29 @@
 		data: function () {
 			return {
 				modal: false,
-				attachmentData: {}
+				attachmentData: {},
+				uploaded: {}
 			}
 		},
+		created() {
+			const UF = this.$store.getters.uploadedFile;
+		},
 		methods: {
-	      addDocument() {
-	      	this.attachmentData.object = this.objectname;
-	      	this.attachmentData.object_id = this.clientid;
-	        this.modal = true;
-	      }
+      addDocument() {
+      	this.attachmentData.object = this.objectname;
+      	this.attachmentData.object_id = this.clientid;
+      	this.$store.commit('setUploaded', {});
+        this.modal = true;
+      }
+		},
+	  watch: {
+		  "$store.state.document.uploaded"() {
+		  	if(!!this.$store.getters.uploadedFile.id) {
+		  		this.attachmentData.media_id = this.$store.getters.uploadedFile.id;
+		  		this.modal = false;
+		  		//TODO
+		  	}
+		  }
 		}
 }
 </script>

@@ -22,7 +22,7 @@ class UploadController extends Controller
 
         $request->validate([
             'file' => ['required', File::types(['jpg', 'png' , 'jpeg', 'tiff', 'pdf'])->max(1024)],
-            'name' => 'required|max:50',
+            'name' => 'required|max:100',
             'collection' => 'required|max:50',
         ]);
  
