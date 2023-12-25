@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Attacment;
+use App\Models\Attachment;
+use App\Http\Requests\AddAttachmentRequest;
 
 class AttachmentController extends Controller
 {
@@ -30,10 +31,10 @@ class AttachmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\AddAttachmentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AddAttachmentRequest $request)
     {
         $this->authorize('create', Attachment::class);
         $created = Attachment::create($request->all());

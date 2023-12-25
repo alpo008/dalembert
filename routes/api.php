@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('diagrams', DiagramController::class);
 Route::apiResource('home', HomeController::class)->except(['create', 'update', 'destroy']);
 Route::apiResource('airmax-clients', AirmaxClientController::class);
-Route::apiResource('attacments', AttachmentController::class)->except(['show', 'edit', 'update']);
+Route::apiResource('attachments', AttachmentController::class);
 Route::post('upload', App\Http\Controllers\UploadController::class)->name('upload');
 
 Route::prefix('auth')->group(function () {

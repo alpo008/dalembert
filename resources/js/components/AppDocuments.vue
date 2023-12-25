@@ -64,14 +64,24 @@
       	this.attachmentData.object_id = this.clientid;
       	this.$store.commit('setUploaded', {});
         this.modal = true;
+      },
+      async addAttachment() {
+	      await this.$store.dispatch('httpRequest', {
+	        url: '/attachments',
+	        method: 'POST',
+	        data: this.attachmentData,
+	        mutation: 'setUploaded'
+	      });
+	      this.errors = this.$store.getters.httpErrors;
+	  		this.modal = false;
+	  		console.log(this.errors)
       }
 		},
 	  watch: {
 		  "$store.state.document.uploaded"() {
 		  	if(!!this.$store.getters.uploadedFile.id) {
 		  		this.attachmentData.media_id = this.$store.getters.uploadedFile.id;
-		  		this.modal = false;
-		  		//TODO
+		  		this.addAttachment();
 		  	}
 		  }
 		}

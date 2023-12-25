@@ -10,6 +10,11 @@ export default {
 			if(typeof(payload.uploaded) === 'object') {
 				state.uploaded = payload.uploaded;
 			}		
+		},
+		setCurrentDocument(state, payload) {
+			if(typeof(payload.current) === 'object') {
+				state.current = payload.current;
+			}		
 		}
 	},
 	actions: {
@@ -20,6 +25,9 @@ export default {
 	getters: {
 		uploadedFile(state) {
 			return state.uploaded;
+		},
+		currentDocument(state) {
+			return state.current;
 		}
 	}
 }

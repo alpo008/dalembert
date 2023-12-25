@@ -78,7 +78,7 @@
       </v-navigation-drawer>
 
       <v-main style="height: auto;padding-top: 82px;">
-        <v-card-text>
+        <v-card-text style="padding: 1rem 1px;">
           <router-view></router-view>
         </v-card-text>
       </v-main>
