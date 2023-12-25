@@ -44,7 +44,7 @@ export default {
       name: '',
       collection: '',
       description: '',
-      doi: '',
+      doi: new Date().toISOString().slice(0,10),
       errors: {},
       enabledCollections: []
     }

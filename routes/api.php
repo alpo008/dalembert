@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DiagramController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AirmaxClientController;
+use App\Http\Controllers\AttachmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResource('diagrams', DiagramController::class);
 Route::apiResource('home', HomeController::class)->except(['create', 'update', 'destroy']);
 Route::apiResource('airmax-clients', AirmaxClientController::class);
+Route::apiResource('attacments', AttachmentController::class)->except(['show', 'edit', 'update']);
+Route::post('upload', App\Http\Controllers\UploadController::class)->name('upload');
 
 Route::prefix('auth')->group(function () {
         Route::post('register', 'App\Http\Controllers\AuthController@register');
@@ -34,5 +37,3 @@ Route::prefix('auth')->group(function () {
         Route::post('logout', 'App\Http\Controllers\AuthController@logout');
     });
 });
-
-Route::post('upload', App\Http\Controllers\UploadController::class)->name('upload');
