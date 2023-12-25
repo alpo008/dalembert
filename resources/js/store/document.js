@@ -14,12 +14,17 @@ export default {
 		setCurrentDocument(state, payload) {
 			if(typeof(payload.current) === 'object') {
 				state.current = payload.current;
+				state.current.media = state.uploaded;
+				state.all.push(state.current);
 			}		
 		},
 		setAttachments(state, payload) {
 			if(typeof(payload.attachments) === 'object') {
 				state.all = payload.attachments;
 			}		
+		},
+		afterDelete(state, payload) {
+			state.all = state.all.filter(el => el.id !== payload.deleted);
 		}
 	},
 	actions: {

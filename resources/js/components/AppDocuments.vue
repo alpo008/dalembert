@@ -31,7 +31,7 @@
         <td>{{ attachment.media.name }}</td>
         <td>{{ attachment.media.doi }}</td>
         <td>
-        	<v-btn density="compact" icon="mdi-delete-forever-outline" @click="deleteAttachment(attachment.id)"></v-btn>
+        	<v-btn density="compact" icon="mdi-delete-forever-outline" @click="deleteAttachment(attachment)"></v-btn>
         </td>
       </tr>
     </tbody>
@@ -95,7 +95,6 @@
 	      if (!isEmpty(this.allAttachments)) {
 	      	this.hasMedia = true;
 	      }
-	      console.log(this.allAttachments);
 		},
 		methods: {
       addDocument() {
@@ -109,18 +108,28 @@
 	        url: '/attachments',
 	        method: 'POST',
 	        data: this.attachmentData,
-	        mutation: 'setUploaded'
+	        mutation: 'setCurrentDocument'
 	      });
 	      this.errors = this.$store.getters.httpErrors;
 	  		if (!isEmpty(this.errors)) {
 		  		console.error(this.errors);
 	  		} else {
 		  		this.modal = false;
+		  		this.allAttachments = this.$store.getters.allAttachments;
 	  		}
       },
-      deleteAttachment(id) {
-      	console.log(id)
+      async deleteAttachment(attachment) {
+	      await this.$store.dispatch('httpRequest', {
+	        url: '/attachments/' + attachment.id,
+	        method: 'DELETE',
+	        data: attachment,
+	        mutation: 'afterDelete'
+	      });
+	      this.allAttachments = this.$store.getters.allAttachments;
       }
+		},
+		computed: {
+
 		},
 	  watch: {
 		  "$store.state.document.uploaded"() {

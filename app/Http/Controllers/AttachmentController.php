@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Attachment;
 use App\Http\Requests\AddAttachmentRequest;
+use Illuminate\Support\Facades\DB;
 
 class AttachmentController extends Controller
 {
@@ -94,8 +95,15 @@ class AttachmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Attachment $attachment)
     {
-        //
+        $this->authorize('delete', $attachment);
+        DB::transaction(function () use($attachment) {
+            DB::table('attachments')->where('id', $attachment->id)->where('object', $attachment->object)->delete();
+            DB::table('media')->where('id', $attachment->media_id)->delete();
+        });
+        return response()->json(
+            ['status' => 'success', 'deleted' => $attachment->id ], 200
+        );
     }
 }
