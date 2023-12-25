@@ -1,7 +1,7 @@
 export default {
 	state : {
 			searchString: '',
-			httpErrors: {}
+			httpErrors: {},
 		},
 	mutations : {
 		setSearchKey(state, payload) {

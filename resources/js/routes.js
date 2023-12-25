@@ -35,10 +35,11 @@ export default VueRouter.createRouter({
             name: 'Airmax clients page',
             component: AppAirmax,
             meta: {
-                    auth: {
+                auth: {
                     roles: ['super', 'admin'],
                     redirect: '/'
-                }
+                },
+                searchBar: true
             }
         },
         {

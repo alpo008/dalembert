@@ -1,6 +1,5 @@
 <template>
   <h1> Temporary test page</h1>
-  <app-media-upload-form></app-media-upload-form>
 </template>
 <script>
 export default {

@@ -16,7 +16,7 @@
       >
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" v-if="$auth.check(['admin', 'super'])">
         </v-app-bar-nav-icon>
-          
+          <v-spacer v-if="!searchBar"></v-spacer>
           <v-text-field 
             density="compact"
             class="ml-1"
@@ -26,6 +26,7 @@
             hide-details
             @keyup="updateSearchString"
             v-model="searchString"
+            v-if="searchBar"
           >
           </v-text-field>
 
@@ -99,6 +100,7 @@
         group: null,
         searchString: '',
         showWeather: false,
+        searchBar: false,
         items: [
           {
             title: 'Home',
@@ -131,6 +133,7 @@
     },
     watch: {
       $route(to, from) {
+        this.searchBar = !!to.meta?.searchBar;
         this.searchString = '';
         this.$store.commit('setSearchKey', this.searchString);
       }
