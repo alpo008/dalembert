@@ -17,7 +17,15 @@ class Media extends Model
      */
     protected $fillable = [
         'name', 'collection', 'file_name', 'mime_type', 'path', 'disk', 'file_hash',
-        'description', 'size', 'uploaded_by'
+        'doi', 'description', 'size', 'uploaded_by'
+    ];
+
+    /**
+     *
+     * @var array
+     */
+    protected $casts = [
+        'doi' => 'datetime:Y-m-d',
     ];
 
     /**

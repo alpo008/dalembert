@@ -24,6 +24,7 @@ class UploadController extends Controller
             'file' => ['required', File::types(['jpg', 'png' , 'jpeg', 'tiff', 'pdf'])->max(1024)],
             'name' => 'required|max:100',
             'collection' => 'required|max:50',
+            'doi' => 'date'
         ]);
  
         $file = $request->file('file');
@@ -47,7 +48,8 @@ class UploadController extends Controller
                 'collection' => $request->get('collection'),
                 'size' => $file->getSize(),
                 'uploaded_by' => Auth::id(),
-                'description' => $request->get('description')
+                'description' => $request->get('description'),
+                'doi' => $request->get('doi')
             ],
         );
 

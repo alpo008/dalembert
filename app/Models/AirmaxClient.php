@@ -20,6 +20,10 @@ class AirmaxClient extends Model
         'router_model', 'router_mac', 'router_ip_address', 'ssid', 'password', 'installed_on', 'admin'
     ];
 
+    /**
+     *
+     * @var array
+     */
     protected $casts = [
         'password' => 'encrypted',
         'admin' => 'encrypted',

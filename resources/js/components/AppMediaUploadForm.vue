@@ -14,6 +14,13 @@
     :items="enabledCollections"
   >    
   </v-select>
+  <v-text-field 
+  type="date"
+  :label="$t('Date of issue')"
+  v-model="doi"
+  :error-messages="errors.doi"
+>           
+</v-text-field>
   <v-textarea 
     :label="$t('Description')"
     v-model="description"
@@ -37,6 +44,7 @@ export default {
       name: '',
       collection: '',
       description: '',
+      doi: '',
       errors: {},
       enabledCollections: []
     }
@@ -55,6 +63,7 @@ export default {
       formData.append('file', this._file);
       formData.append('name', this.name);
       formData.append('collection', this.collection);
+      formData.append('doi', this.doi);
       await this.$store.dispatch('httpRequest', {
         url: '/upload',
         method: 'POST',
