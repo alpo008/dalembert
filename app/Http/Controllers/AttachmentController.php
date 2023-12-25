@@ -56,7 +56,7 @@ class AttachmentController extends Controller
     public function show($obj, $id)
     {
         $this->authorize('view', Attachment::class);
-        $allAttachments = Attachment::where('object', $obj)->where('object_id', $id)->get();
+        $allAttachments = Attachment::with('media')->where('object', $obj)->where('object_id', $id)->get();
         return response()->json(
             [
                 'status' => 'success',

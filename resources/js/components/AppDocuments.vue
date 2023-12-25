@@ -11,6 +11,32 @@
 			>
 		</v-btn>
 	</v-system-bar>
+
+  <v-table v-if="hasMedia">
+    <thead>
+      <tr>
+        <th class="text-left">
+          Name
+        </th>
+        <th class="text-left">
+          Date
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        v-for="attachment in allAttachments"
+        :key="attachment.id"
+      >
+        <td>{{ attachment.media.name }}</td>
+        <td>{{ attachment.media.doi }}</td>
+        <td>
+        	<v-btn density="compact" icon="mdi-delete-forever-outline" @click="deleteAttachment(attachment.id)"></v-btn>
+        </td>
+      </tr>
+    </tbody>
+  </v-table>
+
   <v-dialog
     v-model="modal"
     width="auto"
@@ -53,7 +79,9 @@
 			return {
 				modal: false,
 				attachmentData: {},
-				uploaded: {}
+				uploaded: {},
+				allAttachments: {},
+				hasMedia: false
 			}
 		},
 		async created() {
@@ -63,7 +91,11 @@
 	        data: null,
 	        mutation: 'setAttachments'
 	      });
-	      //TODO
+	      this.allAttachments = this.$store.getters.allAttachments;
+	      if (!isEmpty(this.allAttachments)) {
+	      	this.hasMedia = true;
+	      }
+	      console.log(this.allAttachments);
 		},
 		methods: {
       addDocument() {
@@ -85,6 +117,9 @@
 	  		} else {
 		  		this.modal = false;
 	  		}
+      },
+      deleteAttachment(id) {
+      	console.log(id)
       }
 		},
 	  watch: {
