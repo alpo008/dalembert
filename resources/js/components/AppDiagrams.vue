@@ -3,10 +3,8 @@
   <app-media-upload-form></app-media-upload-form>
 </template>
 <script>
-import AppMediaUploadForm from './AppMediaUploadForm';
 export default {
   components: {
-    AppMediaUploadForm
   },
   data: function () {
     return {

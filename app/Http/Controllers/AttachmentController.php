@@ -53,10 +53,10 @@ class AttachmentController extends Controller
      * @param  string  $obj
      * @return \Illuminate\Http\Response
      */
-    public function show($id, $obj)
+    public function show($obj, $id)
     {
         $this->authorize('view', Attachment::class);
-        $allAttachments = Attachment::where('object', $obj)->where('id', $id)->toArray();
+        $allAttachments = Attachment::where('object', $obj)->where('object_id', $id)->get();
         return response()->json(
             [
                 'status' => 'success',

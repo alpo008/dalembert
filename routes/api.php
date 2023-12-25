@@ -28,6 +28,8 @@ Route::apiResource('airmax-clients', AirmaxClientController::class);
 Route::apiResource('attachments', AttachmentController::class);
 Route::post('upload', App\Http\Controllers\UploadController::class)->name('upload');
 
+Route::get('attachments/{obj}/{id}', 'App\Http\Controllers\AttachmentController@show');
+
 Route::prefix('auth')->group(function () {
         Route::post('register', 'App\Http\Controllers\AuthController@register');
         Route::post('login', 'App\Http\Controllers\AuthController@login');

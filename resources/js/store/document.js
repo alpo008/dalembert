@@ -15,6 +15,11 @@ export default {
 			if(typeof(payload.current) === 'object') {
 				state.current = payload.current;
 			}		
+		},
+		setAttachments(state, payload) {
+			if(typeof(payload.attachments) === 'object') {
+				state.all = payload.attachments;
+			}		
 		}
 	},
 	actions: {
@@ -28,6 +33,9 @@ export default {
 		},
 		currentDocument(state) {
 			return state.current;
+		},
+		allAttachments(state) {
+			return state.all;
 		}
 	}
 }

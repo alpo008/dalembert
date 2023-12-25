@@ -39,6 +39,7 @@
 </template>
 
 <script>
+	const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
 	import AppMediaUploadForm from './AppMediaUploadForm';
 	export default {
 		components: {
@@ -55,8 +56,14 @@
 				uploaded: {}
 			}
 		},
-		created() {
-			const UF = this.$store.getters.uploadedFile;
+		async created() {
+	      await this.$store.dispatch('httpRequest', {
+	        url: '/attachments/' + this.objectname + '/' + this.clientid,
+	        method: 'GET',
+	        data: null,
+	        mutation: 'setAttachments'
+	      });
+	      //TODO
 		},
 		methods: {
       addDocument() {
@@ -73,8 +80,11 @@
 	        mutation: 'setUploaded'
 	      });
 	      this.errors = this.$store.getters.httpErrors;
-	  		this.modal = false;
-	  		console.log(this.errors)
+	  		if (!isEmpty(this.errors)) {
+		  		console.error(this.errors);
+	  		} else {
+		  		this.modal = false;
+	  		}
       }
 		},
 	  watch: {
