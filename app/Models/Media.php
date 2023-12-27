@@ -40,4 +40,13 @@ class Media extends Model
         Storage::disk($this->disk)->delete($this->path);
         return parent::delete();
     }
+
+    /** 
+     * Get contents of mediafile
+     * 
+     * @return string
+     */
+    public function getContents() {
+        return Storage::get($this->path);
+    }
 }

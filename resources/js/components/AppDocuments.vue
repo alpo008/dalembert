@@ -16,10 +16,10 @@
     <thead>
       <tr>
         <th class="text-left">
-          Name
+          {{ $t('Document name') }}
         </th>
         <th class="text-left">
-          Date
+          {{ $t('Date of issue') }}
         </th>
       </tr>
     </thead>
@@ -28,7 +28,11 @@
         v-for="attachment in allAttachments"
         :key="attachment.id"
       >
-        <td>{{ attachment.media.name }}</td>
+        <td>
+          <v-btn density="compact" @click="viewMedia(attachment)">
+            {{ attachment.media.name }}
+          </v-btn>
+      	</td>
         <td>{{ attachment.media.doi }}</td>
         <td>
         	<v-btn density="compact" icon="mdi-delete-forever-outline" @click="deleteAttachment(attachment)"></v-btn>
@@ -36,7 +40,30 @@
       </tr>
     </tbody>
   </v-table>
+  <v-dialog eager v-model="preview">
+	  <v-card style="min-height:90vh" id="media-preview">
+	    <v-toolbar
+	      dark
+	      prominent
+	    >
+	      <v-toolbar-title>{{ mediaPreview.name }} ( {{ mediaPreview.collection }} )</v-toolbar-title>
 
+	      <v-spacer></v-spacer>
+
+	      <v-btn icon @click="preview = false">
+	        <v-icon>mdi-close</v-icon>
+	      </v-btn>
+	    </v-toolbar>
+	    <v-card-title> {{ mediaPreview.description }} </v-card-title>
+	    <iframe 
+	    	:src="mediaContents" 
+	    	frameborder="0" 
+	    	style="border:0; top:0px; left:0px; bottom:0px; right:0px; min-height:80vh; text-align:center;" 
+	    	allowfullscreen>	    		
+    	</iframe>
+	  </v-card>
+	</v-dialog>
+  
   <v-dialog
     v-model="modal"
     width="auto"
@@ -62,14 +89,17 @@
       </v-card-text>
     </v-card>
   </v-dialog>
+  <widget-confirm ref="confirm_del"></widget-confirm>
 </template>
 
 <script>
 	const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
+  import WidgetConfirm from './widgets/WidgetConfirm.vue';
 	import AppMediaUploadForm from './AppMediaUploadForm';
 	export default {
 		components: {
-			AppMediaUploadForm
+			AppMediaUploadForm,
+			WidgetConfirm
 		},
 		props: {
 			clientid: Number,
@@ -81,7 +111,10 @@
 				attachmentData: {},
 				uploaded: {},
 				allAttachments: {},
-				hasMedia: false
+				hasMedia: false,
+				mediaContents: '',
+				preview: false,
+				mediaPreview: {}
 			}
 		},
 		async created() {
@@ -118,14 +151,31 @@
 		  		this.allAttachments = this.$store.getters.allAttachments;
 	  		}
       },
-      async deleteAttachment(attachment) {
+      deleteAttachment(attachment) {
+        if (!isNaN(attachment.id)) {
+          this.$refs.confirm_del.open(this.$t('Deletion'), 
+            this.$t('Are you sure?'), { color: '#ff0266' }).then((confirm) => {
+            if(confirm) {
+    		      this.$store.dispatch('httpRequest', {
+				        url: '/attachments/' + attachment.id,
+				        method: 'DELETE',
+				        data: attachment,
+				        mutation: 'afterDelete'
+				      }).then(() => {this.allAttachments = this.$store.getters.allAttachments;});
+            }
+          });
+        }
+      },
+      async viewMedia(attachment) {
 	      await this.$store.dispatch('httpRequest', {
-	        url: '/attachments/' + attachment.id,
-	        method: 'DELETE',
-	        data: attachment,
-	        mutation: 'afterDelete'
+	        url: '/attachments/download',
+	        method: 'POST',
+	        data: {id: attachment.id},
+	        mutation: 'setMediaContents'
 	      });
-	      this.allAttachments = this.$store.getters.allAttachments;
+	      this.mediaContents = this.$store.getters.fileContents;
+	      this.mediaPreview = attachment.media;
+      	this.preview = true;
       }
 		},
 		computed: {

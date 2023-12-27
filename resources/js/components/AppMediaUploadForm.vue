@@ -63,6 +63,7 @@ export default {
       formData.append('file', this._file);
       formData.append('name', this.name);
       formData.append('collection', this.collection);
+      formData.append('description', this.description);
       formData.append('doi', this.doi);
       await this.$store.dispatch('httpRequest', {
         url: '/upload',

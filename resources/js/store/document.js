@@ -3,7 +3,8 @@ export default {
 	state : {
 		    all: [],
 		    current: {},
-		    uploaded: {}
+		    uploaded: {},
+		    fileContents: ''
 		},
 	mutations : {
 		setUploaded(state, payload) {
@@ -25,6 +26,9 @@ export default {
 		},
 		afterDelete(state, payload) {
 			state.all = state.all.filter(el => el.id !== payload.deleted);
+		},
+		setMediaContents(state, payload) {
+			state.fileContents = payload.contents;
 		}
 	},
 	actions: {
@@ -41,6 +45,12 @@ export default {
 		},
 		allAttachments(state) {
 			return state.all;
+		},
+		fileContents(state) {
+			return state.fileContents;
+		},
+		fileMimeType(state) {
+			return state.fileContents;
 		}
 	}
 }

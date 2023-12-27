@@ -106,4 +106,14 @@ class AttachmentController extends Controller
             ['status' => 'success', 'deleted' => $attachment->id ], 200
         );
     }
+
+    public function download(Request $request) {
+        $media = Attachment::find($request->id)->media;
+        return response()->json(
+            [
+                'status' => 'success',
+                'contents' => 'data: ' . $media->mime_type . ';base64,' . base64_encode($media->getContents())
+            ], 200
+        );
+    }
 }
