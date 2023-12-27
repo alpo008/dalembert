@@ -107,7 +107,14 @@ class AttachmentController extends Controller
         );
     }
 
+    /**
+     * Download attached mediafile.
+     *
+     * @param  Request $request
+     * @return \Illuminate\Http\Response
+     */
     public function download(Request $request) {
+        $this->authorize('view', Attachment::class);
         $media = Attachment::find($request->id)->media;
         return response()->json(
             [

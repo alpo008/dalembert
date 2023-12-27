@@ -54,11 +54,11 @@
 	        <v-icon>mdi-close</v-icon>
 	      </v-btn>
 	    </v-toolbar>
-	    <v-card-title> {{ mediaPreview.description }} </v-card-title>
+	    <v-card-text> {{ mediaPreview.description }} </v-card-text>
 	    <iframe 
 	    	:src="mediaContents" 
 	    	frameborder="0" 
-	    	style="border:0; top:0px; left:0px; bottom:0px; right:0px; min-height:80vh; text-align:center;" 
+	    	style="min-height:80vh; text-align:center; padding: 0.5rem 1rem;" 
 	    	allowfullscreen>	    		
     	</iframe>
 	  </v-card>

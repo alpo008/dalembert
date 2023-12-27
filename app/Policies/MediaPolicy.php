@@ -101,4 +101,8 @@ class MediaPolicy
     {
         //
     }
+    public function download(User $user, Media $media)
+    {
+        //
+    }
 }
