@@ -8,6 +8,10 @@
       <v-tab value="settings"> {{ $t('Settings') }}</v-tab>
       <v-tab value="documents"> {{ $t('Documents') }}</v-tab>
       <v-tab value="payments"> {{ $t('Payments') }}</v-tab>
+      <v-spacer></v-spacer>
+      <div style="line-height: 48px;" class="elevation-2 px-4 font-weight-bold text-medium-emphasis rounded-pill">
+        {{ clientData.place }}
+      </div>
     </v-tabs>
     <v-card-text>
       <v-window v-model="tab">
