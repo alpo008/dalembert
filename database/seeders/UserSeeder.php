@@ -19,19 +19,19 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             'name' => 'User',
             'email' => 'test@gmail.com',
-            'password' => Hash::make('VERY_SECRET_PASSWORD'),
+            'password' => bcrypt('VERY_SECRET_PASSWORD'),
             'role' => User::ROLE_USER
         ]);
         DB::table('users')->insert([
             'name' => 'Administrator',
             'email' => 'admin@hotmail.com',
-            'password' => Hash::make('VERY_SECRET_PASSWORD'),
+            'password' => bcrypt('VERY_SECRET_PASSWORD'),
             'role' => User::ROLE_ADMIN
         ]);
         DB::table('users')->insert([
             'name' => 'Super',
             'email' => 'superadmin@hotmail.com',
-            'password' => Hash::make('VERY_SECRET_PASSWORD'),
+            'password' => bcrypt('VERY_SECRET_PASSWORD'),
             'role' => User::ROLE_SUPERADMIN
         ]);
     }

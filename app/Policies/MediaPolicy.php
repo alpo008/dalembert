@@ -2,15 +2,16 @@
 
 namespace App\Policies;
 
-use App\Models\AirmaxClient;
+use App\Models\Media;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-class AirmaxClientPolicy
+class MediaPolicy
 {
     use HandlesAuthorization;
 
+    
     /**
      * Perform pre-authorization checks.
      */
@@ -34,10 +35,10 @@ class AirmaxClientPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AirmaxClient  $airmaxClient
+     * @param  \App\Models\Media  $media
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, AirmaxClient $airmaxClient)
+    public function view(User $user, Media $media)
     {
         //
     }
@@ -57,10 +58,10 @@ class AirmaxClientPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AirmaxClient  $airmaxClient
+     * @param  \App\Models\Media  $media
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, AirmaxClient $airmaxClient)
+    public function update(User $user, Media $media)
     {
         //
     }
@@ -69,10 +70,10 @@ class AirmaxClientPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AirmaxClient  $airmaxClient
+     * @param  \App\Models\Media  $media
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, AirmaxClient $airmaxClient)
+    public function delete(User $user, Media $media)
     {
         //
     }
@@ -81,10 +82,10 @@ class AirmaxClientPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AirmaxClient  $airmaxClient
+     * @param  \App\Models\Media  $media
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, AirmaxClient $airmaxClient)
+    public function restore(User $user, Media $media)
     {
         //
     }
@@ -93,10 +94,14 @@ class AirmaxClientPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AirmaxClient  $airmaxClient
+     * @param  \App\Models\Media  $media
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, AirmaxClient $airmaxClient)
+    public function forceDelete(User $user, Media $media)
+    {
+        //
+    }
+    public function download(User $user, Media $media)
     {
         //
     }

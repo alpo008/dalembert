@@ -1,11 +1,14 @@
 <template>
-  <h1> Нечто ни о чем </h1>
+  <h1> Temporary test page</h1>
 </template>
 <script>
 export default {
+  components: {
+  },
   data: function () {
     return {
-      diagrams: {}
+      diagrams: {},
+      _file: null
     }
   },
   mounted() {
@@ -14,6 +17,7 @@ export default {
       .then(response => {
         //
       });
-  } 
+  },
 }
+
 </script>

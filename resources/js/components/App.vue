@@ -16,7 +16,7 @@
       >
         <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" v-if="$auth.check(['admin', 'super'])">
         </v-app-bar-nav-icon>
-          
+          <v-spacer v-if="!searchBar"></v-spacer>
           <v-text-field 
             density="compact"
             class="ml-1"
@@ -26,11 +26,9 @@
             hide-details
             @keyup="updateSearchString"
             v-model="searchString"
+            v-if="searchBar"
           >
           </v-text-field>
-
-        <v-btn variant="text" icon="mdi-login" to="/login" v-if="!$auth.check()"></v-btn>
-        <v-btn variant="text" icon="mdi-logout" @click="logout" v-if="$auth.check()"></v-btn>
 
         <v-menu location="bottom">
           <template v-slot:activator="{ props }">
@@ -80,8 +78,8 @@
         </v-list>
       </v-navigation-drawer>
 
-      <v-main style="height: auto;">
-        <v-card-text>
+      <v-main style="height: auto;padding-top: 82px;">
+        <v-card-text style="padding: 1rem 1px">
           <router-view></router-view>
         </v-card-text>
       </v-main>
@@ -102,6 +100,7 @@
         group: null,
         searchString: '',
         showWeather: false,
+        searchBar: false,
         items: [
           {
             title: 'Home',
@@ -134,6 +133,7 @@
     },
     watch: {
       $route(to, from) {
+        this.searchBar = !!to.meta?.searchBar;
         this.searchString = '';
         this.$store.commit('setSearchKey', this.searchString);
       }
