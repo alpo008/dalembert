@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use App\Models\Payment;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class AirmaxClient extends Model
 {
@@ -32,6 +34,16 @@ class AirmaxClient extends Model
         'updated_at' => 'datetime:Y-m-d H:i:s',
         //'location' => 'array'
     ];
+
+    /**
+     * Get all of the clients's payments.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function payments(): MorphMany
+    {
+        return $this->morphMany(Payment::class, 'payer');
+    }
 
 
     /**

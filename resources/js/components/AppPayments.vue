@@ -6,7 +6,7 @@
 	>
 		<v-btn
 			icon="mdi-note-plus-outline"
-			@click="addDocument"
+			@click="addPayment"
 			style="margin: 0 1%;"
 			>
 		</v-btn>
@@ -59,14 +59,8 @@
 	    	:src="mediaContents" 
 	    	frameborder="0" 
 	    	style="min-height:80vh; text-align:center; padding: 0.5rem 1rem;" 
-	    	allowfullscreen
-	    	v-if="mediaPreview.mime_type==='application/pdf'"
-	    	>	    		
+	    	allowfullscreen>	    		
     	</iframe>
-    	<img
-    		:src="mediaContents" 
-    		v-else
-    	/>
 	  </v-card>
 	</v-dialog>
   
@@ -82,7 +76,7 @@
 	      dark
 	      prominent
 	    >
-	      <v-toolbar-title>{{ $t('Uploads page') }}</v-toolbar-title>
+	      <v-toolbar-title>{{ $t('New payment') }}</v-toolbar-title>
 
 	      <v-spacer></v-spacer>
 
@@ -91,7 +85,7 @@
 	      </v-btn>
 	    </v-toolbar>
       <v-card-text>
-        <app-media-upload-form/>
+      	<app-payment-form :clientid="clientid" :objectname="objectname"></app-payment-form>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -101,10 +95,10 @@
 <script>
 	const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
   import WidgetConfirm from './widgets/WidgetConfirm.vue';
-	import AppMediaUploadForm from './AppMediaUploadForm';
+	import AppPaymentForm from './AppPaymentForm.vue';
 	export default {
 		components: {
-			AppMediaUploadForm,
+			AppPaymentForm,
 			WidgetConfirm
 		},
 		props: {
@@ -114,9 +108,11 @@
 		data: function () {
 			return {
 				modal: false,
+				paymentData: {},
 				attachmentData: {},
 				uploaded: {},
 				allAttachments: {},
+				hasMedia: false,
 				mediaContents: '',
 				preview: false,
 				mediaPreview: {}
@@ -130,9 +126,12 @@
 	        mutation: 'setAttachments'
 	      });
 	      this.allAttachments = this.$store.getters.allAttachments;
+	      if (!isEmpty(this.allAttachments)) {
+	      	this.hasMedia = true;
+	      }
 		},
 		methods: {
-      addDocument() {
+      addPayment() {
       	this.attachmentData.object = this.objectname;
       	this.attachmentData.object_id = this.clientid;
       	this.$store.commit('setUploaded', {});
@@ -177,14 +176,10 @@
 	      });
 	      this.mediaContents = this.$store.getters.fileContents;
 	      this.mediaPreview = attachment.media;
-	      console.log(this.mediaPreview)
       	this.preview = true;
       }
 		},
 		computed: {
-			hasMedia() {
-				return !isEmpty(this.allAttachments);
-			}
 		},
 	  watch: {
 		  "$store.state.document.uploaded"() {

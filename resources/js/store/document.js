@@ -13,6 +13,7 @@ export default {
 			}		
 		},
 		setCurrentDocument(state, payload) {
+			console.log(payload)
 			if(typeof(payload.current) === 'object') {
 				state.current = payload.current;
 				state.current.media = state.uploaded;

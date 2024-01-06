@@ -15,11 +15,12 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('place', 30);
+            $table->morphs('payer');
             $table->date('doi')->comment('Date of issue')->default(DB::raw('CURRENT_DATE'));
             $table->decimal('amount', $precision = 8, $scale = 2);
             $table->string('destination');
             $table->bigInteger('created_by')->unsigned();
+            $table->text('comments')->nullable();
             $table->timestamps();
         });
     }

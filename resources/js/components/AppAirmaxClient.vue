@@ -95,7 +95,7 @@
             v-model="clientData.location"
             :readonly="!editable"
             append-icon="mdi-map"
-            @click:append="openGeo(clientData.location)"
+            @click:append="openGeo(formattedLocation)"
             :error-messages="errors.location"
           >
           </v-text-field>
@@ -240,7 +240,7 @@
           <app-documents :clientid="clientData.id" objectname="airmax_clients"></app-documents>
         </v-window-item>
         <v-window-item value="payments">
-          Payments
+          <app-payments :clientid="clientData.id" objectname="App\Models\AirmaxClient"></app-payments>
         </v-window-item>
       </v-window>
     </v-card-text>
@@ -249,11 +249,13 @@
 <script>
   import WidgetConfirm from './widgets/WidgetConfirm.vue';
   import AppDocuments from './AppDocuments.vue';
+  import AppPayments from './AppPayments.vue';
   const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
   export default {
     components: {
       WidgetConfirm,
-      AppDocuments
+      AppDocuments,
+      AppPayments
     },
     data: function () {
       return {
@@ -327,7 +329,6 @@
             this.place = this.clientData.place;
             this.isNew = false;
             this.$router.push('/airmax/' + this.clientData.place);
-            //window.location.replace('/airmax/' + this.place);
           }
         });
       },
@@ -353,12 +354,14 @@
     },
     computed: {
       formattedLocation () {
-        let loc = this.clientData.location;
-        let result = null;
-        if (typeof(loc) === 'object' && loc !== null && typeof(loc.lat) !== 'undefined' && typeof(loc.lng) !== 'undefined') {
-          result = '(' + loc.lat + ',' + loc.lng + ')';
+      try {      
+        let loc = JSON.parse(this.clientData.location);
+          if (typeof(loc) === 'object' && loc !== null && typeof(loc.lat) !== 'undefined' && typeof(loc.lng) !== 'undefined') {
+            return '(' + loc.lat + ',' + loc.lng + ')';
+          }
         }
-        return result;
+        catch (e) { }
+        return null;
       }
     }
   }
