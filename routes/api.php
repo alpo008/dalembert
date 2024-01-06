@@ -6,6 +6,7 @@ use App\Http\Controllers\DiagramController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AirmaxClientController;
 use App\Http\Controllers\AttachmentController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------

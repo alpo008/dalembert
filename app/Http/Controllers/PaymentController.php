@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Payment;
+use App\Http\Requests\AddPaymentRequest;
 
 class PaymentController extends Controller
 {
@@ -29,12 +31,12 @@ class PaymentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\AddPaymentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AddPaymentRequest $request)
     {
-        //
+        $this->authorize('create', Payment::class);
     }
 
     /**

@@ -50,7 +50,7 @@ export default {
         doi: new Date().toISOString().slice(0,10),
         comments: '',
         payer_type: this.objectname,
-        payer_id: this.objectname,
+        payer_id: this.clientid,
       },
       enabledDestinations: [],
       errors: {}
@@ -67,6 +67,12 @@ export default {
       console.log(this.file);
     },
     async save() {
+      await this.$store.dispatch('httpRequest', {
+        url: '/payments',
+        method: 'POST',
+        data: this.paymentData,
+        mutation: ''
+      });
       const formData = new FormData();
       formData.append('file', this.file);
       formData.append('name', this.$t('Payment document'));

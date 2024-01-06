@@ -29,7 +29,7 @@ class AddPaymentRequest extends FormRequest
             'doi' => 'date',
             'amount' => 'decimal:0,2|required',
             'destination' => 'string|max:255|required',
-            'comments' => 'string|nullable',
+            'comments' => 'string|nullable'
         ];
     }
 }

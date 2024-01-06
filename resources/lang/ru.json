@@ -92,6 +92,7 @@
 	"Username": "Логин",
 	"User": "Пользователь",
 	"validation.date": "Поле :attribute должно иметь формат даты",
+	"validation.decimal" : "Число :attribute должно содержать :decimal десятичных знаков",
 	"validation.email": "Поле :attribute должно быть действительным адресом электронной почты",
 	"validation.file": "Файл не загружен",
 	"validation.mimes": "Допускается загрузка файлов :values",
