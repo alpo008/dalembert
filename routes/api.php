@@ -27,6 +27,7 @@ Route::apiResource('home', HomeController::class)->except(['create', 'update', '
 Route::apiResource('airmax-clients', AirmaxClientController::class);
 Route::apiResource('attachments', AttachmentController::class);
 Route::post('upload', App\Http\Controllers\UploadController::class)->name('upload');
+Route::apiResource('payments', PaymentController::class);
 
 Route::get('attachments/{obj}/{id}', 'App\Http\Controllers\AttachmentController@show');
 Route::post('attachments/download', 'App\Http\Controllers\AttachmentController@download');
