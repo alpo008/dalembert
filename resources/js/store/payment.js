@@ -8,21 +8,20 @@ export default {
 		},
 	mutations : {
 		setUploaded(state, payload) {
-			state.uploaded = {};
 			if(typeof(payload.uploaded) === 'object') {
 				state.uploaded = payload.uploaded;
 			}		
 		},
-		setCurrentDocument(state, payload) {
+		setCurrentPayment(state, payload) {
 			if(typeof(payload.current) === 'object') {
 				state.current = payload.current;
 				state.current.media = state.uploaded;
 				state.all.push(state.current);
 			}		
 		},
-		setAttachments(state, payload) {
-			if(typeof(payload.attachments) === 'object') {
-				state.all = payload.attachments;
+		setPayments(state, payload) {
+			if(typeof(payload.payments) === 'object') {
+				state.all = payload.payments;
 			}		
 		},
 		afterDelete(state, payload) {
@@ -33,22 +32,16 @@ export default {
 		}
 	},
 	actions: {
-		clientDocuments(context, payload) {
+		clientPayments(context, payload) {
         	//
 		},
 	},
 	getters: {
-		uploadedFile(state) {
-			return state.uploaded;
-		},
-		currentDocument(state) {
+		currentPayment(state) {
 			return state.current;
 		},
-		allAttachments(state) {
+		allPayments(state) {
 			return state.all;
-		},
-		fileContents(state) {
-			return state.fileContents;
 		}
 	}
 }

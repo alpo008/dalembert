@@ -12,28 +12,32 @@
 		</v-btn>
 	</v-system-bar>
 
-  <v-table v-if="hasMedia">
+  <v-table v-if="true">
     <thead>
       <tr>
         <th class="text-left">
-          {{ $t('Document name') }}
+          {{ $t('Date') }}
         </th>
         <th class="text-left">
-          {{ $t('Date of issue') }}
+          {{ $t('Amount') }}
+        </th>
+        <th class="text-left">
+          {{ $t('Destination') }}
         </th>
       </tr>
     </thead>
     <tbody>
       <tr
-        v-for="attachment in allAttachments"
-        :key="attachment.id"
+        v-for="payment in allPayments"
+        :key="payment.id"
       >
         <td>
           <v-btn density="compact" @click="viewMedia(attachment)">
-            {{ attachment.media.name }}
+            {{ payment.doi }}
           </v-btn>
       	</td>
-        <td>{{ attachment.media.doi }}</td>
+        <td>{{ payment.amount }}</td>
+        <td>{{ payment.destination }}</td>
         <td>
         	<v-btn density="compact" icon="mdi-delete-forever-outline" @click="deleteAttachment(attachment)"></v-btn>
         </td>
@@ -111,7 +115,7 @@
 				paymentData: {},
 				attachmentData: {},
 				uploaded: {},
-				allAttachments: {},
+				allPayments: {},
 				hasMedia: false,
 				mediaContents: '',
 				preview: false,
@@ -119,22 +123,20 @@
 			}
 		},
 		async created() {
-	      await this.$store.dispatch('httpRequest', {
+			this.allPayments = this.$store.getters.allPayments;
+/*	      await this.$store.dispatch('httpRequest', {
 	        url: '/attachments/' + this.objectname + '/' + this.clientid,
 	        method: 'GET',
 	        data: null,
 	        mutation: 'setAttachments'
-	      });
-	      this.allAttachments = this.$store.getters.allAttachments;
-	      if (!isEmpty(this.allAttachments)) {
+	      });*/
+	      //this.allPayments = this.$store.getters.allPayments;
+/*	      if (!isEmpty(this.allPayments)) {
 	      	this.hasMedia = true;
-	      }
+	      }*/
 		},
 		methods: {
       addPayment() {
-      	this.attachmentData.object = this.objectname;
-      	this.attachmentData.object_id = this.clientid;
-      	this.$store.commit('setUploaded', {});
         this.modal = true;
       },
       async addAttachment() {
@@ -149,7 +151,7 @@
 		  		console.error(this.errors);
 	  		} else {
 		  		this.modal = false;
-		  		this.allAttachments = this.$store.getters.allAttachments;
+		  		this.allPayments = this.$store.getters.allPayments;
 	  		}
       },
       deleteAttachment(attachment) {
@@ -162,7 +164,7 @@
 				        method: 'DELETE',
 				        data: attachment,
 				        mutation: 'afterDelete'
-				      }).then(() => {this.allAttachments = this.$store.getters.allAttachments;});
+				      }).then(() => {this.allPayments = this.$store.getters.allPayments;});
             }
           });
         }
@@ -183,8 +185,10 @@
 		},
 	  watch: {
 		  "$store.state.document.uploaded"() {
-		  	if(!!this.$store.getters.uploadedFile.id) {
+		  	if(!!this.$store.getters.uploadedFile.id && !!this.$store.getters.currentPayment.id) {
 		  		this.attachmentData.media_id = this.$store.getters.uploadedFile.id;
+		  		this.attachmentData.object_id = this.$store.getters.currentPayment.id;
+		  		this.attachmentData.object = 'App\Models\Payment';
 		  		this.addAttachment();
 		  	}
 		  }

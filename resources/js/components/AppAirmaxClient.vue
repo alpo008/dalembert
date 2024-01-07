@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card style="margin-top:-20px;">
     <v-tabs
       v-model="tab"
       bg-color="secondary"
@@ -279,6 +279,7 @@
       }
       this.$store.commit('setCurrentPlace', this.place);
       this.clientData = this.$store.getters.currentAirmaxClient;
+      this.$store.commit('setPayments', this.clientData);
     },
     methods:{
       copyText(txt){

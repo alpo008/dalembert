@@ -31,12 +31,13 @@
     @change="uploadFile"
     show-size
     ref="file"
-    :error-messages="errors.file"
+    :error-messages="attachmentErrors.file"
   ></v-file-input>
   <v-btn @click="save">{{ $t('Save') }}</v-btn>
 </template>
 
 <script>
+const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
 export default {
   props: {
     clientid: Number,
@@ -53,7 +54,8 @@ export default {
         payer_id: this.clientid,
       },
       enabledDestinations: [],
-      errors: {}
+      errors: {},
+      attachmentErrors: {}
     }
   },
   mounted() {
@@ -64,29 +66,31 @@ export default {
   methods: {
     uploadFile() {
       this.file = this.$refs.file.files[0];
-      console.log(this.file);
     },
     async save() {
       await this.$store.dispatch('httpRequest', {
         url: '/payments',
         method: 'POST',
         data: this.paymentData,
-        mutation: ''
+        mutation: 'setCurrentPayment'
       });
-      const formData = new FormData();
-      formData.append('file', this.file);
-      formData.append('name', this.$t('Payment document'));
-      formData.append('collection', 'Payments');
-      formData.append('description', this.comments);
-      formData.append('doi', this.doi);
-      console.log(formData);
-/*      await this.$store.dispatch('httpRequest', {
-        url: '/upload',
-        method: 'POST',
-        data: formData,
-        mutation: 'setUploaded'
-      });*/
       this.errors = this.$store.getters.httpErrors;
+      if(isEmpty(this.erroes) && !isEmpty(this.file)) {
+        const formData = new FormData();
+        formData.append('file', this.file);
+        formData.append('name', this.$t('Payment document'));
+        formData.append('collection', 'Payments');
+        formData.append('description', this.paymentData.comments);
+        formData.append('doi', this.paymentData.doi);
+        await this.$store.dispatch('httpRequest', {
+          url: '/upload',
+          method: 'POST',
+          data: formData,
+          mutation: 'setUploaded'
+        });
+        let file = this.$store.getters.uploadedFile;
+        this.attachmentErrors = this.$store.getters.httpErrors;
+      }
     }
   }
 }
