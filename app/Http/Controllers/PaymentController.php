@@ -52,11 +52,20 @@ class PaymentController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
+     * @param  string  $obj
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($obj, $id)
     {
-        //
+        $this->authorize('view', Payment::class);
+        $object = sprintf('App\Models\%s', $obj);
+        $allPayments = Payment::with('attachments')->where('payer_id', $id)->where('payer_type', $object)->get();
+        return response()->json(
+            [
+                'status' => 'success',
+                'payments' => $allPayments
+            ], 200
+        );
     }
 
     /**

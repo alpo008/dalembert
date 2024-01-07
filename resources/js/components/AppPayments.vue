@@ -32,7 +32,7 @@
         :key="payment.id"
       >
         <td>
-          <v-btn density="compact" @click="viewMedia(attachment)">
+          <v-btn density="compact" @click="viewMedia(payment)">
             {{ payment.doi }}
           </v-btn>
       	</td>
@@ -50,7 +50,7 @@
 	      dark
 	      prominent
 	    >
-	      <v-toolbar-title>{{ mediaPreview.name }} ( {{ mediaPreview.collection }} )</v-toolbar-title>
+	      <v-toolbar-title>{{ mediaPreview.doi }} ( {{ mediaPreview.destination }} )</v-toolbar-title>
 
 	      <v-spacer></v-spacer>
 
@@ -58,7 +58,7 @@
 	        <v-icon>mdi-close</v-icon>
 	      </v-btn>
 	    </v-toolbar>
-	    <v-card-text> {{ mediaPreview.description }} </v-card-text>
+	    <v-card-text> {{ mediaPreview.comments }} </v-card-text>
 	    <iframe 
 	    	:src="mediaContents" 
 	    	frameborder="0" 
@@ -123,17 +123,13 @@
 			}
 		},
 		async created() {
-			this.allPayments = this.$store.getters.allPayments;
-/*	      await this.$store.dispatch('httpRequest', {
-	        url: '/attachments/' + this.objectname + '/' + this.clientid,
+	      await this.$store.dispatch('httpRequest', {
+	        url: '/payments/' + this.objectname + '/' + this.clientid,
 	        method: 'GET',
 	        data: null,
-	        mutation: 'setAttachments'
-	      });*/
-	      //this.allPayments = this.$store.getters.allPayments;
-/*	      if (!isEmpty(this.allPayments)) {
-	      	this.hasMedia = true;
-	      }*/
+	        mutation: 'setPayments'
+	      });
+	      this.allPayments = this.$store.getters.allPayments;
 		},
 		methods: {
       addPayment() {
@@ -169,16 +165,20 @@
           });
         }
       },
-      async viewMedia(attachment) {
-	      await this.$store.dispatch('httpRequest', {
-	        url: '/attachments/download',
-	        method: 'POST',
-	        data: {id: attachment.id},
-	        mutation: 'setMediaContents'
-	      });
-	      this.mediaContents = this.$store.getters.fileContents;
-	      this.mediaPreview = attachment.media;
-      	this.preview = true;
+      async viewMedia(payment) {
+      	if (!isEmpty(payment.attachments) && !!payment.attachments[0]?.id) {
+		      await this.$store.dispatch('httpRequest', {
+		        url: '/attachments/download',
+		        method: 'POST',
+		        data: {id: payment.attachments[0].id},
+		        mutation: 'setMediaContents'
+		      });
+  	      this.mediaContents = this.$store.getters.fileContents;
+		      this.mediaPreview = payment.attachments[0].media;
+		      this.mediaPreview.comments = payment.comments;
+		      this.mediaPreview.destination = payment.destination;
+	      	this.preview = true;
+      	}
       }
 		},
 		computed: {
@@ -188,7 +188,7 @@
 		  	if(!!this.$store.getters.uploadedFile.id && !!this.$store.getters.currentPayment.id) {
 		  		this.attachmentData.media_id = this.$store.getters.uploadedFile.id;
 		  		this.attachmentData.object_id = this.$store.getters.currentPayment.id;
-		  		this.attachmentData.object = 'App\Models\Payment';
+		  		this.attachmentData.object = 'payments';
 		  		this.addAttachment();
 		  	}
 		  }

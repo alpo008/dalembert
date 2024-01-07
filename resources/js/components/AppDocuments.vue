@@ -177,7 +177,6 @@
 	      });
 	      this.mediaContents = this.$store.getters.fileContents;
 	      this.mediaPreview = attachment.media;
-	      console.log(this.mediaPreview)
       	this.preview = true;
       }
 		},

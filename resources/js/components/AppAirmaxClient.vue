@@ -237,10 +237,10 @@
           <widget-confirm ref="confirm"></widget-confirm>
         </v-window-item>
         <v-window-item value="documents">
-          <app-documents :clientid="clientData.id" objectname="airmax_clients"></app-documents>
+          <app-documents :clientid="clientData.id" objectname="AirmaxClient"></app-documents>
         </v-window-item>
         <v-window-item value="payments">
-          <app-payments :clientid="clientData.id" objectname="App\Models\AirmaxClient"></app-payments>
+          <app-payments :clientid="clientData.id" objectname="AirmaxClient"></app-payments>
         </v-window-item>
       </v-window>
     </v-card-text>
