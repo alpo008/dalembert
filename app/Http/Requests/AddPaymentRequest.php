@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 
 class AddPaymentRequest extends FormRequest
 {
@@ -29,7 +30,8 @@ class AddPaymentRequest extends FormRequest
             'doi' => 'date',
             'amount' => 'decimal:0,2|required',
             'destination' => 'string|max:255|required',
-            'comments' => 'string|nullable'
+            'comments' => 'string|nullable',
+            //'file' => ['nullable', File::types(['jpg', 'png' , 'jpeg', 'tiff', 'pdf'])->max(2048)]
         ];
     }
 }

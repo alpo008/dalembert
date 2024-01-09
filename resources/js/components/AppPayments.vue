@@ -39,7 +39,7 @@
         <td>{{ payment.amount }}</td>
         <td>{{ payment.destination }}</td>
         <td>
-        	<v-btn density="compact" icon="mdi-delete-forever-outline" @click="deleteAttachment(attachment)"></v-btn>
+        	<v-btn density="compact" icon="mdi-delete-forever-outline" @click="deletePayment(payment)"></v-btn>
         </td>
       </tr>
     </tbody>
@@ -150,16 +150,16 @@
 		  		this.allPayments = this.$store.getters.allPayments;
 	  		}
       },
-      deleteAttachment(attachment) {
-        if (!isNaN(attachment.id)) {
+      deletePayment(payment) {
+        if (!isNaN(payment.id)) {
           this.$refs.confirm_del.open(this.$t('Deletion'), 
             this.$t('Are you sure?'), { color: '#ff0266' }).then((confirm) => {
             if(confirm) {
     		      this.$store.dispatch('httpRequest', {
-				        url: '/attachments/' + attachment.id,
+				        url: '/payments/' + payment.id,
 				        method: 'DELETE',
-				        data: attachment,
-				        mutation: 'afterDelete'
+				        data: payment,
+				        mutation: 'afterDeletePayment'
 				      }).then(() => {this.allPayments = this.$store.getters.allPayments;});
             }
           });
@@ -184,13 +184,8 @@
 		computed: {
 		},
 	  watch: {
-		  "$store.state.document.uploaded"() {
-		  	if(!!this.$store.getters.uploadedFile.id && !!this.$store.getters.currentPayment.id) {
-		  		this.attachmentData.media_id = this.$store.getters.uploadedFile.id;
-		  		this.attachmentData.object_id = this.$store.getters.currentPayment.id;
-		  		this.attachmentData.object = 'payments';
-		  		this.addAttachment();
-		  	}
+		  "$store.state.payment.current"() {
+		  	this.modal = false;
 		  }
 		}
 }

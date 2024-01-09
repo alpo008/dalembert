@@ -10,6 +10,24 @@ class Media extends Model
 {
     use HasFactory;
 
+    /** 
+     * @inheritdoc
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($model) { 
+            Storage::disk($model->disk)->delete($model->path);
+        });
+    }
+
+    protected $file;
+
+    public function setFile($file)
+    {
+        $this->file = $file;
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -29,6 +47,17 @@ class Media extends Model
     ];
 
     /**
+     * Save the model to the database.
+     *
+     * @param  array  $options
+     * @return bool
+     */
+    public function save(array $options = [])
+    {
+        return ($this->saveFile() && parent::save());
+    }
+
+    /**
      * Delete the model from the database.
      *
      * @return bool|null
@@ -37,7 +66,7 @@ class Media extends Model
      */
     public function delete()
     {
-        Storage::disk($this->disk)->delete($this->path);
+        //Storage::disk($this->disk)->delete($this->path);
         return parent::delete();
     }
 
@@ -48,5 +77,23 @@ class Media extends Model
      */
     public function getContents() {
         return Storage::get($this->path);
+    }
+
+    /**
+     * Save the file in storage.
+     *
+     * @param  array  $options
+     * @return bool
+     */
+    private function saveFile()
+    {
+        if($this->file instanceof \Illuminate\Http\UploadedFile) {
+            $name = $this->file->hashName();
+            $this->path .= '/' . $name;
+            Storage::disk('local')->put('documents', $this->file);
+            $this->file_hash = hash_file('sha256', storage_path(path: "app/documents/{$name}"));
+            return true;
+        }
+        return false;
     }
 }

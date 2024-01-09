@@ -5,10 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Http\Requests\AddPaymentRequest;
+use Illuminate\Support\Facades\DB;
+use App\Traits\MediaUploader;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
+    use MediaUploader;
+
     /**
      * Display a listing of the resource.
      *
@@ -40,10 +44,14 @@ class PaymentController extends Controller
         $this->authorize('create', Payment::class);
         $request->merge(['created_by' => Auth::id()]);
         $current = Payment::create($request->all());
+        $media = $this->payment($request);
+        if(!!$media && $media->save()) {
+            $this->attach($current, $media);
+        }
         return response()->json(
             [
                 'status' => 'success',
-                'current' => $current
+                'current' => Payment::with('attachments')->find($current->id)
             ], 200
         );
     }
@@ -97,8 +105,12 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Payment $payment)
     {
-        //
+        $this->authorize('delete', $payment);
+        Payment::destroy($payment->id);
+        return response()->json(
+            ['status' => 'success', 'deleted' => $payment->id ], 200
+        );
     }
 }

@@ -194,7 +194,6 @@ class HomeController extends Controller
             $var1 = pow(sin($deltaLat / 2), 2) + cos($lat1) * cos($lat2) * pow(sin($deltaLng / 2), 2);
             $var2 = 2 * atan2(sqrt($var1), sqrt(1 - $var1));
             $shift = $var2 * self::EARTH_RADIUS;
-            //var_dump($shift);
             $result = ($shift > self::MIN_PLACE_SIZE);
         } 
         return $result;

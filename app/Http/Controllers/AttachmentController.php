@@ -42,7 +42,7 @@ class AttachmentController extends Controller
         return response()->json(
             [
                 'status' => 'success',
-                'current' => $created
+                'current' => Attachment::with('media')->find($created->id)
             ], 200
         );
     }
@@ -98,10 +98,7 @@ class AttachmentController extends Controller
     public function destroy(Attachment $attachment)
     {
         $this->authorize('delete', $attachment);
-        DB::transaction(function () use($attachment) {
-            DB::table('attachments')->where('id', $attachment->id)->where('object', $attachment->object)->delete();
-            DB::table('media')->where('id', $attachment->media_id)->delete();
-        });
+        Attachment::destroy($attachment->id);
         return response()->json(
             ['status' => 'success', 'deleted' => $attachment->id ], 200
         );

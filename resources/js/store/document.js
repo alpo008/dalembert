@@ -16,7 +16,7 @@ export default {
 		setCurrentDocument(state, payload) {
 			if(typeof(payload.current) === 'object') {
 				state.current = payload.current;
-				state.current.media = state.uploaded;
+				state.current.media ??= state.uploaded;
 				state.all.push(state.current);
 			}		
 		},
@@ -25,7 +25,7 @@ export default {
 				state.all = payload.attachments;
 			}		
 		},
-		afterDelete(state, payload) {
+		afterDeleteAttachment(state, payload) {
 			state.all = state.all.filter(el => el.id !== payload.deleted);
 		},
 		setMediaContents(state, payload) {

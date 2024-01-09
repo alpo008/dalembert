@@ -31,7 +31,7 @@
     @change="uploadFile"
     show-size
     ref="file"
-    :error-messages="attachmentErrors.file"
+    :error-messages="errors.file"
   ></v-file-input>
   <v-btn @click="save">{{ $t('Save') }}</v-btn>
 </template>
@@ -50,6 +50,7 @@ export default {
         amount: 0.00,
         doi: new Date().toISOString().slice(0,10),
         comments: '',
+        destination: null,
         payer_type: this.objectname,
         payer_id: this.clientid,
       },
@@ -68,29 +69,21 @@ export default {
       this.file = this.$refs.file.files[0];
     },
     async save() {
+      const formData = new FormData();
+      formData.append('file', this.file);
+      formData.append('amount', this.paymentData.amount);
+      formData.append('doi', this.paymentData.doi);
+      formData.append('payer_type', this.paymentData.payer_type);
+      formData.append('payer_id', this.paymentData.payer_id);
+      formData.append('comments', this.paymentData.comments);
+      formData.append('destination', this.paymentData.destination);
       await this.$store.dispatch('httpRequest', {
         url: '/payments',
         method: 'POST',
-        data: this.paymentData,
+        data: formData,
         mutation: 'setCurrentPayment'
       });
       this.errors = this.$store.getters.httpErrors;
-      if(isEmpty(this.erroes) && !isEmpty(this.file)) {
-        const formData = new FormData();
-        formData.append('file', this.file);
-        formData.append('name', this.$t('Payment document'));
-        formData.append('collection', 'Payments');
-        formData.append('description', this.paymentData.comments);
-        formData.append('doi', this.paymentData.doi);
-        await this.$store.dispatch('httpRequest', {
-          url: '/upload',
-          method: 'POST',
-          data: formData,
-          mutation: 'setUploaded'
-        });
-        let file = this.$store.getters.uploadedFile;
-        this.attachmentErrors = this.$store.getters.httpErrors;
-      }
     }
   }
 }

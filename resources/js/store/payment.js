@@ -15,7 +15,6 @@ export default {
 		setCurrentPayment(state, payload) {
 			if(typeof(payload.current) === 'object') {
 				state.current = payload.current;
-				state.current.media = state.uploaded;
 				state.all.push(state.current);
 			}		
 		},
@@ -24,7 +23,7 @@ export default {
 				state.all = payload.payments;
 			}		
 		},
-		afterDelete(state, payload) {
+		afterDeletePayment(state, payload) {
 			state.all = state.all.filter(el => el.id !== payload.deleted);
 		},
 		setMediaContents(state, payload) {

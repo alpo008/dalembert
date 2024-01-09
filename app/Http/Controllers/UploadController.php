@@ -21,7 +21,7 @@ class UploadController extends Controller
         $this->authorize('create', Media::class);
 
         $request->validate([
-            'file' => ['required', File::types(['jpg', 'png' , 'jpeg', 'tiff', 'pdf'])->max(1024)],
+            'file' => ['required', File::types(['jpg', 'png' , 'jpeg', 'tiff', 'pdf'])->max(2048)],
             'name' => 'required|max:100',
             'collection' => 'required|max:50',
             'doi' => 'date|nullable'

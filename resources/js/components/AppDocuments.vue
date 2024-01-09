@@ -162,7 +162,7 @@
 				        url: '/attachments/' + attachment.id,
 				        method: 'DELETE',
 				        data: attachment,
-				        mutation: 'afterDelete'
+				        mutation: 'afterDeleteAttachment'
 				      }).then(() => {this.allAttachments = this.$store.getters.allAttachments;});
             }
           });

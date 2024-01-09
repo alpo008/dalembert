@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Models\Payment;
+use App\Models\Attachment;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class AirmaxClient extends Model
@@ -43,6 +44,16 @@ class AirmaxClient extends Model
     public function payments(): MorphMany
     {
         return $this->morphMany(Payment::class, 'payer');
+    }
+
+    /**
+     * Get all of the attachments.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function attachments(): MorphMany
+    {
+        return $this->morphMany(Attachment::class, 'morphable');
     }
 
 
