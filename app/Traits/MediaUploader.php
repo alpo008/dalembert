@@ -12,6 +12,36 @@ trait MediaUploader
     private $media;
 
     /** 
+     * Create generic Media object
+     * @param $request
+     * @return null|Media
+     */
+    public function genericAttachment($request): ?Media
+    {     
+        $file = $request->file('file');
+        if(!($file instanceof UploadedFile)) {
+        	return null;
+        }
+        $name = $file->hashName();
+
+        $this->media = new Media ([
+            'name' => $request->get('name'),
+            'file_name' => $file->getClientOriginalName(),
+            'mime_type' => $file->getClientMimeType(),
+            'path' => 'documents',                
+            'disk' => 'local',
+            'file' => $request->file('file'),
+            'collection' => $request->get('collection'),
+            'size' => $file->getSize(),
+            'uploaded_by' => Auth::id(),
+            'description' => $request->get('description'),
+            'doi' => $request->get('doi')
+        ]);
+        $this->media->setFile($file);
+        return $this->media;
+    }   
+
+     /** 
      * Create Media object for Payments
      * @param  [type] $request [description]
      * @return null|Media
@@ -20,7 +50,7 @@ trait MediaUploader
     {     
         $file = $request->file('file');
         if(!($file instanceof UploadedFile)) {
-        	return null;
+            return null;
         }
         $name = $file->hashName();
 
@@ -43,14 +73,15 @@ trait MediaUploader
 
     /** 
      * Attach uploaded media to morphable
-     * @param  [type] $morphable 
+     * @param  integer $morphableType
+     * @param  integer $morphableId 
      * @param  Media $media
      * @return Attachment
      */
-    public function attach($morphable, Media $media): Attachment
+    public function attach($morphableType, $morphableId, Media $media): Attachment
     {
-    	$morphable_type = str_replace('App\\Models\\', '', $morphable::class);
-    	$morphable_id = $morphable->id;
+    	$morphable_type = str_replace('App\\Models\\', '', $morphableType);
+    	$morphable_id = $morphableId;
     	$media_id = $media->id;
     	return Attachment::create(compact(['morphable_id', 'morphable_type', 'media_id']));
     }

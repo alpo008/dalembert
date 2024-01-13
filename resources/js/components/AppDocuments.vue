@@ -66,6 +66,12 @@
     	<img
     		:src="mediaContents" 
     		v-else
+    		style="width: 100vw;"
+    	/>
+    	<img
+    		:src="mediaContents" 
+    		v-else
+    		style="width: 100vw;"
     	/>
 	  </v-card>
 	</v-dialog>
@@ -91,7 +97,7 @@
 	      </v-btn>
 	    </v-toolbar>
       <v-card-text>
-        <app-media-upload-form/>
+        <app-media-upload-form :clientid="clientid" :objectname="objectname"/>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -186,11 +192,8 @@
 			}
 		},
 	  watch: {
-		  "$store.state.document.uploaded"() {
-		  	if(!!this.$store.getters.uploadedFile.id) {
-		  		this.attachmentData.media_id = this.$store.getters.uploadedFile.id;
-		  		this.addAttachment();
-		  	}
+		  "$store.state.document.current"() {
+		  	this.modal = false;
 		  }
 		}
 }

@@ -6,9 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Attachment;
 use App\Http\Requests\AddAttachmentRequest;
 use Illuminate\Support\Facades\DB;
+use App\Traits\MediaUploader;
 
 class AttachmentController extends Controller
 {
+    use MediaUploader;
+
     /**
      * Display a listing of the resource.
      *
@@ -38,11 +41,16 @@ class AttachmentController extends Controller
     public function store(AddAttachmentRequest $request)
     {
         $this->authorize('create', Attachment::class);
-        $created = Attachment::create($request->all());
+        $media = $this->genericAttachment($request);
+        $morphableType = $request->get('morphable_type');
+        $morphableId = $request->get('morphable_id');
+        if(!!$media && $media->save()) {
+            $this->attach($morphableType, $morphableId, $media);
+        }
         return response()->json(
             [
                 'status' => 'success',
-                'current' => Attachment::with('media')->find($created->id)
+                'current' => Attachment::with('media')->where('media_id', $media->id)->first()
             ], 200
         );
     }
@@ -57,7 +65,8 @@ class AttachmentController extends Controller
     public function show($obj, $id)
     {
         $this->authorize('view', Attachment::class);
-        $allAttachments = Attachment::with('media')->where('object', $obj)->where('object_id', $id)->get();
+        $object = sprintf('App\Models\%s', $obj);
+        $allAttachments = Attachment::with('media')->where('morphable_type', $object)->where('morphable_id', $id)->get();
         return response()->json(
             [
                 'status' => 'success',

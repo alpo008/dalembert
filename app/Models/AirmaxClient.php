@@ -13,6 +13,23 @@ class AirmaxClient extends Model
 {
     use HasFactory;
 
+    /** 
+     * @inheritdoc
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function($model) { 
+            $model->attachments()->each(function($attachment) {
+                $attachment->delete(); 
+            });
+            $model->payments()->each(function($payment) {
+                $payment->delete(); 
+            });
+        });
+    }
+
     /**
      * The attributes that are mass assignable.
      *

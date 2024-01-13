@@ -28,7 +28,10 @@ class AddAttachmentRequest extends FormRequest
         return [
             'morphable_type' => 'string|max:255|required',
             'morphable_id' => 'integer|required',
-            'media_id' => 'integer|required'
+            'name' => 'required|max:100',
+            'collection' => 'required|max:50',
+            'doi' => 'date|nullable',
+            'description' => 'string|nullable'
         ];
     }
 }

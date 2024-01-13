@@ -66,7 +66,6 @@ class Attachment extends Model
      */
     public function delete()
     {
-        $this->media()->delete();
         return parent::delete();
     }
 }

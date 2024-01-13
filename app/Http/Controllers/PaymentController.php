@@ -46,7 +46,7 @@ class PaymentController extends Controller
         $current = Payment::create($request->all());
         $media = $this->payment($request);
         if(!!$media && $media->save()) {
-            $this->attach($current, $media);
+            $this->attach($current::class, $current->id, $media);
         }
         return response()->json(
             [

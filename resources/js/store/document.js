@@ -3,20 +3,12 @@ export default {
 	state : {
 		    all: [],
 		    current: {},
-		    uploaded: {},
 		    fileContents: ''
 		},
 	mutations : {
-		setUploaded(state, payload) {
-			state.uploaded = {};
-			if(typeof(payload.uploaded) === 'object') {
-				state.uploaded = payload.uploaded;
-			}		
-		},
 		setCurrentDocument(state, payload) {
 			if(typeof(payload.current) === 'object') {
 				state.current = payload.current;
-				state.current.media ??= state.uploaded;
 				state.all.push(state.current);
 			}		
 		},
@@ -38,9 +30,6 @@ export default {
 		},
 	},
 	getters: {
-		uploadedFile(state) {
-			return state.uploaded;
-		},
 		currentDocument(state) {
 			return state.current;
 		},

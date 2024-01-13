@@ -59,12 +59,19 @@
 	      </v-btn>
 	    </v-toolbar>
 	    <v-card-text> {{ mediaPreview.comments }} </v-card-text>
-	    <iframe 
+	    	    <iframe 
 	    	:src="mediaContents" 
 	    	frameborder="0" 
 	    	style="min-height:80vh; text-align:center; padding: 0.5rem 1rem;" 
-	    	allowfullscreen>	    		
+	    	allowfullscreen
+	    	v-if="mediaPreview.mime_type==='application/pdf'"
+	    	>	    		
     	</iframe>
+    	<img
+    		:src="mediaContents" 
+    		v-else
+    		style="width: 100vw;"
+    	/>
 	  </v-card>
 	</v-dialog>
   
