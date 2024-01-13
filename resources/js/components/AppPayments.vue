@@ -119,11 +119,8 @@
 		data: function () {
 			return {
 				modal: false,
-				paymentData: {},
 				attachmentData: {},
-				uploaded: {},
 				allPayments: {},
-				hasMedia: false,
 				mediaContents: '',
 				preview: false,
 				mediaPreview: {}

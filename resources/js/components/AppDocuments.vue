@@ -121,7 +121,6 @@
 			return {
 				modal: false,
 				attachmentData: {},
-				uploaded: {},
 				allAttachments: {},
 				mediaContents: '',
 				preview: false,
