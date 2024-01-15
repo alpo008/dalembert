@@ -3,7 +3,7 @@
     style="height:50px;width: calc((100% - 10px) - 20px);top:120px;left:16px;"
     class="rounded"
   >
-    <h2 class="pa-1 d-inline" style="margin-right: auto;"> Клиенты</h2>
+    <h2 class="pa-1 d-inline" style="margin-right: auto;"> {{ $t('Airmax clients') }}</h2>
     <v-btn
       icon="mdi-account-plus-outline"
       to="/airmax/new"

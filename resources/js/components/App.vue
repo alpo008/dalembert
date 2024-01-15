@@ -47,9 +47,9 @@
             <v-list-item to="/login" prependIcon="account-lock-open" v-if="!$auth.check()">
               <v-list-item-title>{{ $t('Log in') }}</v-list-item-title>
             </v-list-item>
-            <v-list-item @click="switchOff" prependIcon="close-circle-outline">
+<!--             <v-list-item @click="switchOff" prependIcon="close-circle-outline">
               <v-list-item-title>{{ $t('Close') }}</v-list-item-title>
-            </v-list-item>
+            </v-list-item> -->
           </v-list>
         </v-menu>
       </v-app-bar>
@@ -74,7 +74,7 @@
           >
             <router-link :to="item.url"> {{ item.title }} </router-link>
           </v-list-item>
-          <v-list-item title="Exit" @click="switchOff"></v-list-item>
+          <v-list-item :title="$t('Close')" @click="switchOff"></v-list-item>
         </v-list>
       </v-navigation-drawer>
 
@@ -103,19 +103,11 @@
         searchBar: false,
         items: [
           {
-            title: 'Home',
+            title: this.$t('Home'),
             url: '/',
           },
           {
-            title: 'Diagrams',
-            url: '/diagrams',
-          },
-          {
-            title: 'Diagram 1',
-            url: '/diagrams/1',
-          },
-          {
-            title: 'Airmax Clients',
+            title: this.$t('Airmax clients'),
             url: '/airmax',
           }
         ],
@@ -140,7 +132,14 @@
     },
     methods: {
       switchOff() {
-        navigator.app.exitApp();
+        if(!!navigator.app) {
+          navigator.app.exitApp();
+        } else {
+          setTimeout(() => {
+            let ww = window.open(window.location, '_self'); 
+            ww.close(); 
+          }, 300);
+        }
       },
       updateSearchString(e) {
         this.$store.commit('setSearchKey', this.searchString);

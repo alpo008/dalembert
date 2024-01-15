@@ -18,7 +18,7 @@
         <v-window-item value="settings">
           <v-system-bar color="transparent"
             v-if="editable"
-            style="height:50px;width: calc((100% - 10px) - 60px);top:160px;left:16px;"
+            style="height:50px;width: calc((100% - 10px) - 110px);top:160px;left:66px;"
             class="rounded"
           >
             <v-btn
@@ -41,7 +41,6 @@
             v-model="clientData.active" 
             :label="$t('Active')" 
             :readonly="!editable"
-            style="margin-top:25px;"
           >            
           </v-switch>
           <v-text-field 
