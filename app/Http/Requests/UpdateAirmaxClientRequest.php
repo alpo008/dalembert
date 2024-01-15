@@ -39,7 +39,8 @@ class UpdateAirmaxClientRequest extends FormRequest
             'router_ip_address' => 'ipv4|nullable',
             'ssid' => 'string|max:30|nullable',
             'password' => 'min:8|nullable',
-            'installed_on' => 'date|nullable'
+            'installed_on' => 'date|nullable',
+            'active' => 'boolean|nullable'
         ];
     }
 

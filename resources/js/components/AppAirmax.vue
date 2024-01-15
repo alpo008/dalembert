@@ -17,10 +17,10 @@
     <thead>
       <tr>
         <th class="text-left">
-          Place
+          {{ $t('Place') }}
         </th>
         <th class="text-left">
-          Name
+          {{ $t('Name') }}
         </th>
       </tr>
     </thead>
@@ -30,7 +30,13 @@
         :key="client.place"
       >
         <td>
-          <v-btn density="compact" :to="'/airmax/'+client.place">
+          <v-btn 
+            density="compact" :to="'/airmax/'+client.place" 
+            :prepend-icon="client.active? 'mdi-check-circle' : 'mdi-close-circle'"
+          >
+          <template v-slot:prepend>
+            <v-icon :color="client.active? 'success' : 'error'"></v-icon>
+          </template>
             {{ client.place }}
           </v-btn>
         </td>

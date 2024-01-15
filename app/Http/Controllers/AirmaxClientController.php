@@ -19,7 +19,7 @@ class AirmaxClientController extends Controller
     public function index()
     {
         $this->authorize('viewAny', AirmaxClient::class);
-        $allClients = AirmaxClient::with('payments')->get()->toArray();
+        $allClients = AirmaxClient::with('payments')->with('attachments')->get()->toArray();
         return response()->json(
             [
                 'status' => 'success',

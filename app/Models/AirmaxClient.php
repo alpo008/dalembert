@@ -37,7 +37,7 @@ class AirmaxClient extends Model
      */
     protected $fillable = [
         'place', 'name', 'email', 'location', 'phone', 'ap_model', 'wlan_mac', 'lan_mac', 'ap_mac', 'ip_address', 
-        'router_model', 'router_mac', 'router_ip_address', 'ssid', 'password', 'installed_on', 'admin'
+        'router_model', 'router_mac', 'router_ip_address', 'ssid', 'password', 'installed_on', 'admin', 'active'
     ];
 
     /**
@@ -50,6 +50,7 @@ class AirmaxClient extends Model
         'installed_on' => 'datetime:Y-m-d',
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
+        'active' => 'boolean',
         //'location' => 'array'
     ];
 

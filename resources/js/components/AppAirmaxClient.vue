@@ -37,6 +37,13 @@
             </v-btn>
           </v-system-bar>
           <div @dblclick="swapEditionMode">
+          <v-switch 
+            v-model="clientData.active" 
+            :label="$t('Active')" 
+            :readonly="!editable"
+            style="margin-top:25px;"
+          >            
+          </v-switch>
           <v-text-field 
             type="text"
             :label="$t('Place')"
@@ -318,6 +325,8 @@
         }
         url = this.isNew ? '/airmax-clients/' : '/airmax-clients/' + id;
         method = this.isNew ? 'POST' : 'PUT';
+        delete this.clientData.payments;
+        delete this.clientData.attachments;
         this.$store.dispatch('httpRequest', {
           url: url,
           method: method,
