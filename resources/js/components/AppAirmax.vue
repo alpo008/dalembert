@@ -27,7 +27,7 @@
     <tbody v-if="clients.length">
       <tr
         v-for="client in filteredClients"
-        :key="client.place"
+        :key="client.wlan_mac"
       >
         <td>
           <v-btn 
@@ -64,7 +64,8 @@ export default {
       const searchString = this.$store.getters.searchKey.toLowerCase();
       return this.clients.filter(client => {
           return (!!client.name && client.name.toLowerCase().indexOf(searchString) !== -1) ||
-          (!!client.place && client.place.toLowerCase().indexOf(searchString) !== -1);
+          (!!client.place && client.place.toLowerCase().indexOf(searchString) !== -1) ||
+          (!!client.wlan_mac && client.wlan_mac.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
       });
     }
   }
