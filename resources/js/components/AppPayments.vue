@@ -6,36 +6,40 @@
 	>
 		<v-btn
 			icon="mdi-note-plus-outline"
-			@click="addDocument"
+			@click="addPayment"
 			style="margin: 0 1%;"
 			>
 		</v-btn>
 	</v-system-bar>
 
-  <v-table v-if="hasMedia">
+  <v-table v-if="true">
     <thead>
       <tr>
         <th class="text-left">
-          {{ $t('Document name') }}
+          {{ $t('Date') }}
         </th>
         <th class="text-left">
-          {{ $t('Date of issue') }}
+          {{ $t('Amount') }}
+        </th>
+        <th class="text-left">
+          {{ $t('Destination') }}
         </th>
       </tr>
     </thead>
     <tbody>
       <tr
-        v-for="attachment in allAttachments"
-        :key="attachment.id"
+        v-for="payment in allPayments"
+        :key="payment.id"
       >
         <td>
-          <v-btn density="compact" @click="viewMedia(attachment)">
-            {{ attachment.media.name }}
+          <v-btn density="compact" @click="viewMedia(payment)">
+            {{ payment.doi }}
           </v-btn>
       	</td>
-        <td>{{ attachment.media.doi }}</td>
+        <td>{{ payment.amount }}</td>
+        <td>{{ payment.destination }}</td>
         <td>
-        	<v-btn density="compact" icon="mdi-delete-forever-outline" @click="deleteAttachment(attachment)"></v-btn>
+        	<v-btn density="compact" icon="mdi-delete-forever-outline" @click="deletePayment(payment)"></v-btn>
         </td>
       </tr>
     </tbody>
@@ -46,7 +50,7 @@
 	      dark
 	      prominent
 	    >
-	      <v-toolbar-title>{{ mediaPreview.name }} ( {{ mediaPreview.collection }} )</v-toolbar-title>
+	      <v-toolbar-title>{{ mediaPreview.doi }} ( {{ mediaPreview.destination }} )</v-toolbar-title>
 
 	      <v-spacer></v-spacer>
 
@@ -54,8 +58,8 @@
 	        <v-icon>mdi-close</v-icon>
 	      </v-btn>
 	    </v-toolbar>
-	    <v-card-text> {{ mediaPreview.description }} </v-card-text>
-	    <iframe 
+	    <v-card-text> {{ mediaPreview.comments }} </v-card-text>
+	    	    <iframe 
 	    	:src="mediaContents" 
 	    	frameborder="0" 
 	    	style="min-height:80vh; text-align:center; padding: 0.5rem 1rem;" 
@@ -63,11 +67,6 @@
 	    	v-if="mediaPreview.mime_type==='application/pdf'"
 	    	>	    		
     	</iframe>
-    	<img
-    		:src="mediaContents" 
-    		v-else
-    		style="width: 100vw;"
-    	/>
     	<img
     		:src="mediaContents" 
     		v-else
@@ -88,7 +87,7 @@
 	      dark
 	      prominent
 	    >
-	      <v-toolbar-title>{{ $t('Uploads page') }}</v-toolbar-title>
+	      <v-toolbar-title>{{ $t('New payment') }}</v-toolbar-title>
 
 	      <v-spacer></v-spacer>
 
@@ -97,7 +96,7 @@
 	      </v-btn>
 	    </v-toolbar>
       <v-card-text>
-        <app-media-upload-form :clientid="clientid" :objectname="objectname"/>
+      	<app-payment-form :clientid="clientid" :objectname="objectname"></app-payment-form>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -107,10 +106,10 @@
 <script>
 	const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
   import WidgetConfirm from './widgets/WidgetConfirm.vue';
-	import AppMediaUploadForm from './AppMediaUploadForm';
+	import AppPaymentForm from './AppPaymentForm.vue';
 	export default {
 		components: {
-			AppMediaUploadForm,
+			AppPaymentForm,
 			WidgetConfirm
 		},
 		props: {
@@ -121,7 +120,7 @@
 			return {
 				modal: false,
 				attachmentData: {},
-				allAttachments: {},
+				allPayments: {},
 				mediaContents: '',
 				preview: false,
 				mediaPreview: {}
@@ -129,18 +128,15 @@
 		},
 		async created() {
 	      await this.$store.dispatch('httpRequest', {
-	        url: '/attachments/' + this.objectname + '/' + this.clientid,
+	        url: '/payments/' + this.objectname + '/' + this.clientid,
 	        method: 'GET',
 	        data: null,
-	        mutation: 'setAttachments'
+	        mutation: 'setPayments'
 	      });
-	      this.allAttachments = this.$store.getters.allAttachments;
+	      this.allPayments = this.$store.getters.allPayments;
 		},
 		methods: {
-      addDocument() {
-      	this.attachmentData.object = this.objectname;
-      	this.attachmentData.object_id = this.clientid;
-      	this.$store.commit('setUploaded', {});
+      addPayment() {
         this.modal = true;
       },
       async addAttachment() {
@@ -155,43 +151,44 @@
 		  		console.error(this.errors);
 	  		} else {
 		  		this.modal = false;
-		  		this.allAttachments = this.$store.getters.allAttachments;
+		  		this.allPayments = this.$store.getters.allPayments;
 	  		}
       },
-      deleteAttachment(attachment) {
-        if (!isNaN(attachment.id)) {
+      deletePayment(payment) {
+        if (!isNaN(payment.id)) {
           this.$refs.confirm_del.open(this.$t('Deletion'), 
             this.$t('Are you sure?'), { color: '#ff0266' }).then((confirm) => {
             if(confirm) {
     		      this.$store.dispatch('httpRequest', {
-				        url: '/attachments/' + attachment.id,
+				        url: '/payments/' + payment.id,
 				        method: 'DELETE',
-				        data: attachment,
-				        mutation: 'afterDeleteAttachment'
-				      }).then(() => {this.allAttachments = this.$store.getters.allAttachments;});
+				        data: payment,
+				        mutation: 'afterDeletePayment'
+				      }).then(() => {this.allPayments = this.$store.getters.allPayments;});
             }
           });
         }
       },
-      async viewMedia(attachment) {
-	      await this.$store.dispatch('httpRequest', {
-	        url: '/attachments/download',
-	        method: 'POST',
-	        data: {id: attachment.id},
-	        mutation: 'setMediaContents'
-	      });
-	      this.mediaContents = this.$store.getters.fileContents;
-	      this.mediaPreview = attachment.media;
-      	this.preview = true;
+      async viewMedia(payment) {
+      	if (!isEmpty(payment.attachments) && !!payment.attachments[0]?.id) {
+		      await this.$store.dispatch('httpRequest', {
+		        url: '/attachments/download',
+		        method: 'POST',
+		        data: {id: payment.attachments[0].id},
+		        mutation: 'setMediaContents'
+		      });
+  	      this.mediaContents = this.$store.getters.fileContents;
+		      this.mediaPreview = payment.attachments[0].media;
+		      this.mediaPreview.comments = payment.comments;
+		      this.mediaPreview.destination = payment.destination;
+	      	this.preview = true;
+      	}
       }
 		},
 		computed: {
-			hasMedia() {
-				return !isEmpty(this.allAttachments);
-			}
 		},
 	  watch: {
-		  "$store.state.document.current"() {
+		  "$store.state.payment.current"() {
 		  	this.modal = false;
 		  }
 		}

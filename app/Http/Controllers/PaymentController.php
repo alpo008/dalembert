@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Attachment;
-use App\Http\Requests\AddAttachmentRequest;
+use App\Models\Payment;
+use App\Http\Requests\AddPaymentRequest;
 use Illuminate\Support\Facades\DB;
 use App\Traits\MediaUploader;
+use Illuminate\Support\Facades\Auth;
 
-class AttachmentController extends Controller
+class PaymentController extends Controller
 {
     use MediaUploader;
 
@@ -35,22 +36,22 @@ class AttachmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\AddAttachmentRequest  $request
+     * @param  \App\Http\Requests\AddPaymentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AddAttachmentRequest $request)
+    public function store(AddPaymentRequest $request)
     {
-        $this->authorize('create', Attachment::class);
-        $media = $this->genericAttachment($request);
-        $morphableType = $request->get('morphable_type');
-        $morphableId = $request->get('morphable_id');
+        $this->authorize('create', Payment::class);
+        $request->merge(['created_by' => Auth::id()]);
+        $current = Payment::create($request->all());
+        $media = $this->payment($request);
         if(!!$media && $media->save()) {
-            $this->attach($morphableType, $morphableId, $media);
+            $this->attach($current::class, $current->id, $media);
         }
         return response()->json(
             [
                 'status' => 'success',
-                'current' => Attachment::with('media')->where('media_id', $media->id)->first()
+                'current' => Payment::with('attachments')->find($current->id)
             ], 200
         );
     }
@@ -64,13 +65,13 @@ class AttachmentController extends Controller
      */
     public function show($obj, $id)
     {
-        $this->authorize('view', Attachment::class);
+        $this->authorize('view', Payment::class);
         $object = sprintf('App\Models\%s', $obj);
-        $allAttachments = Attachment::with('media')->where('morphable_type', $object)->where('morphable_id', $id)->get();
+        $allPayments = Payment::with('attachments')->where('payer_id', $id)->where('payer_type', $object)->get();
         return response()->json(
             [
                 'status' => 'success',
-                'attachments' => $allAttachments
+                'payments' => $allPayments
             ], 200
         );
     }
@@ -104,29 +105,12 @@ class AttachmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Attachment $attachment)
+    public function destroy(Payment $payment)
     {
-        $this->authorize('delete', $attachment);
-        Attachment::destroy($attachment->id);
+        $this->authorize('delete', $payment);
+        Payment::destroy($payment->id);
         return response()->json(
-            ['status' => 'success', 'deleted' => $attachment->id ], 200
-        );
-    }
-
-    /**
-     * Download attached mediafile.
-     *
-     * @param  Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function download(Request $request) {
-        $this->authorize('view', Attachment::class);
-        $media = Attachment::find($request->id)->media;
-        return response()->json(
-            [
-                'status' => 'success',
-                'contents' => 'data: ' . $media->mime_type . ';base64,' . base64_encode($media->getContents())
-            ], 200
+            ['status' => 'success', 'deleted' => $payment->id ], 200
         );
     }
 }

@@ -3,7 +3,7 @@
     style="height:50px;width: calc((100% - 10px) - 20px);top:120px;left:16px;"
     class="rounded"
   >
-    <h2 class="pa-1 d-inline" style="margin-right: auto;"> Клиенты</h2>
+    <h2 class="pa-1 d-inline" style="margin-right: auto;"> {{ $t('Airmax clients') }}</h2>
     <v-btn
       icon="mdi-account-plus-outline"
       to="/airmax/new"
@@ -17,20 +17,26 @@
     <thead>
       <tr>
         <th class="text-left">
-          Place
+          {{ $t('Place') }}
         </th>
         <th class="text-left">
-          Name
+          {{ $t('Name') }}
         </th>
       </tr>
     </thead>
     <tbody v-if="clients.length">
       <tr
         v-for="client in filteredClients"
-        :key="client.place"
+        :key="client.wlan_mac"
       >
         <td>
-          <v-btn density="compact" :to="'/airmax/'+client.place">
+          <v-btn 
+            density="compact" :to="'/airmax/'+client.place" 
+            :prepend-icon="client.active? 'mdi-check-circle' : 'mdi-close-circle'"
+          >
+          <template v-slot:prepend>
+            <v-icon :color="client.active? 'success' : 'error'"></v-icon>
+          </template>
             {{ client.place }}
           </v-btn>
         </td>
@@ -58,7 +64,8 @@ export default {
       const searchString = this.$store.getters.searchKey.toLowerCase();
       return this.clients.filter(client => {
           return (!!client.name && client.name.toLowerCase().indexOf(searchString) !== -1) ||
-          (!!client.place && client.place.toLowerCase().indexOf(searchString) !== -1);
+          (!!client.place && client.place.toLowerCase().indexOf(searchString) !== -1) ||
+          (!!client.wlan_mac && client.wlan_mac.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
       });
     }
   }

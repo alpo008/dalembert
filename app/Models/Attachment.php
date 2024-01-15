@@ -11,6 +11,21 @@ class Attachment extends Model
 {
     use HasFactory;
 
+    /** 
+     * @inheritdoc
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->morphable_type = sprintf('App\Models\%s', $model->morphable_type);
+        });
+        static::deleting(function($model) { 
+            $model->media->delete();
+        });
+    }
+
     public $timestamps = false;
 
     /**
@@ -19,7 +34,7 @@ class Attachment extends Model
      * @var array
      */
     protected $fillable = [
-        'object', 'object_id', 'media_id'
+        'morphable_type', 'morphable_id', 'media_id'
     ];
 
     /**
@@ -30,5 +45,27 @@ class Attachment extends Model
     public function media(): BelongsTo
     {
         return $this->belongsTo(Media::class, 'media_id');
+    }
+
+    /**
+     * Get all of the models that own media.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function morphable(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    /**
+     * Delete the model from the database.
+     *
+     * @return bool|null
+     *
+     * @throws \Exception
+     */
+    public function delete()
+    {
+        return parent::delete();
     }
 }

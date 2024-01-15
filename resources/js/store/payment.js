@@ -3,21 +3,27 @@ export default {
 	state : {
 		    all: [],
 		    current: {},
+		    uploaded: {},
 		    fileContents: ''
 		},
 	mutations : {
-		setCurrentDocument(state, payload) {
+		setUploaded(state, payload) {
+			if(typeof(payload.uploaded) === 'object') {
+				state.uploaded = payload.uploaded;
+			}		
+		},
+		setCurrentPayment(state, payload) {
 			if(typeof(payload.current) === 'object') {
 				state.current = payload.current;
 				state.all.push(state.current);
 			}		
 		},
-		setAttachments(state, payload) {
-			if(typeof(payload.attachments) === 'object') {
-				state.all = payload.attachments;
+		setPayments(state, payload) {
+			if(typeof(payload.payments) === 'object') {
+				state.all = payload.payments;
 			}		
 		},
-		afterDeleteAttachment(state, payload) {
+		afterDeletePayment(state, payload) {
 			state.all = state.all.filter(el => el.id !== payload.deleted);
 		},
 		setMediaContents(state, payload) {
@@ -25,19 +31,16 @@ export default {
 		}
 	},
 	actions: {
-		clientDocuments(context, payload) {
+		clientPayments(context, payload) {
         	//
 		},
 	},
 	getters: {
-		currentDocument(state) {
+		currentPayment(state) {
 			return state.current;
 		},
-		allAttachments(state) {
+		allPayments(state) {
 			return state.all;
-		},
-		fileContents(state) {
-			return state.fileContents;
 		}
 	}
 }

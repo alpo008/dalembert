@@ -6,6 +6,7 @@ use App\Http\Controllers\DiagramController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AirmaxClientController;
 use App\Http\Controllers\AttachmentController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,9 +28,12 @@ Route::apiResource('home', HomeController::class)->except(['create', 'update', '
 Route::apiResource('airmax-clients', AirmaxClientController::class);
 Route::apiResource('attachments', AttachmentController::class);
 Route::post('upload', App\Http\Controllers\UploadController::class)->name('upload');
+Route::apiResource('payments', PaymentController::class);
 
 Route::get('attachments/{obj}/{id}', 'App\Http\Controllers\AttachmentController@show');
 Route::post('attachments/download', 'App\Http\Controllers\AttachmentController@download');
+
+Route::get('payments/{obj}/{id}', 'App\Http\Controllers\PaymentController@show');
 
 Route::prefix('auth')->group(function () {
         Route::post('register', 'App\Http\Controllers\AuthController@register');

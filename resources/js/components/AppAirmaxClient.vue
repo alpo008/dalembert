@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card style="margin-top:-20px;">
     <v-tabs
       v-model="tab"
       bg-color="secondary"
@@ -18,7 +18,7 @@
         <v-window-item value="settings">
           <v-system-bar color="transparent"
             v-if="editable"
-            style="height:50px;width: calc((100% - 10px) - 60px);top:160px;left:16px;"
+            style="height:50px;width: calc((100% - 10px) - 110px);top:160px;left:66px;"
             class="rounded"
           >
             <v-btn
@@ -37,6 +37,12 @@
             </v-btn>
           </v-system-bar>
           <div @dblclick="swapEditionMode">
+          <v-switch 
+            v-model="clientData.active" 
+            :label="$t('Active')" 
+            :readonly="!editable"
+          >            
+          </v-switch>
           <v-text-field 
             type="text"
             :label="$t('Place')"
@@ -95,7 +101,7 @@
             v-model="clientData.location"
             :readonly="!editable"
             append-icon="mdi-map"
-            @click:append="openGeo(clientData.location)"
+            @click:append="openGeo(formattedLocation)"
             :error-messages="errors.location"
           >
           </v-text-field>
@@ -237,10 +243,10 @@
           <widget-confirm ref="confirm"></widget-confirm>
         </v-window-item>
         <v-window-item value="documents">
-          <app-documents :clientid="clientData.id" objectname="airmax_clients"></app-documents>
+          <app-documents :clientid="clientData.id" objectname="AirmaxClient"></app-documents>
         </v-window-item>
         <v-window-item value="payments">
-          Payments
+          <app-payments :clientid="clientData.id" objectname="AirmaxClient"></app-payments>
         </v-window-item>
       </v-window>
     </v-card-text>
@@ -249,11 +255,13 @@
 <script>
   import WidgetConfirm from './widgets/WidgetConfirm.vue';
   import AppDocuments from './AppDocuments.vue';
+  import AppPayments from './AppPayments.vue';
   const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
   export default {
     components: {
       WidgetConfirm,
-      AppDocuments
+      AppDocuments,
+      AppPayments
     },
     data: function () {
       return {
@@ -277,6 +285,7 @@
       }
       this.$store.commit('setCurrentPlace', this.place);
       this.clientData = this.$store.getters.currentAirmaxClient;
+      this.$store.commit('setPayments', this.clientData);
     },
     methods:{
       copyText(txt){
@@ -315,6 +324,8 @@
         }
         url = this.isNew ? '/airmax-clients/' : '/airmax-clients/' + id;
         method = this.isNew ? 'POST' : 'PUT';
+        delete this.clientData.payments;
+        delete this.clientData.attachments;
         this.$store.dispatch('httpRequest', {
           url: url,
           method: method,
@@ -327,7 +338,6 @@
             this.place = this.clientData.place;
             this.isNew = false;
             this.$router.push('/airmax/' + this.clientData.place);
-            //window.location.replace('/airmax/' + this.place);
           }
         });
       },
@@ -353,12 +363,14 @@
     },
     computed: {
       formattedLocation () {
-        let loc = this.clientData.location;
-        let result = null;
-        if (typeof(loc) === 'object' && loc !== null && typeof(loc.lat) !== 'undefined' && typeof(loc.lng) !== 'undefined') {
-          result = '(' + loc.lat + ',' + loc.lng + ')';
+      try {      
+        let loc = JSON.parse(this.clientData.location);
+          if (typeof(loc) === 'object' && loc !== null && typeof(loc.lat) !== 'undefined' && typeof(loc.lng) !== 'undefined') {
+            return '(' + loc.lat + ',' + loc.lng + ')';
+          }
         }
-        return result;
+        catch (e) { }
+        return null;
       }
     }
   }

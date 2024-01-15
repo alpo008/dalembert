@@ -38,6 +38,10 @@
 </template>
 <script>
 export default {
+  props: {
+    clientid: Number,
+    objectname: String
+  },
   data: function () {
     return {
       _file: null,
@@ -65,11 +69,13 @@ export default {
       formData.append('collection', this.collection);
       formData.append('description', this.description);
       formData.append('doi', this.doi);
+      formData.append('morphable_type', this.objectname);
+      formData.append('morphable_id', this.clientid);
       await this.$store.dispatch('httpRequest', {
-        url: '/upload',
+        url: '/attachments',
         method: 'POST',
         data: formData,
-        mutation: 'setUploaded'
+        mutation: 'setCurrentDocument'
       });
       this.errors = this.$store.getters.httpErrors;
     }

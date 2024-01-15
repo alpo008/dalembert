@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-img
-      style="height:82vh;"
+      style="height:82vh;top:-20px;"
       aspect-ratio="16/9"
       cover
       src="./img/bg-energy.jpg"

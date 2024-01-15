@@ -26,9 +26,12 @@ class AddAttachmentRequest extends FormRequest
     {
         //$tables = DB::select('SHOW TABLES');
         return [
-            'object' => 'string|max:255|required',
-            'object_id' => 'integer|required',
-            'media_id' => 'integer|required'
+            'morphable_type' => 'string|max:255|required',
+            'morphable_id' => 'integer|required',
+            'name' => 'required|max:100',
+            'collection' => 'required|max:50',
+            'doi' => 'date|nullable',
+            'description' => 'string|nullable'
         ];
     }
 }
