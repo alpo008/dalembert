@@ -28,7 +28,7 @@ class AddPaymentRequest extends FormRequest
             'payer_type' => 'string|max:255|required',
             'payer_id' => 'integer|required',
             'doi' => 'date',
-            'amount' => 'decimal:0,2|required',
+            'amount' => 'decimal:0,2|min:100|required',
             'destination' => 'string|max:255|required',
             'comments' => 'string|nullable',
             //'file' => ['nullable', File::types(['jpg', 'png' , 'jpeg', 'tiff', 'pdf'])->max(2048)]

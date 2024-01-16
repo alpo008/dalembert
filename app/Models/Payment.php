@@ -57,4 +57,14 @@ class Payment extends Model
     {
         return $this->morphMany(Attachment::class, 'morphable')->with('media');
     }
+
+    /**
+     * Format installed_on date.
+     */
+    protected function createdBy(): Attribute
+    {
+        return Attribute::make(
+            get: fn (string $value) => User::find($value)->name
+        );
+    }
 }
