@@ -15,13 +15,13 @@
   <v-table v-if="true">
     <thead>
       <tr>
-        <th class="text-left">
+        <th class="text-left pa-1 text-break">
           {{ $t('Date') }}
         </th>
-        <th class="text-left">
+        <th class="text-left pa-1 text-break">
           {{ $t('Amount') }}
         </th>
-        <th class="text-left">
+        <th class="text-left pa-1 text-break">
           {{ $t('Destination') }}
         </th>
       </tr>
@@ -31,15 +31,15 @@
         v-for="payment in allPayments"
         :key="payment.id"
       >
-        <td>
-          <v-btn density="compact" @click="viewMedia(payment)">
+        <td class="pa-1">
+          <v-btn density="compact" @click="viewMedia(payment)" class="px-1">
             {{ payment.doi }}
           </v-btn>
       	</td>
-        <td>{{ payment.amount }}</td>
+        <td class="pa-1">{{ payment.amount }}</td>
         <td>{{ payment.destination }}</td>
-        <td>
-        	<v-btn density="compact" icon="mdi-delete-forever-outline" @click="deletePayment(payment)"></v-btn>
+        <td class="pa-1">
+        	<v-btn density="compact" class="px-1" icon="mdi-delete-forever-outline" @click="deletePayment(payment)"></v-btn>
         </td>
       </tr>
     </tbody>

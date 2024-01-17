@@ -5,11 +5,11 @@
       bg-color="secondary"
       style="position:sticky;"
     >
-      <v-tab value="settings"> {{ $t('Settings') }}</v-tab>
-      <v-tab value="documents"> {{ $t('Documents') }}</v-tab>
-      <v-tab value="payments"> {{ $t('Payments') }}</v-tab>
+      <v-tab value="settings" class="px-1 text-overline"> {{ $t('Settings') }}</v-tab>
+      <v-tab value="documents" class="px-1 text-overline"> {{ $t('Documents') }}</v-tab>
+      <v-tab value="payments" class="px-1 text-overline"> {{ $t('Payments') }}</v-tab>
       <v-spacer></v-spacer>
-      <div style="line-height: 48px;" class="elevation-2 px-4 font-weight-bold text-medium-emphasis rounded-pill">
+      <div style="line-height: 48px;" class="elevation-2 px-2 font-weight-bold text-medium-emphasis rounded-pill">
         {{ clientData.place }}
       </div>
     </v-tabs>

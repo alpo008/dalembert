@@ -32,6 +32,11 @@ Route::apiResource('payments', PaymentController::class);
 
 Route::get('attachments/{obj}/{id}', 'App\Http\Controllers\AttachmentController@show');
 Route::post('attachments/download', 'App\Http\Controllers\AttachmentController@download');
+//Route::post('airmax-clients/download', 'App\Http\Controllers\AirmaxClientController@download');
+
+Route::group(['prefix' => 'export'], function () {
+    Route::get('airmax', 'App\Http\Controllers\ExportController@airmax');
+});
 
 Route::get('payments/{obj}/{id}', 'App\Http\Controllers\PaymentController@show');
 

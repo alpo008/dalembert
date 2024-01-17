@@ -17,5 +17,8 @@
     <icon src="assets/xhdpi.png" density="xhdpi" />
     <icon src="assets/xxhdpi.png" density="xxhdpi" />
     <icon src="assets/xxxhdpi.png" density="xxxhdpi" />
+    <edit-config file="app/src/main/AndroidManifest.xml" mode="merge"  target="/manifest/application" xmlns:android="http://schemas.android.com/apk/res/android">
+        <application android:usesCleartextTraffic="true" />
+    </edit-config>
 </platform>
 </widget>

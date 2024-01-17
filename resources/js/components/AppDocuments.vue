@@ -15,10 +15,10 @@
   <v-table v-if="hasMedia">
     <thead>
       <tr>
-        <th class="text-left">
+        <th class="text-left pa-1 text-break">
           {{ $t('Document name') }}
         </th>
-        <th class="text-left">
+        <th class="text-left pa-1 text-break">
           {{ $t('Date of issue') }}
         </th>
       </tr>
@@ -28,14 +28,19 @@
         v-for="attachment in allAttachments"
         :key="attachment.id"
       >
-        <td>
-          <v-btn density="compact" @click="viewMedia(attachment)">
+        <td class="pa-1">
+          <v-btn density="compact" @click="viewMedia(attachment)" class="px-1">
             {{ attachment.media.name }}
           </v-btn>
       	</td>
-        <td>{{ attachment.media.doi }}</td>
-        <td>
-        	<v-btn density="compact" icon="mdi-delete-forever-outline" @click="deleteAttachment(attachment)"></v-btn>
+        <td class="pa-1">{{ attachment.media.doi }}</td>
+        <td class="pa-1">
+        	<v-btn 
+        		density="compact" 
+        		icon="mdi-delete-forever-outline" 
+        		@click="deleteAttachment(attachment)"
+        		>
+        		</v-btn>
         </td>
       </tr>
     </tbody>
