@@ -5,6 +5,11 @@
   >
     <h2 class="pa-1 d-inline" style="margin-right: auto;"> {{ $t('Airmax clients') }}</h2>
     <v-btn
+      icon="mdi-file-export-outline"
+      @click="exportExcel"
+    >
+    </v-btn>
+    <v-btn
       icon="mdi-account-plus-outline"
       to="/airmax/new"
     >
@@ -46,28 +51,39 @@
   </v-table>
 </template>
 <script>
-export default {
-  data: function () {
-    return {
-      clients: [],
-      errors: {}
-    }
-  },
-  async created() {
-    this.$store.commit('setCurrentClient', {'current' : {}});
-    await this.$store.dispatch('updateAirmaxClients');
-    this.clients = this.$store.getters.airmaxClients;
-    this.errors = this.$store.getters.httpErrors;
-  },
-  computed: {
-    filteredClients() {
-      const searchString = this.$store.getters.searchKey.toLowerCase();
-      return this.clients.filter(client => {
-          return (!!client.name && client.name.toLowerCase().indexOf(searchString) !== -1) ||
-          (!!client.place && client.place.toLowerCase().indexOf(searchString) !== -1) ||
-          (!!client.wlan_mac && client.wlan_mac.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
-      });
+  const FileSaver = require('file-saver');
+  export default {
+    data: function () {
+      return {
+        clients: [],
+        errors: {}
+      }
+    },
+    async created() {
+      this.$store.commit('setCurrentClient', {'current' : {}});
+      await this.$store.dispatch('updateAirmaxClients');
+      this.clients = this.$store.getters.airmaxClients;
+      this.errors = this.$store.getters.httpErrors;
+    },
+    methods: {
+      exportExcel() {
+        axios.get('export/airmax', {responseType: 'blob'}).then((response) => {
+          FileSaver.saveAs(response.data, 'airmax-clients.xlsx');
+        }).catch((error) => {
+          let message = error.message ?? this.$t('Could not Download the Excel report');
+          this.$store.commit('setHttpErrors', message);
+        });
+      }
+    },
+    computed: {
+      filteredClients() {
+        const searchString = this.$store.getters.searchKey.toLowerCase();
+        return this.clients.filter(client => {
+            return (!!client.name && client.name.toLowerCase().indexOf(searchString) !== -1) ||
+            (!!client.place && client.place.toLowerCase().indexOf(searchString) !== -1) ||
+            (!!client.wlan_mac && client.wlan_mac.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
+        });
+      }
     }
   }
-}
 </script>

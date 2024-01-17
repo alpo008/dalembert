@@ -17,7 +17,7 @@ export default {
 				}
 				state.httpErrors.generic.push(payload)
 			}			
-		}
+		},
 	},
 	actions : {
 		httpRequest(context, payload) {
@@ -39,7 +39,7 @@ export default {
 		                        error.response = response;
 		                        throw error
 		                    }
-		                }).then(response => {		                			                  
+		                }).then(response => {	                			                  
 		                    if (response.headers['content-type'] !== 'application/json') {
 		                        let error = new Error('Некорректный ответ от сервера');
 		                        error.response = response;
