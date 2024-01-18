@@ -18,21 +18,22 @@
         <v-window-item value="settings">
           <v-system-bar color="transparent"
             v-if="editable"
-            style="height:50px;width: calc((100% - 10px) - 110px);top:160px;left:66px;"
+            style="height:50px;width:auto;top:160px;right:20px;left:auto;padding: 0 2%;justify-content:center;"
             class="rounded"
+            elevation="10"
           >
             <v-btn
               icon="mdi-delete-alert-outline"
               v-if="editable"
               @click="deleteClient"
-              style="margin: 0 1%;"
+              style="margin: 0 3%;"
             >
             </v-btn>
             <v-btn
               icon="mdi-content-save"
               v-if="editable"
               @click="save"
-              style="margin: 0 1%;"
+              style="margin: 0 3%;"
             >
             </v-btn>
           </v-system-bar>

@@ -24,6 +24,8 @@
         <th class="text-left pa-1 text-break">
           {{ $t('Destination') }}
         </th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -32,12 +34,13 @@
         :key="payment.id"
       >
         <td class="pa-1">
-          <v-btn density="compact" @click="viewMedia(payment)" class="px-1">
-            {{ payment.doi }}
-          </v-btn>
+          {{ payment.doi }}
       	</td>
         <td class="pa-1">{{ payment.amount }}</td>
         <td>{{ payment.destination }}</td>
+        <td class="pa-1">
+        	<v-btn density="compact" class="px-1" icon="mdi-paperclip" @click="viewMedia(payment)" v-if="hasMedia(payment)"></v-btn>
+        </td>
         <td class="pa-1">
         	<v-btn density="compact" class="px-1" icon="mdi-delete-forever-outline" @click="deletePayment(payment)"></v-btn>
         </td>
@@ -183,6 +186,9 @@
 		      this.mediaPreview.destination = payment.destination;
 	      	this.preview = true;
       	}
+      },
+      hasMedia(payment) {
+      	return (!isEmpty(payment.attachments) && !!payment.attachments[0]?.id);	
       }
 		},
 		computed: {

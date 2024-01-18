@@ -1,7 +1,7 @@
 <template>
 	<v-system-bar 
 		color="transparent"
-		style="height:50px;width: calc((100% - 10px) - 20px);top:160px;left:16px;"
+    style="height:50px;width:auto;top:160px;right:20px;left:auto;padding: 0 2%;justify-content:center;"
 		class="rounded"
 	>
 		<v-btn
@@ -12,7 +12,7 @@
 		</v-btn>
 	</v-system-bar>
 
-  <v-table v-if="hasMedia">
+  <v-table v-if="hasAttachments">
     <thead>
       <tr>
         <th class="text-left pa-1 text-break">
@@ -21,6 +21,8 @@
         <th class="text-left pa-1 text-break">
           {{ $t('Date of issue') }}
         </th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -28,19 +30,24 @@
         v-for="attachment in allAttachments"
         :key="attachment.id"
       >
-        <td class="pa-1">
-          <v-btn density="compact" @click="viewMedia(attachment)" class="px-1">
-            {{ attachment.media.name }}
-          </v-btn>
-      	</td>
+        <td class="pa-1">{{ attachment.media.name }}</td>
         <td class="pa-1">{{ attachment.media.doi }}</td>
+        <td class="pa-1">
+        	<v-btn 
+        	v-if="hasMedia(attachment)"
+        		density="compact" 
+        		icon="mdi-paperclip" 
+        		@click="viewMedia(attachment)"
+      		>
+      		</v-btn>
+        </td>
         <td class="pa-1">
         	<v-btn 
         		density="compact" 
         		icon="mdi-delete-forever-outline" 
         		@click="deleteAttachment(attachment)"
-        		>
-        		</v-btn>
+      		>
+      		</v-btn>
         </td>
       </tr>
     </tbody>
@@ -188,10 +195,13 @@
 	      this.mediaContents = this.$store.getters.fileContents;
 	      this.mediaPreview = attachment.media;
       	this.preview = true;
-      }
+      },
+			hasMedia(attachment) {
+				return !isEmpty(attachment.media);
+			}
 		},
 		computed: {
-			hasMedia() {
+			hasAttachments() {
 				return !isEmpty(this.allAttachments);
 			}
 		},
