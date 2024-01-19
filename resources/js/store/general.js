@@ -62,14 +62,14 @@ export default {
 			                  }
 			                }
 			               } else {
-			               	if (typeof error.message !== 'undefined') {
-		                       context.commit('setHttpErrors', error.message);
-		                    }
-		                   }		                     		                  
-		                });
-		        	}
-				}	
-			}
+								if (typeof error.message !== 'undefined') {
+									context.commit('setHttpErrors', error.message);
+								}
+	                    	}		                     		                  
+                	});
+        		}
+			}	
+		}
 	},
 	getters: {
 		searchKey(state) {

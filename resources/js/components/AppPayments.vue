@@ -34,7 +34,7 @@
         :key="payment.id"
       >
         <td class="pa-1">
-          {{ payment.doi }}
+          {{ formatDate(payment.doi, 'D.M.YYYY') }}
       	</td>
         <td class="pa-1">{{ payment.amount }}</td>
         <td>{{ payment.destination }}</td>
@@ -62,7 +62,7 @@
 	      </v-btn>
 	    </v-toolbar>
 	    <v-card-text> {{ mediaPreview.comments }} </v-card-text>
-	    	    <iframe 
+	    <iframe 
 	    	:src="mediaContents" 
 	    	frameborder="0" 
 	    	style="min-height:80vh; text-align:center; padding: 0.5rem 1rem;" 
@@ -189,6 +189,10 @@
       },
       hasMedia(payment) {
       	return (!isEmpty(payment.attachments) && !!payment.attachments[0]?.id);	
+      },
+      formatDate(date) {
+      	let parts = date.split('-');
+      	return parts[2] + '.' + parts[1] + '.' + parts[0];
       }
 		},
 		computed: {

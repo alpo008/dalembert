@@ -27,6 +27,7 @@
               v-if="editable"
               @click="deleteClient"
               style="margin: 0 3%;"
+              :title="$t('Delete')"
             >
             </v-btn>
             <v-btn
@@ -34,6 +35,7 @@
               v-if="editable"
               @click="save"
               style="margin: 0 3%;"
+              :title="$t('Save')"
             >
             </v-btn>
           </v-system-bar>
