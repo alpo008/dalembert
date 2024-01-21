@@ -157,6 +157,18 @@
             counter="30"
           >
           </v-text-field>
+          <v-select
+            :label="$t('Base station')"
+            ref="ap_mac"
+            v-if="!!clientData.ap_mac|editable"
+            v-model="clientData.ap_mac"
+            :error-messages="errors.ap_mac"
+            :items="baseStations"
+            :readonly="!editable"
+            append-icon="mdi-content-copy"
+            @click:append="copyText('ap_mac')"
+          >    
+          </v-select> 
           <v-text-field 
             type="text"
             :label="$t('Bridge IP')"
@@ -273,7 +285,12 @@
         place: '',
         clientData: {},
         errors: {},
-        tab: null
+        tab: null,
+        baseStations: [
+          {'title': 'AKM071(EE)', 'value': '00:27:22:12:DF:EE'}, 
+          {'title': 'AKM072(7F)', 'value': '00:27:22:12:DF:7F'}, 
+          {'title': 'AKM073(4D)', 'value': 'DC:9F:DB:34:13:4D'}
+        ]
       }
     },
     async created() {
