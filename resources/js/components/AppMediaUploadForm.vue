@@ -44,7 +44,7 @@ export default {
   },
   data: function () {
     return {
-      _file: null,
+      _file: '',
       name: '',
       collection: '',
       description: '',

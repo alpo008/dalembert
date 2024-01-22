@@ -36,7 +36,7 @@
         	<v-btn 
         	v-if="hasMedia(attachment)"
         		density="compact" 
-        		icon="mdi-paperclip" 
+        		icon="mdi-eye-outline" 
         		@click="viewMedia(attachment)"
       		>
       		</v-btn>
