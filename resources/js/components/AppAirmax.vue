@@ -1,23 +1,29 @@
 <template>
-  <v-system-bar color="lightgrey" 
-    style="height:50px;width: calc((100% - 10px) - 20px);top:120px;left:16px;"
+  <h2 class="pa-1 d-inline" style="margin-right: auto;"> {{ $t('Airmax clients') }}</h2>
+  <v-system-bar color="white" 
+    style="height:50px;width:auto;top:115px;right:20px;left:auto;padding: 0 2%;justify-content:center;"
     class="rounded"
+    elevation="10"
   >
-    <h2 class="pa-1 d-inline" style="margin-right: auto;"> {{ $t('Airmax clients') }}</h2>
     <v-btn
-      icon="mdi-file-export-outline"
+      icon="mdi-file-excel"
       @click="exportExcel"
+      style="margin: 0 3%;"
+      :title="$t('Export')"
     >
     </v-btn>
     <v-btn
       icon="mdi-account-plus-outline"
       to="/airmax/new"
+      style="margin: 0 3%;"
+      :title="$t('New client')"
     >
     </v-btn>
   </v-system-bar>
   <v-table
     fixed-header
-    height="90%"
+    style="height:90%;width:80%;"
+    class="table-condensed"
   >
     <thead>
       <tr>
@@ -26,6 +32,9 @@
         </th>
         <th class="text-left">
           {{ $t('Name') }}
+        </th>
+        <th class="text-left">
+          {{ $t('Bridge IP') }}
         </th>
       </tr>
     </thead>
@@ -46,6 +55,9 @@
           </v-btn>
         </td>
         <td>{{ client.name }}</td>
+        <td>
+          <a :href="'http://' + client.ip_address" target="_blank">{{ client.ip_address }}</a>
+        </td>
       </tr>
     </tbody>
   </v-table>
@@ -81,6 +93,7 @@
         return this.clients.filter(client => {
             return (!!client.name && client.name.toLowerCase().indexOf(searchString) !== -1) ||
             (!!client.place && client.place.toLowerCase().indexOf(searchString) !== -1) ||
+            (!!client.ip_address && client.ip_address.indexOf(searchString) !== -1) ||
             (!!client.wlan_mac && client.wlan_mac.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
         });
       }

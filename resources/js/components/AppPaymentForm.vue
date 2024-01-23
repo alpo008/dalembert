@@ -50,7 +50,7 @@ export default {
         amount: 0.00,
         doi: new Date().toISOString().slice(0,10),
         comments: '',
-        destination: null,
+        destination: '',
         payer_type: this.objectname,
         payer_id: this.clientid,
       },
@@ -70,7 +70,9 @@ export default {
     },
     async save() {
       const formData = new FormData();
-      formData.append('file', this.file);
+      if(!!this.file) {
+        formData.append('file', this.file);
+      }
       formData.append('amount', this.paymentData.amount);
       formData.append('doi', this.paymentData.doi);
       formData.append('payer_type', this.paymentData.payer_type);

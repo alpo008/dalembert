@@ -5,9 +5,15 @@
       bg-color="secondary"
       style="position:sticky;"
     >
-      <v-tab value="settings" class="px-1 text-overline"> {{ $t('Settings') }}</v-tab>
-      <v-tab value="documents" class="px-1 text-overline"> {{ $t('Documents') }}</v-tab>
-      <v-tab value="payments" class="px-1 text-overline"> {{ $t('Payments') }}</v-tab>
+      <v-tab value="settings" class="px-1 text-h6">
+        <v-icon icon="mdi-account-cog-outline" :title="$t('Settings')"></v-icon>
+      </v-tab>
+      <v-tab value="documents" class="px-1 text-h6">
+        <v-icon icon="mdi-account-card-outline" :title="$t('Documents')"></v-icon>
+      </v-tab>
+      <v-tab value="payments" class="px-1 text-h6">
+        <v-icon icon="mdi-account-cash-outline" :title="$t('Payments')"></v-icon>
+      </v-tab>
       <v-spacer></v-spacer>
       <div style="line-height: 48px;" class="elevation-2 px-2 font-weight-bold text-medium-emphasis rounded-pill">
         {{ clientData.place }}
@@ -18,21 +24,24 @@
         <v-window-item value="settings">
           <v-system-bar color="transparent"
             v-if="editable"
-            style="height:50px;width: calc((100% - 10px) - 110px);top:160px;left:66px;"
+            style="height:50px;width:auto;top:160px;right:20px;left:auto;padding: 0 2%;justify-content:center;"
             class="rounded"
+            elevation="10"
           >
             <v-btn
               icon="mdi-delete-alert-outline"
               v-if="editable"
               @click="deleteClient"
-              style="margin: 0 1%;"
+              style="margin: 0 3%;"
+              :title="$t('Delete')"
             >
             </v-btn>
             <v-btn
               icon="mdi-content-save"
               v-if="editable"
               @click="save"
-              style="margin: 0 1%;"
+              style="margin: 0 3%;"
+              :title="$t('Save')"
             >
             </v-btn>
           </v-system-bar>
@@ -154,6 +163,18 @@
             counter="30"
           >
           </v-text-field>
+          <v-select
+            :label="$t('Base station')"
+            ref="ap_mac"
+            v-if="!!clientData.ap_mac|editable"
+            v-model="clientData.ap_mac"
+            :error-messages="errors.ap_mac"
+            :items="baseStations"
+            :readonly="!editable"
+            append-icon="mdi-content-copy"
+            @click:append="copyText('ap_mac')"
+          >    
+          </v-select> 
           <v-text-field 
             type="text"
             :label="$t('Bridge IP')"
@@ -270,7 +291,12 @@
         place: '',
         clientData: {},
         errors: {},
-        tab: null
+        tab: null,
+        baseStations: [
+          {'title': 'AKM071(EE)', 'value': '00:27:22:12:DF:EE'}, 
+          {'title': 'AKM072(7F)', 'value': '00:27:22:12:DF:7F'}, 
+          {'title': 'AKM073(4D)', 'value': 'DC:9F:DB:34:13:4D'}
+        ]
       }
     },
     async created() {

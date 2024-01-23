@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 //use Illuminate\Support\Facades\DB;
 
 class AddAttachmentRequest extends FormRequest
@@ -31,7 +32,8 @@ class AddAttachmentRequest extends FormRequest
             'name' => 'required|max:100',
             'collection' => 'required|max:50',
             'doi' => 'date|nullable',
-            'description' => 'string|nullable'
+            'description' => 'string|nullable',
+            'file' => ['required', File::types(['jpg', 'png' , 'jpeg', 'tiff', 'pdf'])->max(2048)]
         ];
     }
 }
