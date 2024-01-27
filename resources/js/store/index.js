@@ -4,6 +4,7 @@ import weather from './weather';
 import airmax from './airmax';
 import document from './document';
 import payment from './payment';
+import statistics from './statistics';
 import general from './general';
 
 export const store = createStore({
@@ -17,6 +18,7 @@ export const store = createStore({
     airmax,
     document,
     payment,
+    statistics,
     general
 	}
 })

@@ -7,6 +7,7 @@ import AppDiagram from './components/AppDiagram.vue';
 import AppDiagrams from './components/AppDiagrams.vue';
 import AppAirmax from './components/AppAirmax.vue';
 import AppAirmaxClient from './components/AppAirmaxClient.vue';
+import AppStatistics from './components/AppStatistics.vue';
 
 export default VueRouter.createRouter({
     routes: [
@@ -40,6 +41,18 @@ export default VueRouter.createRouter({
                     redirect: '/'
                 },
                 searchBar: true
+            }
+        },
+        {
+            path: '/statistics',
+            name: 'General statistics page',
+            component: AppStatistics,
+            meta: {
+                auth: {
+                    roles: ['super', 'admin'],
+                    redirect: '/'
+                },
+                searchBar: false
             }
         },
         {

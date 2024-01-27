@@ -109,6 +109,10 @@
           {
             title: this.$t('Airmax clients'),
             url: '/airmax',
+          },
+          {
+            title: this.$t('Statistics'),
+            url: '/statistics',
           }
         ],
         time: ''

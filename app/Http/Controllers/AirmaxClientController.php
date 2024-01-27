@@ -6,6 +6,7 @@ use App\Models\AirmaxClient;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateAirmaxClientRequest;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Database\Query\Builder;
 
 class AirmaxClientController extends Controller
 {
@@ -123,5 +124,29 @@ class AirmaxClientController extends Controller
         return response()->json(
             compact('status', 'deleted'), $code
         );
+    }
+
+    /**
+     * Remturns airmax clients statistics data.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function statistics()
+    {
+        $this->authorize('viewAny', AirmaxClient::class);
+        $yearAgo = date('Y-m-d', strtotime("-1 year", time()));
+        $overdue = AirmaxClient::with('payments')->whereNotIn('id', function(Builder $query) use($yearAgo){
+            $query->select('payer_id')
+            ->from('payments')
+            ->where('payer_type', '=', 'App\\Models\\AirmaxClient')
+            ->where('doi', '>', $yearAgo);
+        })->get()->toArray();
+        return response()->json(
+            [
+                'status' => 'success',
+                'statistics' => ['airmax' => compact('overdue')]
+            ], 200
+        );
+        
     }
 }
