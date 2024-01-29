@@ -1,13 +1,29 @@
 <template>
+
+  <!--   Alert widget -->
   <v-alert
-  v-if="showAlert"
-  color="warning"
-  style="z-index:1005;"
-  icon="$warning"
-  :title="$t('Alert')"
-  :text="genericErrors.toString()"
-  closable
-  ></v-alert>
+    v-if="showAlert"
+    color="warning"
+    style="z-index:1005;"
+    icon="$warning"
+    :title="$t('Alert')"
+    :text="genericErrors.toString()"
+    closable
+  >
+  </v-alert>
+
+  <!--   Loading overlay -->
+  <v-overlay
+    :model-value="overlay"
+    class="align-center justify-center"
+  >
+    <v-progress-circular
+      color="primary"
+      indeterminate
+      size="64"
+    ></v-progress-circular>
+  </v-overlay>
+
   <v-card v-if="$auth.ready()">
     <v-layout>
       <v-app-bar
@@ -101,6 +117,7 @@
         searchString: '',
         showWeather: false,
         searchBar: false,
+        overlay: false,
         items: [
           {
             title: this.$t('Home'),
@@ -177,6 +194,11 @@
           result = 'mdi-account-check';
         }
         return result;
+      }
+    },
+    watch: {
+      "$store.state.general.loading"(val) {
+        this.overlay = val;
       }
     }
   }
