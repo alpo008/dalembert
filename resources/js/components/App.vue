@@ -201,3 +201,12 @@
     }
   }
 </script>
+
+<style>
+    div.slide-panel {
+        width: 100%;
+        height: 100px;
+        display: none;
+        background: #dffdc1;
+    }
+</style> 

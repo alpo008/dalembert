@@ -1,51 +1,60 @@
 <template>
-  <v-system-bar color="white" style="top:115px;max-width: 50vw;">
-  <h2 class="pa-1 d-inline" style="margin-right: auto;max-width:fit-content;"> {{ $t('Airmax clients') }}</h2>
-  <v-checkbox
-    style="max-width:fit-content;"    
-    v-model="activityFilter.active"
-    :label="$t('Active')"
-    color="success"
-    hide-details
-@change="tst"
+  <h2 class="pa-1 d-inline" style="margin-right: auto;max-width:fit-content;"> 
+    {{ $t('Airmax clients') }} ( {{ filteredClients.length }} )
+  </h2>
+  <v-btn 
+    density="compact" 
+    :icon="!showToolbar ? 'mdi-menu-open' : 'mdi-menu-right-outline'" 
+    style="position:fixed;top:113px;right:5px;"
+    @click="showToolbar=!showToolbar"
+    :title="$t('Toolbar')"
   >
-  </v-checkbox> 
-  <v-checkbox
-    style="max-width:fit-content;"
-    v-model="activityFilter.disabled"
-    :label="$t('Disabled')"
-    color="warning"
-    hide-details
-    @change="tst"
-  >   
-  </v-checkbox>
-</v-system-bar>
-  <v-system-bar color="white" 
-    style="height:50px;width:auto;top:115px;right:20px;left:auto;padding: 0 2%;justify-content:center;"
-    class="rounded"
-    elevation="10"
-  >
-    <v-btn
-      icon="mdi-file-excel"
-      @click="exportExcel"
-      style="margin: 0 3%;"
-      :title="$t('Export')"
+  </v-btn>
+  <Transition name="slide-fade">
+    <v-system-bar color="white" 
+      style="height:50px;top:100px;padding: 0 2%;justify-content:center;width: calc((100% - 0px) - 50px);"
+      class="rounded"
+      elevation="10"
+      v-if="showToolbar"
     >
-    </v-btn>
-    <v-btn
-      icon="mdi-account-plus-outline"
-      to="/airmax/new"
-      style="margin: 0 3%;"
-      :title="$t('New client')"
-    >
-    </v-btn>
-  </v-system-bar>
+      <v-checkbox
+        style="max-width:fit-content;"    
+        v-model="activityFilter.active"
+        color="success"
+        hide-details
+        :title="$t('Active')"
+      >
+      </v-checkbox> 
+      <v-checkbox
+        style="max-width:fit-content;"
+        v-model="activityFilter.disabled"
+        color="warning"
+        hide-details
+        :title="$t('Disabled')"
+      >   
+      </v-checkbox>
+      <v-spacer></v-spacer>
+      <v-btn
+        icon="mdi-file-excel"
+        @click="exportExcel"
+        :title="$t('Export')"
+      >
+      </v-btn>
+      <v-btn
+        icon="mdi-account-plus-outline"
+        to="/airmax/new"
+        :title="$t('New client')"
+        style="margin-left:5px;"
+      >
+      </v-btn>
+    </v-system-bar>
+  </Transition>
   <v-table
     fixed-header
     style="height:90%;width:80%;margin-top: 30px;"
     class="table-condensed"
   >
-    <thead>
+    <thead @click="showToolbar=!showToolbar">
       <tr>
         <th class="text-left">
           {{ $t('Place') }}
@@ -92,7 +101,8 @@
         activityFilter: {
           active: true,
           disabled: true
-        }
+        },
+        showToolbar: true
       }
     },
     async created() {
@@ -109,9 +119,6 @@
           let message = error.message ?? this.$t('Could not Download the Excel report');
           this.$store.commit('setHttpErrors', message);
         });
-      },
-      tst() {
-        //console.log(this.activityFilter)
       }
     },
     computed: {
@@ -129,3 +136,36 @@
     }
   }
 </script>
+
+<style scoped>
+  .slide-fade-enter-active {
+    transition: all 0.2s ease-out;
+  }
+
+  .slide-fade-leave-active {
+    transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+  }
+
+  .slide-fade-enter-from,
+  .slide-fade-leave-to {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style>
