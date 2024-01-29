@@ -144,13 +144,6 @@
         }
       ).catch(err => console.warn(`ERROR(${err.code}): ${err.message}`));
     },
-    watch: {
-      $route(to, from) {
-        this.searchBar = !!to.meta?.searchBar;
-        this.searchString = '';
-        this.$store.commit('setSearchKey', this.searchString);
-      }
-    },
     methods: {
       switchOff() {
         if(!!navigator.app) {
@@ -197,6 +190,11 @@
       }
     },
     watch: {
+      $route(to, from) {
+        this.searchBar = !!to.meta?.searchBar;
+        this.searchString = '';
+        this.$store.commit('setSearchKey', this.searchString);
+      },
       "$store.state.general.loading"(val) {
         this.overlay = val;
       }

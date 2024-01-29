@@ -1,5 +1,25 @@
 <template>
-  <h2 class="pa-1 d-inline" style="margin-right: auto;"> {{ $t('Airmax clients') }}</h2>
+  <v-system-bar color="white" style="top:115px;max-width: 50vw;">
+  <h2 class="pa-1 d-inline" style="margin-right: auto;max-width:fit-content;"> {{ $t('Airmax clients') }}</h2>
+  <v-checkbox
+    style="max-width:fit-content;"    
+    v-model="activityFilter.active"
+    :label="$t('Active')"
+    color="success"
+    hide-details
+@change="tst"
+  >
+  </v-checkbox> 
+  <v-checkbox
+    style="max-width:fit-content;"
+    v-model="activityFilter.disabled"
+    :label="$t('Disabled')"
+    color="warning"
+    hide-details
+    @change="tst"
+  >   
+  </v-checkbox>
+</v-system-bar>
   <v-system-bar color="white" 
     style="height:50px;width:auto;top:115px;right:20px;left:auto;padding: 0 2%;justify-content:center;"
     class="rounded"
@@ -22,7 +42,7 @@
   </v-system-bar>
   <v-table
     fixed-header
-    style="height:90%;width:80%;"
+    style="height:90%;width:80%;margin-top: 30px;"
     class="table-condensed"
   >
     <thead>
@@ -68,7 +88,11 @@
     data: function () {
       return {
         clients: [],
-        errors: {}
+        errors: {},
+        activityFilter: {
+          active: true,
+          disabled: true
+        }
       }
     },
     async created() {
@@ -85,16 +109,21 @@
           let message = error.message ?? this.$t('Could not Download the Excel report');
           this.$store.commit('setHttpErrors', message);
         });
+      },
+      tst() {
+        //console.log(this.activityFilter)
       }
     },
     computed: {
       filteredClients() {
         const searchString = this.$store.getters.searchKey.toLowerCase();
         return this.clients.filter(client => {
-            return (!!client.name && client.name.toLowerCase().indexOf(searchString) !== -1) ||
+            let activityCriteria = client.active&this.activityFilter.active || !client.active&this.activityFilter.disabled;
+            return ((!!client.name && client.name.toLowerCase().indexOf(searchString) !== -1) ||
             (!!client.place && client.place.toLowerCase().indexOf(searchString) !== -1) ||
             (!!client.ip_address && client.ip_address.indexOf(searchString) !== -1) ||
-            (!!client.wlan_mac && client.wlan_mac.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
+            (!!client.wlan_mac && client.wlan_mac.toLowerCase().indexOf(searchString.toLowerCase()) !== -1)) &&
+            activityCriteria;
         });
       }
     }
