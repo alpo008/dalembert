@@ -4,15 +4,15 @@
   </h2>
   <v-btn 
     density="compact" 
-    :icon="!showToolbar ? 'mdi-menu-open' : 'mdi-menu-right-outline'" 
+    icon="mdi-menu-open"
     style="position:fixed;top:113px;right:5px;"
-    @click="showToolbar=!showToolbar"
+    @click="showToolbar=true"
     :title="$t('Toolbar')"
   >
   </v-btn>
   <Transition name="slide-fade">
     <v-system-bar color="white" 
-      style="height:50px;top:100px;padding: 0 2%;justify-content:center;width: calc((100% - 0px) - 50px);"
+      style="height:50px;top:100px;padding: 0 2%;justify-content:center;width: calc((100% - 0px) - 0px);"
       class="rounded"
       elevation="10"
       v-if="showToolbar"
@@ -47,6 +47,14 @@
         style="margin-left:5px;"
       >
       </v-btn>
+      <v-icon
+        size="x-large"
+        color="black"
+        :title="$t('Hide')"
+        icon="mdi-menu-right-outline"
+        @click="showToolbar=false"
+        style="left:15px;"
+      ></v-icon>
     </v-system-bar>
   </Transition>
   <v-table
@@ -54,7 +62,7 @@
     style="height:90%;width:80%;margin-top: 30px;"
     class="table-condensed"
   >
-    <thead @click="showToolbar=!showToolbar">
+    <thead>
       <tr>
         <th class="text-left">
           {{ $t('Place') }}
