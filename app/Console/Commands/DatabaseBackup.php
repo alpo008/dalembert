@@ -32,6 +32,11 @@ class DatabaseBackup extends Command
         if (! Storage::exists('backup')) {
             Storage::makeDirectory('backup');
         }
+        collect(Storage::listContents('backup', true))->each(function($file) {
+            if ($file['type'] === 'file' && $file['lastModified'] < now()->subDays(5)->getTimestamp()) {
+                Storage::delete($file['path']);
+            }
+        });
  
         $filename = "backup-" . Carbon::now()->format('Y-m-d') . ".sql";
     
