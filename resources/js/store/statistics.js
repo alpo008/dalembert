@@ -21,5 +21,8 @@ export default {
 		airmaxStatistics(state) {
 			return state.statData?.airmax;
 		},
+		allStatistics(state) {
+			return state.statData;
+		},
 	}
 }

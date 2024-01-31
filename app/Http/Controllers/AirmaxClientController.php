@@ -135,16 +135,21 @@ class AirmaxClientController extends Controller
     {
         $this->authorize('viewAny', AirmaxClient::class);
         $yearAgo = date('Y-m-d', strtotime("-1 year", time()));
-        $overdue = AirmaxClient::with('payments')->whereNotIn('id', function(Builder $query) use($yearAgo){
+        $overdueQuery = AirmaxClient::with('payments')->whereNotIn('id', function(Builder $query) use($yearAgo){
             $query->select('payer_id')
             ->from('payments')
             ->where('payer_type', '=', 'App\\Models\\AirmaxClient')
             ->where('doi', '>', $yearAgo);
-        })->get()->toArray();
+        });
+        $active = AirmaxClient::where('active', true)->get()->toArray();
+        $disabled = AirmaxClient::where('active', false)->get()->toArray();
+        $overdue = $overdueQuery->get()->toArray();
+        $overdueButActive = $overdueQuery->where('active', true)->get()->toArray();
+
         return response()->json(
             [
                 'status' => 'success',
-                'statistics' => ['airmax' => compact('overdue')]
+                'statistics' => ['airmax' => compact('overdue', 'active', 'disabled', 'overdueButActive')]
             ], 200
         );
         
