@@ -33,7 +33,7 @@ class AddAttachmentRequest extends FormRequest
             'collection' => 'required|max:50',
             'doi' => 'date|nullable',
             'description' => 'string|nullable',
-            'file' => ['required', File::types(['jpg', 'png' , 'jpeg', 'tiff', 'pdf'])->max(2048)]
+            'file' => ['required', File::types(['jpg', 'png' , 'jpeg', 'tiff', 'pdf', 'txt'])->max(2048)]
         ];
     }
 }

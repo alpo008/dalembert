@@ -36,8 +36,9 @@
         	<v-btn 
         	v-if="hasMedia(attachment)"
         		density="compact" 
-        		icon="mdi-eye-outline" 
-        		@click="viewMedia(attachment)"
+        		:icon="attachment.media.mime_type === 'text/plain' ? 'mdi-download' : 'mdi-eye-outline'" 
+        		:title="attachment.media.mime_type === 'text/plain' ? $t('Download') : $t('View')" 
+        		@click="viewOrDownloadMedia(attachment)"
       		>
       		</v-btn>
         </td>
@@ -46,6 +47,7 @@
         		density="compact" 
         		icon="mdi-delete-forever-outline" 
         		@click="deleteAttachment(attachment)"
+        		:title="$t('Delete')" 
       		>
       		</v-btn>
         </td>
@@ -117,6 +119,7 @@
 </template>
 
 <script>
+  const FileSaver = require('file-saver');
 	const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
   import WidgetConfirm from './widgets/WidgetConfirm.vue';
 	import AppMediaUploadForm from './AppMediaUploadForm';
@@ -185,7 +188,7 @@
           });
         }
       },
-      async viewMedia(attachment) {
+      async viewOrDownloadMedia(attachment) {
 	      await this.$store.dispatch('httpRequest', {
 	        url: '/attachments/download',
 	        method: 'POST',
@@ -194,7 +197,11 @@
 	      });
 	      this.mediaContents = this.$store.getters.fileContents;
 	      this.mediaPreview = attachment.media;
-      	this.preview = true;
+	      if(attachment.media.mime_type === 'text/plain') {
+	      	FileSaver.saveAs(this.mediaContents, this.mediaPreview.file_name.replace('.txt', ''));
+	      } else {
+	      	this.preview = true;
+	      }   	
       },
 			hasMedia(attachment) {
 				return !isEmpty(attachment.media);
