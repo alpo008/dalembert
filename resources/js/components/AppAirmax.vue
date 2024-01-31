@@ -1,28 +1,65 @@
 <template>
-  <h2 class="pa-1 d-inline" style="margin-right: auto;"> {{ $t('Airmax clients') }}</h2>
-  <v-system-bar color="white" 
-    style="height:50px;width:auto;top:115px;right:20px;left:auto;padding: 0 2%;justify-content:center;"
-    class="rounded"
-    elevation="10"
+  <h2 class="pa-1 d-inline" style="margin-right: auto;max-width:fit-content;"> 
+    {{ $t('Airmax clients') }} ( {{ filteredClients.length }} )
+  </h2>
+  <v-btn 
+    density="compact" 
+    icon="mdi-menu-open"
+    style="position:fixed;top:113px;right:5px;"
+    @click="showToolbar=true"
+    :title="$t('Toolbar')"
   >
-    <v-btn
-      icon="mdi-file-excel"
-      @click="exportExcel"
-      style="margin: 0 3%;"
-      :title="$t('Export')"
+  </v-btn>
+  <Transition name="slide-fade">
+    <v-system-bar color="white" 
+      style="height:50px;top:100px;padding: 0 2%;justify-content:center;width: calc((100% - 0px) - 0px);"
+      class="rounded"
+      elevation="10"
+      v-if="showToolbar"
     >
-    </v-btn>
-    <v-btn
-      icon="mdi-account-plus-outline"
-      to="/airmax/new"
-      style="margin: 0 3%;"
-      :title="$t('New client')"
-    >
-    </v-btn>
-  </v-system-bar>
+      <v-checkbox
+        style="max-width:fit-content;"    
+        v-model="activityFilter.active"
+        color="success"
+        hide-details
+        :title="$t('Active')"
+      >
+      </v-checkbox> 
+      <v-checkbox
+        style="max-width:fit-content;"
+        v-model="activityFilter.disabled"
+        color="warning"
+        hide-details
+        :title="$t('Disabled')"
+      >   
+      </v-checkbox>
+      <v-spacer></v-spacer>
+      <v-btn
+        icon="mdi-file-excel"
+        @click="exportExcel"
+        :title="$t('Export')"
+      >
+      </v-btn>
+      <v-btn
+        icon="mdi-account-plus-outline"
+        to="/airmax/new"
+        :title="$t('New client')"
+        style="margin-left:5px;"
+      >
+      </v-btn>
+      <v-icon
+        size="x-large"
+        color="black"
+        :title="$t('Hide')"
+        icon="mdi-menu-right-outline"
+        @click="showToolbar=false"
+        style="left:15px;"
+      ></v-icon>
+    </v-system-bar>
+  </Transition>
   <v-table
     fixed-header
-    style="height:90%;width:80%;"
+    style="height:90%;width:80%;margin-top: 30px;"
     class="table-condensed"
   >
     <thead>
@@ -68,7 +105,12 @@
     data: function () {
       return {
         clients: [],
-        errors: {}
+        errors: {},
+        activityFilter: {
+          active: true,
+          disabled: true
+        },
+        showToolbar: true
       }
     },
     async created() {
@@ -91,12 +133,47 @@
       filteredClients() {
         const searchString = this.$store.getters.searchKey.toLowerCase();
         return this.clients.filter(client => {
-            return (!!client.name && client.name.toLowerCase().indexOf(searchString) !== -1) ||
+            let activityCriteria = client.active&this.activityFilter.active || !client.active&this.activityFilter.disabled;
+            return ((!!client.name && client.name.toLowerCase().indexOf(searchString) !== -1) ||
             (!!client.place && client.place.toLowerCase().indexOf(searchString) !== -1) ||
             (!!client.ip_address && client.ip_address.indexOf(searchString) !== -1) ||
-            (!!client.wlan_mac && client.wlan_mac.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
+            (!!client.wlan_mac && client.wlan_mac.toLowerCase().indexOf(searchString.toLowerCase()) !== -1)) &&
+            activityCriteria;
         });
       }
     }
   }
 </script>
+
+<style scoped>
+  .slide-fade-enter-active {
+    transition: all 0.2s ease-out;
+  }
+
+  .slide-fade-leave-active {
+    transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+  }
+
+  .slide-fade-enter-from,
+  .slide-fade-leave-to {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style>

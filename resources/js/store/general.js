@@ -1,8 +1,9 @@
 export default {
 	state : {
-			searchString: '',
-			httpErrors: {},
-		},
+		searchString: '',
+		httpErrors: {},
+		loading: false
+	},
 	mutations : {
 		setSearchKey(state, payload) {
 			state.searchString = payload;
@@ -18,6 +19,9 @@ export default {
 				state.httpErrors.generic.push(payload)
 			}			
 		},
+		setHttpLoadingState(state,payload) {
+			state.loading = !!payload;
+		}
 	},
 	actions : {
 		httpRequest(context, payload) {
@@ -29,9 +33,11 @@ export default {
 				if (typeof url === 'string' && url.length && 
 					typeof method === 'string' && method.length &&
 					typeof method === 'string' && method.length) {
-					context.state.httpErrors = {};	
+					context.state.httpErrors = {};
+					context.commit('setHttpLoadingState', true);	
 					return axios({method, url, data})
               		.then(response => {
+              			context.commit('setHttpLoadingState', false);
 		                if (response.status >= 200 && response.status < 300) {		                			                  
 		                        return response;
 		                    } else {
@@ -51,7 +57,8 @@ export default {
 			                	context.commit(mutation, json);
 			                }		              	
 		                }).catch(error => {
-        	               if (typeof error.response === 'object') {
+		                	context.commit('setHttpLoadingState', false);
+        	                if (typeof error.response === 'object') {
 			                if (typeof error.response.data === 'object') {
 			                  if (typeof error.response.data.errors === 'object') {
 			                    context.commit('setHttpErrors', error.response.data.errors);

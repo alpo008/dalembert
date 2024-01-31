@@ -43,12 +43,16 @@ import App from './components/App.vue';
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
+import * as labsComponents from 'vuetify/labs/components'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
 const vuetify = createVuetify({
-  components,
-  directives,
+    components: {
+    ...components,
+    ...labsComponents,
+  },
+  directives
 });
 
 import auth from './auth.js';
