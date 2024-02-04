@@ -47,7 +47,7 @@
       </tr>
     </tbody>
   </v-table>
-  <v-dialog eager v-model="preview">
+  <v-dialog eager v-model="preview" style="width:60vw;">
 	  <v-card style="min-height:90vh" id="media-preview">
 	    <v-toolbar
 	      dark
@@ -73,7 +73,7 @@
     	<img
     		:src="mediaContents" 
     		v-else
-    		style="width: 100vw;"
+    		style="width: 55vw;"
     	/>
 	  </v-card>
 	</v-dialog>

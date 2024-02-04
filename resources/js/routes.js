@@ -52,7 +52,7 @@ export default VueRouter.createRouter({
                     roles: ['super', 'admin'],
                     redirect: '/'
                 },
-                searchBar: false
+                searchBar: true
             }
         },
         {

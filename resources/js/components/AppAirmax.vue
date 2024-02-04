@@ -133,7 +133,8 @@
       filteredClients() {
         const searchString = this.$store.getters.searchKey.toLowerCase();
         return this.clients.filter(client => {
-            let activityCriteria = client.active&this.activityFilter.active || !client.active&this.activityFilter.disabled;
+            let activityCriteria = client.active&this.activityFilter.active || 
+                                   !client.active&this.activityFilter.disabled;
             return ((!!client.name && client.name.toLowerCase().indexOf(searchString) !== -1) ||
             (!!client.place && client.place.toLowerCase().indexOf(searchString) !== -1) ||
             (!!client.ip_address && client.ip_address.indexOf(searchString) !== -1) ||

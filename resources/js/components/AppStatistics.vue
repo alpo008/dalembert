@@ -94,15 +94,20 @@ export default {
     getAirmaxStatistics(key) {
       const result = [];
       if (!!this.statistics?.airmax[key]) {
+        const searchString = this.$store.getters.searchKey.toLowerCase();
         this.statistics.airmax[key].forEach(client => {
-          result.push({
-            id: client.id, 
-            place: client.place, 
-            name: client.name,
-            ip_address: client.ip_address,
-            active: client.active,
-            title: client.place
-          });
+          if ((!!client.name && client.name.toLowerCase().indexOf(searchString) !== -1) ||
+            (!!client.place && client.place.toLowerCase().indexOf(searchString) !== -1) ||
+            (!!client.ip_address && client.ip_address.indexOf(searchString) !== -1)) {
+              result.push({
+                id: client.id, 
+                place: client.place, 
+                name: client.name,
+                ip_address: client.ip_address,
+                active: client.active,
+                title: client.place
+              });
+            }
         });
       }
       return result;

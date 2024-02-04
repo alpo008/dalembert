@@ -1,5 +1,5 @@
 <template>
-  <v-card style="margin-top:-20px;">
+  <v-card style="margin-top:-5px;">
     <v-tabs
       v-model="tab"
       bg-color="secondary"
