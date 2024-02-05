@@ -35,9 +35,16 @@
       </v-checkbox>
       <v-spacer></v-spacer>
       <v-btn
+        icon="mdi-backup-restore"
+        @click="exportSql"
+        :title="$t('Backup')"
+      >
+      </v-btn>
+      <v-btn
         icon="mdi-file-excel"
         @click="exportExcel"
         :title="$t('Export')"
+        style="margin-left:5px;"
       >
       </v-btn>
       <v-btn
@@ -123,6 +130,14 @@
       exportExcel() {
         axios.get('export/airmax', {responseType: 'blob'}).then((response) => {
           FileSaver.saveAs(response.data, 'airmax-clients.xlsx');
+        }).catch((error) => {
+          let message = error.message ?? this.$t('Could not Download the Excel report');
+          this.$store.commit('setHttpErrors', message);
+        });
+      },
+      exportSql() {
+        axios.get('export/backup', {responseType: 'blob'}).then((response) => {
+          FileSaver.saveAs(response.data, 'backup.sql');
         }).catch((error) => {
           let message = error.message ?? this.$t('Could not Download the Excel report');
           this.$store.commit('setHttpErrors', message);

@@ -36,6 +36,7 @@ Route::post('airmax-clients/statistics', 'App\Http\Controllers\AirmaxClientContr
 
 Route::group(['prefix' => 'export'], function () {
     Route::get('airmax', 'App\Http\Controllers\ExportController@airmax');
+    Route::get('backup', 'App\Http\Controllers\ExportController@backup');
 });
 
 Route::get('payments/{obj}/{id}', 'App\Http\Controllers\PaymentController@show');
