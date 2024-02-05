@@ -8,7 +8,8 @@
 			icon="mdi-note-plus-outline"
 			@click="addPayment"
 			style="margin: 0 1%;"
-			>
+			:title="$t('Add payment')"
+		>
 		</v-btn>
 	</v-system-bar>
 

@@ -8,6 +8,7 @@
 			icon="mdi-note-plus-outline"
 			@click="addDocument"
 			style="margin: 0 1%;"
+			:title="$t('Add document')"
 			>
 		</v-btn>
 	</v-system-bar>
@@ -31,7 +32,7 @@
         :key="attachment.id"
       >
         <td class="pa-1">{{ attachment.media.name }}</td>
-        <td class="pa-1">{{ attachment.media.doi }}</td>
+        <td class="pa-1">{{ formatDate(attachment.media.doi, 'D.M.YYYY') }}</td>
         <td class="pa-1">
         	<v-btn 
         	v-if="hasMedia(attachment)"
@@ -205,7 +206,11 @@
       },
 			hasMedia(attachment) {
 				return !isEmpty(attachment.media);
-			}
+			},
+      formatDate(date) {
+      	let parts = date.split('-');
+      	return parts[2] + '.' + parts[1] + '.' + parts[0];
+      }
 		},
 		computed: {
 			hasAttachments() {
