@@ -11,11 +11,11 @@
   >
   </v-btn>
   <Transition name="slide-fade">
-    <v-system-bar color="white" 
-      style="height:50px;top:100px;padding: 0 2%;justify-content:center;width: calc((100% - 0px) - 0px);"
+    <v-system-bar 
+      style="height:50px;top:100px;padding: 0 2%;justify-content:center;width: calc((100% - 0px) - 0px);backdrop-filter: blur(10px);background-color:transparent"
       class="rounded"
       elevation="10"
-      v-if="showToolbar"
+      v-show="showToolbar"
     >
       <v-checkbox
         style="max-width:fit-content;"    
@@ -92,7 +92,7 @@
   </Transition>
   <v-table
     fixed-header
-    style="height:90%;width:80%;margin-top: 30px;"
+    style="height:90%;margin-top: 30px;"
     class="table-condensed"
   >
     <thead>
@@ -114,15 +114,9 @@
         :key="client.wlan_mac"
       >
         <td>
-          <v-btn 
-            density="compact" :to="'/airmax/'+client.place" 
-            :prepend-icon="client.active? 'mdi-check-circle' : 'mdi-close-circle'"
-          >
-          <template v-slot:prepend>
-            <v-icon :color="client.active? 'success' : 'error'"></v-icon>
-          </template>
+          <v-chip variant="elevated" :to="'/airmax/'+client.place" :color="client.active? 'success' : 'warning'">
             {{ client.place }}
-          </v-btn>
+          </v-chip>
         </td>
         <td>{{ client.name }}</td>
         <td>
