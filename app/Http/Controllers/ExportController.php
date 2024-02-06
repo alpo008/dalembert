@@ -10,15 +10,15 @@ use Illuminate\Support\Facades\Storage;
 
 class ExportController extends Controller
 {
-    public function airmax()
+    public function airmax(Request $request)
     {
         $this->authorize('viewAny', AirmaxClient::class);
-        return Excel::download(new AirmaxClientsExport, 'airmax-clients.xlsx');
+        return Excel::download(new AirmaxClientsExport($request->query('keyword')), 'airmax-clients.xlsx');
     }
 
     public function backup()
     {
-        $this->authorize('delete', AirmaxClient::class);
+        $this->authorize('update', AirmaxClient::class);
         $available = Storage::files('backup');
         $latest = array_pop($available);
         if ($latest) {

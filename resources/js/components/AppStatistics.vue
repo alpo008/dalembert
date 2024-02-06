@@ -1,6 +1,6 @@
 <template>
   <h1> {{ $t('Statistics') }}</h1>
-  <v-expansion-panels style="margin-top:30px;">
+  <v-expansion-panels style="margin-top:30px;" v-if="isReady">
     <v-expansion-panel v-if="haveAirmaxStatistics('overdue')">
       <v-expansion-panel-title>
         {{ $t('Airmax overdue clients') }} ( {{ getAirmaxStatistics('overdue').length }} )
@@ -166,6 +166,9 @@ export default {
           key: 'ip_address',
         },
       ];
+    },
+    isReady() {
+      return !isEmpty(this.statistics?.airmax);
     }
   }
 }

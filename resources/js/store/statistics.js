@@ -9,7 +9,7 @@ export default {
 				for (const [key, value] of Object.entries(payload.statistics)) {
 					state.statData[key] = value;
 				}
-			}		
+			}	
 		}
 	},
 	actions: {

@@ -38,15 +38,41 @@
         icon="mdi-backup-restore"
         @click="exportSql"
         :title="$t('Backup')"
-      >
-      </v-btn>
-      <v-btn
-        icon="mdi-file-excel"
-        @click="exportExcel"
-        :title="$t('Export')"
+        v-if="$auth.check('super')"
         style="margin-left:5px;"
       >
       </v-btn>
+      <v-menu location="bottom">
+        <template v-slot:activator="{ props }">
+          <v-btn
+            icon="mdi-file-excel"
+            v-bind="props"
+            :title="$t('Export')"
+            style="margin-left:5px;"
+          >
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="exportExcel('all')">
+            <v-list-item-title>{{ $t('All') }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="exportExcel('active')">
+            <v-list-item-title>{{ $t('Active') }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="exportExcel('disabled')">
+            <v-list-item-title>{{ $t('Disabled') }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="exportExcel('overdue')">
+            <v-list-item-title>{{ $t('Debtors') }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="exportExcel('overdueButActive')">
+            <v-list-item-title>{{ $t('Not blocked debtors') }}</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="exportExcel('remind')">
+            <v-list-item-title>{{ $t('Reminders') }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
       <v-btn
         icon="mdi-account-plus-outline"
         to="/airmax/new"
@@ -60,7 +86,7 @@
         :title="$t('Hide')"
         icon="mdi-menu-right-outline"
         @click="showToolbar=false"
-        style="left:15px;"
+        style="left:10px;"
       ></v-icon>
     </v-system-bar>
   </Transition>
@@ -127,8 +153,8 @@
       this.errors = this.$store.getters.httpErrors;
     },
     methods: {
-      exportExcel() {
-        axios.get('export/airmax', {responseType: 'blob'}).then((response) => {
+      exportExcel(keyword) {
+        axios.get('export/airmax', {responseType: 'blob', params: {keyword}}).then((response) => {
           FileSaver.saveAs(response.data, 'airmax-clients.xlsx');
         }).catch((error) => {
           let message = error.message ?? this.$t('Could not Download the Excel report');

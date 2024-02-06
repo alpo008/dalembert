@@ -6,7 +6,6 @@ use App\Models\AirmaxClient;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdateAirmaxClientRequest;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Database\Query\Builder;
 
 class AirmaxClientController extends Controller
 {
@@ -134,32 +133,18 @@ class AirmaxClientController extends Controller
     public function statistics()
     {
         $this->authorize('viewAny', AirmaxClient::class);
-        $yearAgo = date('Y-m-d', strtotime("-1 year", time()));
-        $timeToPay = date('Y-m-d', strtotime("-350 days", time()));
-        $overdueQuery = AirmaxClient::with('payments')->whereNotIn('id', function(Builder $query) use($yearAgo){
-            $query->select('payer_id')
-            ->from('payments')
-            ->where('payer_type', '=', 'App\\Models\\AirmaxClient')
-            ->where('doi', '>', $yearAgo);
-        });
-        $remindQuery = AirmaxClient::with('payments')->whereIn('id', function(Builder $query) use($timeToPay, $yearAgo){
-            $query->select('payer_id')
-            ->from('payments')
-            ->where('payer_type', '=', 'App\\Models\\AirmaxClient')
-            ->whereBetween('doi', [$yearAgo, $timeToPay]);
-        });
-        $active = AirmaxClient::where('active', true)->get()->toArray();
-        $disabled = AirmaxClient::where('active', false)->get()->toArray();
-        $overdue = $overdueQuery->get()->toArray();
-        $overdueButActive = $overdueQuery->where('active', true)->get()->toArray();
-        $remind = $remindQuery->where('active', true)->get()->toArray();
-
         return response()->json(
             [
                 'status' => 'success',
-                'statistics' => ['airmax' => compact('overdue', 'active', 'disabled', 'overdueButActive', 'remind')]
+                'statistics' => ['airmax' => [
+                    'overdue' => AirmaxClient::statistics(AirmaxClient::CLIENTS_DEBTORS)->toArray(),
+                    'active' => AirmaxClient::statistics(AirmaxClient::CLIENTS_ACTIVE)->toArray(), 
+                    'disabled' => AirmaxClient::statistics(AirmaxClient::CLIENTS_DISABLED)->toArray(), 
+                    'overdueButActive' => AirmaxClient::statistics(AirmaxClient::CLIENTS_DEBTORS_BUT_ACTIVE)->toArray(),
+                    'remind' => AirmaxClient::statistics(AirmaxClient::CLIENTS_TO_REMIND)->toArray()
+                    ]
+                ]
             ], 200
         );
-        
     }
 }

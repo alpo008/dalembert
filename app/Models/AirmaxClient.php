@@ -8,10 +8,19 @@ use Carbon\Carbon;
 use App\Models\Payment;
 use App\Models\Attachment;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class AirmaxClient extends Model
 {
     use HasFactory;
+
+    const CLIENTS_ALL = 'all';
+    const CLIENTS_ACTIVE = 'active';
+    const CLIENTS_DISABLED = 'disabled';
+    const CLIENTS_DEBTORS = 'overdue';
+    const CLIENTS_DEBTORS_BUT_ACTIVE = 'overdueButActive';
+    const CLIENTS_TO_REMIND = 'remind';
 
     /** 
      * @inheritdoc
@@ -83,5 +92,54 @@ class AirmaxClient extends Model
         return Attribute::make(
             get: fn (string $value) => Carbon::parse($value)->format('d.m.Y')
         );
+    }
+
+    /**
+     * @param string $keyword
+     * 
+     * @return Illuminate\Database\Eloquent\Collection|null
+     * */
+    public static function statistics(string $keyword): ?Collection
+    {
+        $yearAgo = date('Y-m-d', strtotime("-1 year", time()));
+        $timeToPay = date('Y-m-d', strtotime("-350 days", time()));
+        $overdueQuery = AirmaxClient::with('payments')->whereNotIn('id', function(Builder $query) use($yearAgo){
+            $query->select('payer_id')
+            ->from('payments')
+            ->where('payer_type', '=', 'App\\Models\\AirmaxClient')
+            ->where('doi', '>', $yearAgo);
+        })->select('place', 'name', 'phone', 'ip_address', 'active');
+        $remindQuery = AirmaxClient::with('payments')->whereIn('id', function(Builder $query) use($timeToPay, $yearAgo){
+            $query->select('payer_id')
+            ->from('payments')
+            ->where('payer_type', '=', 'App\\Models\\AirmaxClient')
+            ->whereBetween('doi', [$yearAgo, $timeToPay]);
+        })->select('place', 'name', 'phone', 'ip_address', 'active');
+
+        switch ($keyword) {
+            case self::CLIENTS_ALL :
+                return AirmaxClient::select('place', 'name', 'phone', 'ip_address', 'active')
+                    ->get();
+                break;
+            case self::CLIENTS_ACTIVE :
+                return AirmaxClient::where('active', true)->select('place', 'name', 'phone', 'ip_address', 'active')
+                    ->get();
+                break;
+            case self::CLIENTS_DISABLED :
+                return AirmaxClient::where('active', false)->select('place', 'name', 'phone', 'ip_address', 'active')
+                    ->get();
+                break;
+            case self::CLIENTS_DEBTORS :
+                return $overdueQuery->get();
+                break;
+            case self::CLIENTS_DEBTORS_BUT_ACTIVE :
+                return $overdueQuery->where('active', true)->get();
+                break;
+            case self::CLIENTS_TO_REMIND :
+                return $remindQuery->where('active', true)->get();
+                break;
+            default:
+            return null;
+        }
     }
 }
