@@ -92,7 +92,7 @@
   </Transition>
   <v-table
     fixed-header
-    style="height:90%;margin-top: 30px;"
+    style="height:90%;width:90%;margin-top: 30px;"
     class="table-condensed"
   >
     <thead>
@@ -114,6 +114,15 @@
         :key="client.wlan_mac"
       >
         <td>
+<!--           <v-btn 
+            density="compact" :to="'/airmax/'+client.place" 
+            :prepend-icon="client.active? 'mdi-check-circle' : 'mdi-close-circle'"
+          >
+          <template v-slot:prepend>
+            <v-icon :color="client.active? 'success' : 'error'"></v-icon>
+          </template>
+            {{ client.place }}
+          </v-btn> -->
           <v-chip variant="elevated" :to="'/airmax/'+client.place" :color="client.active? 'success' : 'warning'">
             {{ client.place }}
           </v-chip>

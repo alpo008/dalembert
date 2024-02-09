@@ -23,14 +23,14 @@
       <v-window v-model="tab">
         <v-window-item value="settings">
           <v-system-bar color="transparent"
-            v-if="editable"
+              v-if="editable&&$auth.check('super')"
             style="height:50px;width:auto;top:160px;right:20px;left:auto;padding: 0 2%;justify-content:center;"
             class="rounded"
             elevation="10"
           >
             <v-btn
               icon="mdi-delete-alert-outline"
-              v-if="editable"
+              v-if="editable&&$auth.check('super')"
               @click="deleteClient"
               style="margin: 0 3%;"
               :title="$t('Delete')"
@@ -38,7 +38,7 @@
             </v-btn>
             <v-btn
               icon="mdi-content-save"
-              v-if="editable"
+              v-if="editable&&$auth.check('super')"
               @click="save"
               style="margin: 0 3%;"
               :title="$t('Save')"

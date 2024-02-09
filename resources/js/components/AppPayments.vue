@@ -43,7 +43,14 @@
         	<v-btn density="compact" class="px-1" icon="mdi-eye-outline" @click="viewMedia(payment)" v-if="hasMedia(payment)"></v-btn>
         </td>
         <td class="pa-1">
-        	<v-btn density="compact" class="px-1" icon="mdi-delete-forever-outline" @click="deletePayment(payment)"></v-btn>
+        	<v-btn 
+        		density="compact" 
+        		class="px-1" 
+        		icon="mdi-delete-forever-outline" 
+        		@click="deletePayment(payment)"
+						v-if="$auth.check('super')"       		
+      		>      			
+      		</v-btn>
         </td>
       </tr>
     </tbody>
