@@ -49,7 +49,7 @@
         		icon="mdi-delete-forever-outline" 
         		@click="deleteAttachment(attachment)"
         		:title="$t('Delete')" 
-        		v-if="$auth.check('super')"
+
       		>
       		</v-btn>
         </td>

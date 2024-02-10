@@ -15,9 +15,9 @@ class AttachmentPolicy
     /**
      * Perform pre-authorization checks.
      */
-    public function before(User $user, string $ability): Response
+    public function before(User $user, string $ability): bool|null
     {
-        return $user->isAdministrator() ? Response::allow() : Response::deny(__('Log in required'));
+        return $user->isSuperadministrator() ? true : null;
     }
 
     /**
@@ -28,7 +28,8 @@ class AttachmentPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->isAdministrator() ? Response::allow() : Response::denyAsNotFound();
+
     }
 
     /**
@@ -38,9 +39,9 @@ class AttachmentPolicy
      * @param  \App\Models\Attachment  $attachment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Attachment $attachment)
+    public function view(User $user/*, Attachment $attachment*/)
     {
-        //
+        return $user->isAdministrator() ? Response::allow() : Response::denyWithStatus(403);
     }
 
     /**
@@ -51,7 +52,7 @@ class AttachmentPolicy
      */
     public function create(User $user)
     {
-        //
+        return Response::denyWithStatus(403);
     }
 
     /**
@@ -61,9 +62,9 @@ class AttachmentPolicy
      * @param  \App\Models\Attachment  $attachment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Attachment $attachment)
+    public function update(User $user/*, Attachment $attachment*/)
     {
-        //
+        return Response::denyWithStatus(403);
     }
 
     /**
@@ -73,9 +74,9 @@ class AttachmentPolicy
      * @param  \App\Models\Attachment  $attachment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Attachment $attachment)
+    public function delete(User $user/*, Attachment $attachment*/)
     {
-        //
+        return Response::denyWithStatus(403);
     }
 
     /**
@@ -85,9 +86,9 @@ class AttachmentPolicy
      * @param  \App\Models\Attachment  $attachment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Attachment $attachment)
+    public function restore(User $user/*, Attachment $attachment*/)
     {
-        //
+        return Response::denyAsNotFound();
     }
 
     /**
@@ -97,8 +98,8 @@ class AttachmentPolicy
      * @param  \App\Models\Attachment  $attachment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Attachment $attachment)
+    public function forceDelete(User $user/*, Attachment $attachment*/)
     {
-        //
+        return Response::denyAsNotFound();
     }
 }
