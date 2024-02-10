@@ -52,7 +52,7 @@ class AttachmentPolicy
      */
     public function create(User $user)
     {
-        return Response::denyWithStatus(403);
+        return $user->isAdministrator() ? Response::allow() : Response::denyWithStatus(403);
     }
 
     /**
@@ -74,9 +74,14 @@ class AttachmentPolicy
      * @param  \App\Models\Attachment  $attachment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user/*, Attachment $attachment*/)
+    public function delete(User $user, Attachment $attachment)
     {
-        return Response::denyWithStatus(403);
+        if((($user->id === $attachment->media?->uploaded_by) && $user->isAdministrator())
+             || $user->isSuperadministrator()) {
+            return Response::allow();
+        } else {
+            return Response::denyWithStatus(403);
+        }
     }
 
     /**
@@ -86,9 +91,14 @@ class AttachmentPolicy
      * @param  \App\Models\Attachment  $attachment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user/*, Attachment $attachment*/)
+    public function restore(User $user, Attachment $attachment)
     {
-        return Response::denyAsNotFound();
+        if((($user->id === $attachment->media?->uploaded_by) && $user->isAdministrator())
+             || $user->isSuperadministrator()) {
+            return Response::allow();
+        } else {
+            return Response::denyWithStatus(403);
+        }
     }
 
     /**
@@ -98,8 +108,13 @@ class AttachmentPolicy
      * @param  \App\Models\Attachment  $attachment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user/*, Attachment $attachment*/)
+    public function forceDelete(User $user, Attachment $attachment)
     {
-        return Response::denyAsNotFound();
+        if((($user->id === $attachment->media?->uploaded_by) && $user->isAdministrator())
+             || $user->isSuperadministrator()) {
+            return Response::allow();
+        } else {
+            return Response::denyWithStatus(403);
+        }
     }
 }
