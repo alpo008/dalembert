@@ -92,8 +92,17 @@ class User extends Authenticatable implements JWTSubject
      *
      * @return bool
      */
-    public function isAdministrator() :bool
+    public function isAdministrator(): bool
     {
         return in_array($this->role, ['super', 'admin']);
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    public function isSuperadministrator(): bool
+    {
+        return $this->role === 'super';
     }
 }

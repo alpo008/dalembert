@@ -12,15 +12,10 @@
           :items-per-page-text="$t('Items per page')"
         >
         <template v-slot:item.place="{ item }">
-          <v-btn 
-            density="compact" :to="'/airmax/'+ getAirmaxClient(item, 'place')" 
-            :prepend-icon="getAirmaxClient(item, 'active')? 'mdi-check-circle' : 'mdi-close-circle'"
-          >
-          <template v-slot:prepend>
-            <v-icon :color="getAirmaxClient(item, 'active')? 'success' : 'error'"></v-icon>
-          </template>
+          <v-chip variant="elevated" :to="'/airmax/'+ getAirmaxClient(item, 'place')"
+           :color="getAirmaxClient(item, 'active') ? 'success' : 'warning'">
             {{ getAirmaxClient(item, 'place') }}
-          </v-btn>
+          </v-chip>
         </template>
         </v-data-table>
       </v-expansion-panel-text>
@@ -36,15 +31,10 @@
           :items-per-page-text="$t('Items per page')"
         >
         <template v-slot:item.place="{ item }">
-          <v-btn 
-            density="compact" :to="'/airmax/'+ getAirmaxClient(item, 'place')" 
-            :prepend-icon="getAirmaxClient(item, 'active')? 'mdi-check-circle' : 'mdi-close-circle'"
-          >
-          <template v-slot:prepend>
-            <v-icon :color="getAirmaxClient(item, 'active')? 'success' : 'error'"></v-icon>
-          </template>
+          <v-chip variant="elevated" :to="'/airmax/'+ getAirmaxClient(item, 'place')"
+           :color="getAirmaxClient(item, 'active') ? 'success' : 'warning'">
             {{ getAirmaxClient(item, 'place') }}
-          </v-btn>
+          </v-chip>
         </template>
         </v-data-table>
       </v-expansion-panel-text>
@@ -60,15 +50,10 @@
           :items-per-page-text="$t('Items per page')"
         >
         <template v-slot:item.place="{ item }">
-          <v-btn 
-            density="compact" :to="'/airmax/'+ getAirmaxClient(item, 'place')" 
-            :prepend-icon="getAirmaxClient(item, 'active')? 'mdi-check-circle' : 'mdi-close-circle'"
-          >
-          <template v-slot:prepend>
-            <v-icon :color="getAirmaxClient(item, 'active')? 'success' : 'error'"></v-icon>
-          </template>
+          <v-chip variant="elevated" :to="'/airmax/'+ getAirmaxClient(item, 'place')"
+           :color="getAirmaxClient(item, 'active') ? 'success' : 'warning'">
             {{ getAirmaxClient(item, 'place') }}
-          </v-btn>
+          </v-chip>
         </template>
         </v-data-table>
       </v-expansion-panel-text>
@@ -84,15 +69,10 @@
           :items-per-page-text="$t('Items per page')"
         >
         <template v-slot:item.place="{ item }">
-          <v-btn 
-            density="compact" :to="'/airmax/'+ getAirmaxClient(item, 'place')" 
-            :prepend-icon="getAirmaxClient(item, 'active')? 'mdi-check-circle' : 'mdi-close-circle'"
-          >
-          <template v-slot:prepend>
-            <v-icon :color="getAirmaxClient(item, 'active')? 'success' : 'error'"></v-icon>
-          </template>
+          <v-chip variant="elevated" :to="'/airmax/'+ getAirmaxClient(item, 'place')"
+           :color="getAirmaxClient(item, 'active') ? 'success' : 'warning'">
             {{ getAirmaxClient(item, 'place') }}
-          </v-btn>
+          </v-chip>
         </template>
         </v-data-table>
       </v-expansion-panel-text>

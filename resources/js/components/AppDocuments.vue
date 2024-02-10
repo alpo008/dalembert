@@ -9,6 +9,7 @@
 			@click="addDocument"
 			style="margin: 0 1%;"
 			:title="$t('Add document')"
+			v-if="$auth.check(['admin', 'user'])"
 			>
 		</v-btn>
 	</v-system-bar>
@@ -49,6 +50,7 @@
         		icon="mdi-delete-forever-outline" 
         		@click="deleteAttachment(attachment)"
         		:title="$t('Delete')" 
+        		v-if="canDelete(attachment)"
       		>
       		</v-btn>
         </td>
@@ -174,6 +176,11 @@
 		  		this.allAttachments = this.$store.getters.allAttachments;
 	  		}
       },
+      canDelete(attachment) {
+      	let id = this.userId;
+      	console.log(attachment.media?.uploaded_by)
+      	return ((id === attachment.media?.uploaded_by) || this.$auth.check('super'));
+      },
       deleteAttachment(attachment) {
         if (!isNaN(attachment.id)) {
           this.$refs.confirm_del.open(this.$t('Deletion'), 
@@ -215,6 +222,10 @@
 		computed: {
 			hasAttachments() {
 				return !isEmpty(this.allAttachments);
+			},
+			userId() {
+				let user = this.$auth.user();
+				return user?.id;
 			}
 		},
 	  watch: {
