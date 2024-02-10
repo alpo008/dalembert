@@ -14,9 +14,9 @@ class PaymentPolicy
     /**
      * Perform pre-authorization checks.
      */
-    public function before(User $user, string $ability): Response
+    public function before(User $user, string $ability): bool|null
     {
-        return $user->isAdministrator() ? Response::allow() : Response::deny(__('Log in required'));
+        return $user->isSuperadministrator() ? true : null;
     }
 
     /**
@@ -27,7 +27,7 @@ class PaymentPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->isAdministrator() ? Response::allow() : Response::denyAsNotFound();
     }
 
     /**
@@ -37,9 +37,9 @@ class PaymentPolicy
      * @param  \App\Models\Payment  $payment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Payment $payment)
+    public function view(User $user/*, Payment $payment*/)
     {
-        //
+        return $user->isAdministrator() ? Response::allow() : Response::denyWithStatus(403);
     }
 
     /**
@@ -50,7 +50,7 @@ class PaymentPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->isAdministrator() ? Response::allow() : Response::denyWithStatus(403);
     }
 
     /**
@@ -62,7 +62,11 @@ class PaymentPolicy
      */
     public function update(User $user, Payment $payment)
     {
-        //
+        if(($user->id === $payment->created_by) || $user->isSuperadministrator()) {
+            Response::allow();
+        } else {
+            return Response::denyWithStatus(403);
+        }
     }
 
     /**
@@ -74,7 +78,12 @@ class PaymentPolicy
      */
     public function delete(User $user, Payment $payment)
     {
-        //
+        if((($user->id === $payment->created_by) && $user->isAdministrator())
+             || $user->isSuperadministrator()) {
+            return Response::allow();
+        } else {
+            return Response::denyWithStatus(403);
+        }
     }
 
     /**
@@ -86,7 +95,12 @@ class PaymentPolicy
      */
     public function restore(User $user, Payment $payment)
     {
-        //
+        if((($user->id === $payment->created_by) && $user->isAdministrator())
+             || $user->isSuperadministrator()) {
+            return Response::allow();
+        } else {
+            return Response::denyWithStatus(403);
+        }
     }
 
     /**
@@ -98,6 +112,11 @@ class PaymentPolicy
      */
     public function forceDelete(User $user, Payment $payment)
     {
-        //
+        if((($user->id === $payment->created_by) && $user->isAdministrator())
+             || $user->isSuperadministrator()) {
+            return Response::allow();
+        } else {
+            return Response::denyWithStatus(403);
+        }
     }
 }

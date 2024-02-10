@@ -9,6 +9,7 @@
 			@click="addDocument"
 			style="margin: 0 1%;"
 			:title="$t('Add document')"
+			v-if="$auth.check(['admin', 'user'])"
 			>
 		</v-btn>
 	</v-system-bar>
@@ -49,7 +50,7 @@
         		icon="mdi-delete-forever-outline" 
         		@click="deleteAttachment(attachment)"
         		:title="$t('Delete')" 
-
+        		v-if="$auth.check('super')"
       		>
       		</v-btn>
         </td>

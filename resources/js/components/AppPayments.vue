@@ -9,6 +9,7 @@
 			@click="addPayment"
 			style="margin: 0 1%;"
 			:title="$t('Add payment')"
+			v-if="$auth.check(['admin', 'user'])"
 		>
 		</v-btn>
 	</v-system-bar>
@@ -48,7 +49,7 @@
         		class="px-1" 
         		icon="mdi-delete-forever-outline" 
         		@click="deletePayment(payment)"
-						v-if="$auth.check('super')"       		
+						v-if="canDelete(payment)"       		
       		>      			
       		</v-btn>
         </td>
@@ -165,6 +166,10 @@
 		  		this.allPayments = this.$store.getters.allPayments;
 	  		}
       },
+      canDelete(payment) {
+      	let id = this.userId;
+      	return ((id === payment.created_by) || this.$auth.check('super'));
+      },
       deletePayment(payment) {
         if (!isNaN(payment.id)) {
           this.$refs.confirm_del.open(this.$t('Deletion'), 
@@ -204,6 +209,10 @@
       }
 		},
 		computed: {
+			userId() {
+				let user = this.$auth.user();
+				return user?.id;
+			}
 		},
 	  watch: {
 		  "$store.state.payment.current"() {
