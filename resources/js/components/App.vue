@@ -52,6 +52,7 @@
               variant="text" 
               :icon="userIcon"
               v-bind="props"
+              :title="userName"
             >
             </v-btn>
           </template>
@@ -187,6 +188,10 @@
           result = 'mdi-account-check';
         }
         return result;
+      },
+      userName() {
+        let user = this.$auth.user();
+        return user?.name;
       }
     },
     watch: {
