@@ -19,12 +19,8 @@ class WorkSeeder extends Seeder
         $jsonString = file_get_contents($filePath);
         $works = json_decode($jsonString, true);
         foreach($works as $work) {
-            $newWork = new Work($work);
-            try {               
-                $newWork->save(); 
-            } catch (Exception $e) {
-                echo 'Caught exception: ',  $e->getMessage(), "\n";  
-            }
+            $newWork = new Work($work);            
+            $newWork->save(); 
         }
     }
 }

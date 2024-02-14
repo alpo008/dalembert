@@ -14,9 +14,9 @@ class AirmaxClientPolicy
     /**
      * Perform pre-authorization checks.
      */
-    public function before(User $user, string $ability): Response
+    public function before(User $user, string $ability): bool|null
     {
-        return $user->isAdministrator() ? Response::allow() : Response::deny(__('Log in required'));
+        return $user->isSuperadministrator() ? true : null;
     }
 
     /**
@@ -27,7 +27,7 @@ class AirmaxClientPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->isAdministrator() ? Response::allow() : Response::denyAsNotFound();
     }
 
     /**
@@ -37,9 +37,9 @@ class AirmaxClientPolicy
      * @param  \App\Models\AirmaxClient  $airmaxClient
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, AirmaxClient $airmaxClient)
+    public function view(User $user/*, AirmaxClient $airmaxClient*/)
     {
-        //
+        return $user->isAdministrator() ? Response::allow() : Response::denyWithStatus(403);
     }
 
     /**
@@ -50,7 +50,7 @@ class AirmaxClientPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->isSuperdministrator() ? Response::allow() : Response::deny();
     }
 
     /**
@@ -60,9 +60,9 @@ class AirmaxClientPolicy
      * @param  \App\Models\AirmaxClient  $airmaxClient
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, AirmaxClient $airmaxClient)
+    public function update(User $user/*, AirmaxClient $airmaxClient*/)
     {
-        //
+        return $user->isSuperdministrator() ? Response::allow() : Response::deny();
     }
 
     /**
@@ -72,9 +72,9 @@ class AirmaxClientPolicy
      * @param  \App\Models\AirmaxClient  $airmaxClient
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, AirmaxClient $airmaxClient)
+    public function delete(User $user/*, AirmaxClient $airmaxClient*/)
     {
-        //
+        return $user->isSuperdministrator() ? Response::allow() : Response::deny();
     }
 
     /**
@@ -86,7 +86,7 @@ class AirmaxClientPolicy
      */
     public function restore(User $user, AirmaxClient $airmaxClient)
     {
-        //
+        return $user->isSuperdministrator() ? Response::allow() : Response::deny();
     }
 
     /**
@@ -98,6 +98,6 @@ class AirmaxClientPolicy
      */
     public function forceDelete(User $user, AirmaxClient $airmaxClient)
     {
-        //
+        return $user->isSuperdministrator() ? Response::allow() : Response::deny();
     }
 }
