@@ -178,7 +178,6 @@
       },
       canDelete(attachment) {
       	let id = this.userId;
-      	console.log(attachment.media?.uploaded_by)
       	return ((id === attachment.media?.uploaded_by) || this.$auth.check('super'));
       },
       deleteAttachment(attachment) {
