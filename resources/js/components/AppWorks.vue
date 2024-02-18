@@ -21,11 +21,42 @@
         </template>
     </v-data-table>
 
+    <v-dialog
+      v-model="modal"
+      width="auto"
+    >
+      <v-card
+        elevation="4"
+        rounded
+      >
+        <v-toolbar
+          dark
+          prominent
+        >
+          <v-toolbar-title>{{ $t('Work') }}</v-toolbar-title>
+
+          <v-spacer></v-spacer>
+
+          <v-btn icon @click="modal = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-card-text>
+          <app-works-form :work="currentWork"/>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
 </template>
 <script>
+  import AppWorksForm from './AppWorksForm';
   export default {
+    components: {
+      AppWorksForm
+    },
     data: function () {
       return {
+        modal: false,
         tableHeaders: [
           {
             title: this.$t('Work title'),
@@ -47,7 +78,8 @@
             align: 'center',
             key: 'action'
           }
-        ]
+        ],
+        currentWork: {}
       }
     },
     async created() {
@@ -60,7 +92,8 @@
     },
     methods: {
       editWork(dataTableItem) {
-        console.log(dataTableItem.raw)
+        this.currentWork = dataTableItem.raw;
+        this.modal = true;
       },
       deleteWork(dataTableItem) {
         console.log(dataTableItem.raw)
