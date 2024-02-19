@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Work;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateWorkRequest;
 
 class WorkController extends Controller
 {
@@ -69,13 +70,20 @@ class WorkController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Http\Requests\UpdateWorkRequest  $request
      * @param  \App\Models\Work  $work
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Work $work)
+    public function update(UpdateWorkRequest $request, Work $work)
     {
-        //
+        $this->authorize('update', $work);
+        $result = Work::whereId($request->id)->update($request->all());
+        return response()->json(
+            [
+                'status' => 'success',
+                'current' => Work::find($request->id)
+            ], 200
+        );
     }
 
     /**

@@ -60,12 +60,14 @@ export default {
   },
   methods: {
     async submit() {
-/*      await this.$store.dispatch('httpRequest', {
-        url: '/attachments',
-        method: 'POST',
-        data: formData,
-        mutation: 'setCurrentDocument'
-      });*/
+      let method = !!this.workData.id ? 'PUT' : 'POST';
+      let url = !!this.workData.id ? '/works/' + this.workData.id : '/works';
+      await this.$store.dispatch('httpRequest', {
+        url: url,
+        method: method,
+        data: this.workData,
+        mutation: 'setCurrentWork'
+      });
       this.errors = this.$store.getters.httpErrors;
     }
   },
@@ -86,6 +88,9 @@ export default {
         result.push({title, value});
       });
       return result;
+    },
+    rootCategories() {
+      
     }
   }
 }

@@ -16,7 +16,7 @@ class WorkPolicy
      */
     public function before(User $user, string $ability): Response
     {
-        return $user->isSuperadministrator() ? Response::allow() : Response::denyAsNotFound();
+        return $user->isSuperadministrator() ? Response::allow() : Response::deny();
     }
 
     /**

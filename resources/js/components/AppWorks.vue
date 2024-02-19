@@ -23,7 +23,7 @@
 
     <v-dialog
       v-model="modal"
-      width="auto"
+      width="80vw"
     >
       <v-card
         elevation="4"
