@@ -124,12 +124,6 @@ export default {
 				},
               mutation: 'setWeather'
             });
-/*			let response = await axios.post('/home', {
-				'lat': currentPosition.coords.latitude, 
-				'lng': currentPosition.coords.longitude,
-				'timezone': timeZone 
-			});
-			context.commit('setWeather', response.data.weather);*/
 		},
 		async getCoords() {
 			return new Promise((resolve, reject) => {

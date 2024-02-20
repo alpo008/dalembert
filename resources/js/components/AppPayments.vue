@@ -9,7 +9,7 @@
 			@click="addPayment"
 			style="margin: 0 1%;"
 			:title="$t('Add payment')"
-			v-if="$auth.check(['admin', 'user'])"
+			v-if="$auth.check(['admin', 'super'])"
 		>
 		</v-btn>
 	</v-system-bar>

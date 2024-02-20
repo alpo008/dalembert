@@ -9,7 +9,7 @@
 			@click="addDocument"
 			style="margin: 0 1%;"
 			:title="$t('Add document')"
-			v-if="$auth.check(['admin', 'user'])"
+			v-if="$auth.check(['admin', 'super'])"
 			>
 		</v-btn>
 	</v-system-bar>
@@ -178,7 +178,6 @@
       },
       canDelete(attachment) {
       	let id = this.userId;
-      	console.log(attachment.media?.uploaded_by)
       	return ((id === attachment.media?.uploaded_by) || this.$auth.check('super'));
       },
       deleteAttachment(attachment) {

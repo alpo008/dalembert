@@ -83,7 +83,7 @@
       >
         <v-list>
           <v-list-item
-            v-for="item of items"
+            v-for="item of allowedMenuItems"
             :key="item.title"
             :to="item.url"
             @click.prevent=""
@@ -119,24 +119,20 @@
         showWeather: false,
         searchBar: false,
         overlay: false,
-        items: [
-          {
-            title: this.$t('Home'),
-            url: '/',
-          },
-          {
-            title: this.$t('Airmax clients'),
-            url: '/airmax',
-          },
-          {
-            title: this.$t('Statistics'),
-            url: '/statistics',
-          }
-        ],
-        time: ''
+        menuItems: []
       }
     },
     mounted() {
+      const routes = this.$router.getRoutes();
+      routes.forEach(route => {
+        if(route?.meta?.menuItem){
+          this.menuItems.push({
+            title: this.$t(route.name),
+            url: route.path,
+            roles: route?.meta?.auth?.roles ?? 'any'
+          });
+        }
+      });
       this.showWeather = false;
       this.$store.dispatch('updateWeather').then(
         () => {
@@ -192,6 +188,11 @@
       userName() {
         let user = this.$auth.user();
         return user?.name;
+      },
+      allowedMenuItems() {
+        return this.menuItems.filter(item => {
+          return item?.roles === 'any' || this.$auth.check(item?.roles);
+        });
       }
     },
     watch: {

@@ -336,7 +336,7 @@
         window.open(url, '_system').focus();
       },
       swapEditionMode() {
-        this.editable = !this.editable;
+        this.editable = !this.editable&this.$auth.check('super');
       },
       save() {
         let url, method, id;

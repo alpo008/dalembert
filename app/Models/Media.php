@@ -28,6 +28,7 @@ class Media extends Model
     {
         $this->file = $file;
     }
+    
     /**
      * The attributes that are mass assignable.
      *

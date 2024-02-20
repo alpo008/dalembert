@@ -8,51 +8,70 @@ import AppDiagrams from './components/AppDiagrams.vue';
 import AppAirmax from './components/AppAirmax.vue';
 import AppAirmaxClient from './components/AppAirmaxClient.vue';
 import AppStatistics from './components/AppStatistics.vue';
+import AppWorks from './components/AppWorks.vue';
 
 export default VueRouter.createRouter({
     routes: [
         {
             path: '/',
-            name: 'home',
+            name: 'Home',
             component: AppHome,
+            meta: {
+                searchBar: false,
+                menuItem: true
+            }
         },
         {
             path: '/login',
             name: 'login',
             component: AppLogin,
+            meta: {
+                searchBar: false,
+                menuItem: false
+            }
         },
         {
             path: '/diagrams/:id(\\d+)',
-            name: 'Diagram page',
+            name: 'Diagram',
             component: AppDiagram,
+            meta: {
+                searchBar: false,
+                menuItem: false
+            }
         },
         {
             path: '/diagrams',
-            name: 'Diagrams page',
+            name: 'Diagrams',
             component: AppDiagrams,
+            meta: {
+                searchBar: false,
+                menuItem: false
+            }
         },
         {
             path: '/airmax',
-            name: 'Airmax clients page',
+            name: 'Airmax clients',
             component: AppAirmax,
             meta: {
                 auth: {
                     roles: ['super', 'admin'],
                     redirect: '/'
                 },
-                searchBar: true
+                searchBar: true,
+                menuItem: true
             }
         },
         {
             path: '/statistics',
-            name: 'General statistics page',
+            name: 'Statistics',
             component: AppStatistics,
             meta: {
                 auth: {
                     roles: ['super', 'admin'],
                     redirect: '/'
                 },
-                searchBar: true
+                searchBar: true,
+                menuItem: true
             }
         },
         {
@@ -60,12 +79,27 @@ export default VueRouter.createRouter({
             name: 'Airmax client page',
             component: AppAirmaxClient,
             meta: {
-                    auth: {
+                auth: {
                     roles: ['super', 'admin'],
                     redirect: '/'
-                }
+                },
+                searchBar: false,
+                menuItem: false
             }
-        }
+        },
+        {
+            path: '/works',
+            name: 'Price list',
+            component: AppWorks,
+            meta: {
+                auth: {
+                    roles: ['super'],
+                    redirect: '/'
+                },
+                searchBar: true,
+                menuItem: true
+            }
+        },
     ],
     scrollBehavior(to, from, savedPosition) {
         return { top: 0 };
