@@ -1,9 +1,18 @@
 <template>  
   <v-select
+    :label="$t('Specialization')"
+    v-model="specialization"
+    :items="specializations"
+    :error-messages="errors.specialization"
+    @update:modelValue="checkCategory"
+  >    
+  </v-select>
+  <v-select
     :label="$t('Category')"
     v-model="workData.category"
     :error-messages="errors.category"
     :items="categories"
+    @update:modelValue="checkCategory"
   >    
   </v-select>
   <v-text-field 
@@ -51,12 +60,15 @@ export default {
         category: 'generic',
         comments: ''
       },
-      rootCategory: 'electrics',
+      specialization: 'electrics',
       errors: {}
     }
   },
   mounted() {
     this.workData = this.work;
+    if (this.workData.category === 'generic') {
+      this.workData.category = this.specialization + '.' + this.workData.category;
+    }
   },
   methods: {
     async submit() {
@@ -69,6 +81,12 @@ export default {
         mutation: 'setCurrentWork'
       });
       this.errors = this.$store.getters.httpErrors;
+    },
+    checkCategory() {
+      this.errors.specialization = [];
+      if(this.workData.category.indexOf(this.specialization) === -1) {
+        this.errors.specialization = [this.$t('Specialization does not match')]
+      }
     }
   },
   computed: {
@@ -80,17 +98,25 @@ export default {
     categories() {
       const workCategories = `${process.env.MIX_WORK_CATEGORIES}`;
       let cats = JSON.parse(workCategories);
-      let subCats = cats.filter(cat => cat.indexOf(this.rootCategory) !== -1);
+      let subCats = cats.filter(cat => cat.indexOf(this.specialization) !== -1);
       const result = [];
       subCats.forEach(el => {
         let value = el;
-        let title = this.$t(el.replace(this.rootCategory + '.', ''));
+        let title = this.$t(el.replace(this.specialization + '.', ''));
         result.push({title, value});
       });
       return result;
     },
-    rootCategories() {
-      
+    specializations() {
+      const workSpecializations = `${process.env.MIX_WORK_SPECIALIZATIONS}`;
+      let specs = JSON.parse(workSpecializations);
+      const result = [];
+      specs.forEach(el => {
+        let value = el;
+        let title = this.$t(el);
+        result.push({title, value});
+      });
+      return result;    
     }
   }
 }

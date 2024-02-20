@@ -1,5 +1,4 @@
 <template>
-
     <v-data-table :headers="tableHeaders" :items="allWorks" item-key="title" class="elevation-1">
         <template v-slot:item.action="{ item }">
           <v-btn
@@ -48,6 +47,7 @@
     </v-dialog>
 
 </template>
+
 <script>
   import AppWorksForm from './AppWorksForm';
   export default {
@@ -106,6 +106,11 @@
         return allWorks.filter(work => {
           return (!!work.title && work.title.toLowerCase().indexOf(searchString) !== -1)
         });
+      }
+    },
+    watch: {
+      "$store.state.works.current"() {
+        this.modal = false;
       }
     }
   }
