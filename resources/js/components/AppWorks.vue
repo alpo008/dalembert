@@ -45,14 +45,17 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <widget-confirm ref="confirm_del"></widget-confirm>
 
 </template>
 
 <script>
   import AppWorksForm from './AppWorksForm';
+  import WidgetConfirm from './widgets/WidgetConfirm.vue';
   export default {
     components: {
-      AppWorksForm
+      AppWorksForm,
+      WidgetConfirm
     },
     data: function () {
       return {
@@ -96,7 +99,19 @@
         this.modal = true;
       },
       deleteWork(dataTableItem) {
-        console.log(dataTableItem.raw)
+        if (!isNaN(dataTableItem.raw.id)) {
+          this.$refs.confirm_del.open(this.$t('Deletion'), 
+            this.$t('Are you sure?'), { color: '#ff0266' }).then((confirm) => {
+            if(confirm) {
+              this.$store.dispatch('httpRequest', {
+                url: '/works/' + dataTableItem.raw.id,
+                method: 'DELETE',
+                data: dataTableItem.raw,
+                mutation: 'afterDeleteWork'
+              });
+            }
+          });
+        }
       }
     },
     computed: {

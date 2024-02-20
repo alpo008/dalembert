@@ -15,7 +15,10 @@ export default {
 				state.current = payload.current;
 				state.all.push(state.current);
 			}		
-		}
+		},
+		afterDeleteWork(state, payload) {
+			state.all = state.all.filter(el => el.id !== payload.deleted);
+		},
 	},
 	actions: {
 		newAction(context, payload) {

@@ -94,6 +94,10 @@ class WorkController extends Controller
      */
     public function destroy(Work $work)
     {
-        //
+        $this->authorize('delete', $work);
+        Work::destroy($work->id);
+        return response()->json(
+            ['status' => 'success', 'deleted' => $work->id ], 200
+        );
     }
 }
