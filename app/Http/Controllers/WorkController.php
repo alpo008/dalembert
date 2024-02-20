@@ -37,12 +37,19 @@ class WorkController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\UpdateWorkRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UpdateWorkRequest $request)
     {
-        //
+        $this->authorize('create', Work::class);
+        $current = Work::create($request->all());
+        return response()->json(
+            [
+                'status' => 'success',
+                'current' => $current
+            ], 200
+        );
     }
 
     /**

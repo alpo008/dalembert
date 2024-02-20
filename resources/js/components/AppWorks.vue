@@ -1,51 +1,65 @@
 <template>
-    <v-data-table :headers="tableHeaders" :items="allWorks" item-key="title" class="elevation-1">
-        <template v-slot:item.action="{ item }">
-          <v-btn
-            icon="mdi-square-edit-outline"
-            @click="editWork(item)"
-            style="margin: 0 1%;"
-            :title="$t('Edit')"
-            v-if="$auth.check('super')"
-          >
-          </v-btn>
-          <v-btn
-            icon="mdi-delete-forever-outline"
-            @click="deleteWork(item)"
-            style="margin: 0 1%;"
-            :title="$t('Delete')"
-            v-if="$auth.check('super')"
-          >
-          </v-btn>
-        </template>
-    </v-data-table>
-
-    <v-dialog
-      v-model="modal"
-      width="80vw"
-    >
-      <v-card
-        elevation="4"
-        rounded
+  <v-system-bar 
+    color="transparent"
+    style="height:50px;width:auto;top:100px;right:0;left:auto;padding: 0 2%;justify-content:center;"
+    class="rounded"
+  >
+    <v-btn
+      icon="mdi-note-plus-outline"
+      @click="addWork"
+      style="margin: 0 1%;"
+      :title="$t('Add work')"
+      v-if="$auth.check('super')"
       >
-        <v-toolbar
-          dark
-          prominent
+    </v-btn>
+  </v-system-bar>
+  <v-data-table :headers="tableHeaders" :items="allWorks" item-key="title" class="elevation-1">
+      <template v-slot:item.action="{ item }">
+        <v-btn
+          icon="mdi-square-edit-outline"
+          @click="editWork(item)"
+          style="margin: 0 1%;"
+          :title="$t('Edit')"
+          v-if="$auth.check('super')"
         >
-          <v-toolbar-title>{{ $t('Work') }}</v-toolbar-title>
+        </v-btn>
+        <v-btn
+          icon="mdi-delete-forever-outline"
+          @click="deleteWork(item)"
+          style="margin: 0 1%;"
+          :title="$t('Delete')"
+          v-if="$auth.check('super')"
+        >
+        </v-btn>
+      </template>
+  </v-data-table>
 
-          <v-spacer></v-spacer>
+  <v-dialog
+    v-model="modal"
+    width="80vw"
+  >
+    <v-card
+      elevation="4"
+      rounded
+    >
+      <v-toolbar
+        dark
+        prominent
+      >
+        <v-toolbar-title>{{ $t('Work') }}</v-toolbar-title>
 
-          <v-btn icon @click="modal = false">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <v-card-text>
-          <app-works-form :work="currentWork"/>
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-    <widget-confirm ref="confirm_del"></widget-confirm>
+        <v-spacer></v-spacer>
+
+        <v-btn icon @click="modal = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-toolbar>
+      <v-card-text>
+        <app-works-form :work="currentWork"/>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+  <widget-confirm ref="confirm_del"></widget-confirm>
 
 </template>
 
@@ -96,6 +110,10 @@
     methods: {
       editWork(dataTableItem) {
         this.currentWork = dataTableItem.raw;
+        this.modal = true;
+      },
+      addWork() {
+        this.currentWork = {};
         this.modal = true;
       },
       deleteWork(dataTableItem) {

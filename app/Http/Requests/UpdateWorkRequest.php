@@ -27,7 +27,7 @@ class UpdateWorkRequest extends FormRequest
         return [
             'title' => 'required|max:255|unique:works,title,' . ($this->id ?? 0), 
             'unit' => 'string|required',
-            'price' => 'decimal:0,2|min:100|max:100000|required', 
+            'price' => 'decimal:0,2|min:10|max:100000|required', 
             'category' => 'string|required',
             'comments' => 'string|nullable'
         ];
