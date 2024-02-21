@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('phone', 30)->nullable($value = true)->unique();
             $table->json('location')->nullable($value = true);
             $table->string('address')->nullable();
+            $table->text('comments')->nullable();
         });
     }
 
