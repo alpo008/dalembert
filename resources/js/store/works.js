@@ -30,5 +30,8 @@ export default {
 		allWorks(state) {
 			return state.all;
 		},
+	    workById: (state) => (id) => {
+	      return state.all.find(work => work.id === id)
+	    }
 	}
 }
