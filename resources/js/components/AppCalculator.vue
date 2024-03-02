@@ -7,6 +7,7 @@
     :title="$t('Toolbar')"
   >
   </v-btn>
+
   <Transition name="slide-fade">
     <v-system-bar 
       color="transparent"
@@ -108,24 +109,35 @@
     v-if="selectedWorks.length"
     :style="dataTableStyle"
   >
-  <tbody>
-    <tr v-for="selectedWork in selectedWorks" :key="selectedWork.id">
-      <td>{{ selectedWork.title }}</td>
-      <td>{{ selectedWork.unit }}</td>
-      <td>{{ selectedWork.price }}</td>
-      <td>
-        <v-text-field 
-          type="number"
-          v-model="selectedWork.qty"
-          style="max-width: 100px;"
-          hide-details
-        >           
-        </v-text-field>
-      </td>
-      <td>{{ selectedWork.qty * selectedWork.price }}</td>
-    </tr>
-  </tbody>
+    <tbody>
+      <tr v-for="selectedWork in selectedWorks" :key="selectedWork.id">
+        <td>{{ selectedWork.title }}</td>
+        <td>{{ selectedWork.unit }}</td>
+        <td>{{ selectedWork.price }}</td>
+        <td>
+          <v-text-field 
+            type="number"
+            v-model="selectedWork.qty"
+            style="max-width: 100px;"
+            hide-details
+          >           
+          </v-text-field>
+        </td>
+        <td>{{ selectedWork.qty * selectedWork.price }}</td>
+      </tr>
+    </tbody>
   </v-table>
+
+  <v-divider v-show="selectedWorks.length"></v-divider>
+  <v-btn 
+    density="compact" 
+    icon="mdi-content-save" 
+    style="margin: 0 12px;"
+    @click="saveCalculation"
+    :title="$t('Save')"
+    v-show="selectedWorks.length"
+  >      
+  </v-btn>
 
 </template>
 
@@ -166,10 +178,9 @@
         newItem.qty = parseInt(this.currentQty);
         this.selectedWorks.push(newItem);
         this.currentQty = 0;
-        console.log(this.selectedWorks);
       },
-      test(i) {
-        console.log(i)
+      saveCalculation() {
+
       }
     },
     computed: {
