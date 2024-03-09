@@ -133,7 +133,7 @@
     density="compact" 
     icon="mdi-content-save" 
     style="margin: 0 12px;"
-    @click="saveCalculation"
+    @click="submitCalculation"
     :title="$t('Save')"
     v-show="selectedWorks.length"
   >      
@@ -179,7 +179,7 @@
         this.selectedWorks.push(newItem);
         this.currentQty = 0;
       },
-      saveCalculation() {
+      submitCalculation() {
 
       }
     },
