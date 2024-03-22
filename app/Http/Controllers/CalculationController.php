@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\CalculationRequest;
 
 class CalculationController extends Controller
 {
@@ -29,12 +30,12 @@ class CalculationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\CalculationRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CalculationRequest $request)
     {
-        //
+        dump($request);
     }
 
     /**

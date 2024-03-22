@@ -139,19 +139,55 @@
   >      
   </v-btn>
 
+  <v-dialog
+    v-model="modal"
+    width="80vw"
+  >
+    <v-card
+      elevation="4"
+      rounded
+    >
+      <v-card-text>
+        <v-text-field 
+          :label="$t('Denotation')"
+          v-model="calculationData.name"
+          :error-messages="errors.name"
+        >
+        </v-text-field>           
+          <v-text-field 
+          type="number"
+          :label="$t('Working days')"
+          v-model="calculationData.days"
+          :error-messages="errors.days"
+        >           
+        </v-text-field>
+        <v-textarea 
+          :label="$t('Comments')"
+          v-model="calculationData.comments"
+          :error-messages="errors.comments"
+        >   
+        </v-textarea>
+        <v-btn @click="submit">{{ $t('Save') }}</v-btn>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
+
 </template>
 
 <script>
   export default {
     data: function () {
       return {
+        calculationData: {},
         selectedWorks: [],
         currentWorkId: null,
         currentWork: {},
         currentQty: 0,
         selectedCategory: 'electrics.cabling',
         specialization: 'electrics',
-        showToolbar: true
+        showToolbar: true,
+        modal: false,
+        errors: {}
       }
     },
     async created() {
@@ -180,7 +216,21 @@
         this.currentQty = 0;
       },
       submitCalculation() {
-
+        this.modal = true;
+      },
+      async submit() {
+        this.calculationData.works = JSON.stringify(this.selectedWorks);
+        this.calculationData.customer_id = 1;
+        this.calculationData.sum = 1;
+        let method = !!this.calculationData.id ? 'PUT' : 'POST';
+        let url = !!this.calculationData.id ? '/calculations/' + this.calculationData.id : '/calculations';
+        await this.$store.dispatch('httpRequest', {
+          url: url,
+          method: method,
+          data: this.calculationData,
+          mutation: ''
+        });
+      this.errors = this.$store.getters.httpErrors;
       }
     },
     computed: {

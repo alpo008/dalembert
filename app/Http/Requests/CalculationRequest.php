@@ -27,7 +27,7 @@ class CalculationRequest extends FormRequest
         return [
             'name' => 'required|max:255|unique:calculations,name,' . ($this->id ?? 0), 
             'customer_id' => 'integer|required',
-            'sum' => 'decimal:0,2|min:10|max:1000000|required', 
+            //'sum' => 'decimal:0,2|min:10|max:1000000|required', 
             'days' => 'integer|nullable',
             'works' => 'json',
             'comments' => 'string|nullable'

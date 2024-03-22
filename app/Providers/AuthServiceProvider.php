@@ -16,7 +16,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\AirmaxClient' => 'App\Policies\AirmaxClientPolicy',
         'App\Models\Media' => 'App\Policies\MediaPolicy',
         'App\Models\Attachment' => 'App\Policies\AttachmentPolicy',
-        'App\Models\Work' => 'App\Policies\WorkPolicy'
+        'App\Models\Work' => 'App\Policies\WorkPolicy',
         'App\Models\Calculation' => 'App\Policies\CalculationPolicy'
     ];
 

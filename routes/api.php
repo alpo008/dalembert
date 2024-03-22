@@ -32,7 +32,7 @@ Route::apiResource('attachments', AttachmentController::class);
 Route::post('upload', App\Http\Controllers\UploadController::class)->name('upload');
 Route::apiResource('payments', PaymentController::class);
 Route::apiResource('works', WorkController::class);
-Route::apiResource('works', CalculationController::class);
+Route::apiResource('calculations', CalculationController::class);
 
 Route::get('attachments/{obj}/{id}', 'App\Http\Controllers\AttachmentController@show');
 Route::post('attachments/download', 'App\Http\Controllers\AttachmentController@download');
