@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\CalculationRequest;
-use App\Models\Calculation;
+use App\Http\Requests\CustomerRequest;
+use App\Models\Customer;
 
-class CalculationController extends Controller
+class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +15,12 @@ class CalculationController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', Calculation::class);
-        $allCalculations = Calculation::all()->toArray();
+        $this->authorize('viewAny', Customer::class);
+        $allCustomers = Customer::all()->toArray();
         return response()->json(
             [
                 'status' => 'success',
-                'calculations' => $allCalculations
+                'customers' => $allCustomers
             ], 200
         );
     }
@@ -38,19 +38,12 @@ class CalculationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\CalculationRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CalculationRequest $request)
+    public function store(Request $request)
     {
-        $this->authorize('create', Calculation::class);
-        $current = Calculation::create($request->all());
-        return response()->json(
-            [
-                'status' => 'success',
-                'current' => Calculation::find($current->id)
-            ], 200
-        );
+        //
     }
 
     /**

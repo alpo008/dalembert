@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
+use App\Models\Customer;
 use App\Models\User;
-use App\Models\Calculation;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-class CalculationPolicy
+class CustomerPolicy
 {
     use HandlesAuthorization;
 
@@ -34,10 +34,10 @@ class CalculationPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Calculation  $calculation
+     * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Calculation $calculation)
+    public function view(User $user, Customer $customer)
     {
         //
     }
@@ -57,10 +57,10 @@ class CalculationPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Calculation  $calculation
+     * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Calculation $calculation)
+    public function update(User $user, Customer $customer)
     {
         //
     }
@@ -69,10 +69,10 @@ class CalculationPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Calculation  $calculation
+     * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Calculation $calculation)
+    public function delete(User $user, Customer $customer)
     {
         //
     }
@@ -81,10 +81,10 @@ class CalculationPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Calculation  $calculation
+     * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Calculation $calculation)
+    public function restore(User $user, Customer $customer)
     {
         //
     }
@@ -93,10 +93,10 @@ class CalculationPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Calculation  $calculation
+     * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Calculation $calculation)
+    public function forceDelete(User $user, Customer $customer)
     {
         //
     }

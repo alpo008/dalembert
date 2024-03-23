@@ -197,6 +197,18 @@
         data: null,
         mutation: 'setWorks'
       });
+      await this.$store.dispatch('httpRequest', {
+        url: '/calculations',
+        method: 'GET',
+        data: null,
+        mutation: ''
+      });
+      await this.$store.dispatch('httpRequest', {
+        url: '/customers',
+        method: 'GET',
+        data: null,
+        mutation: ''
+      });
       this.currentWork = this.allWorks[0];
       this.currentWorkId = this.currentWork.id;
     },

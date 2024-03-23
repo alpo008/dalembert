@@ -9,6 +9,7 @@ use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\CalculationController;
+use App\Http\Controllers\CustomerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,7 @@ Route::apiResource('attachments', AttachmentController::class);
 Route::post('upload', App\Http\Controllers\UploadController::class)->name('upload');
 Route::apiResource('payments', PaymentController::class);
 Route::apiResource('works', WorkController::class);
+Route::apiResource('customers', CustomerController::class);
 Route::apiResource('calculations', CalculationController::class);
 
 Route::get('attachments/{obj}/{id}', 'App\Http\Controllers\AttachmentController@show');
