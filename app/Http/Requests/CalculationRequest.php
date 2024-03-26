@@ -29,7 +29,7 @@ class CalculationRequest extends FormRequest
             'customer_id' => 'integer|required',
             //'sum' => 'decimal:0,2|min:10|max:1000000|required', 
             'days' => 'integer|nullable',
-            'works' => 'json',
+            'works' => 'array',
             'comments' => 'string|nullable'
         ];
     }

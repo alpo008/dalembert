@@ -12,4 +12,12 @@ class Customer extends Model
     protected $fillable = ['name', 'email', 'phone', 'location', 'address', 'comments'];
 
     public $timestamps = false;
+
+    /**
+     *
+     * @var array
+     */
+    protected $casts = [
+        'location' => 'array'
+    ];
 }

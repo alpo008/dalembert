@@ -6,6 +6,7 @@ import document from './document';
 import payment from './payment';
 import statistics from './statistics';
 import works from './works';
+import customers from './customers';
 import general from './general';
 
 export const store = createStore({
@@ -21,6 +22,7 @@ export const store = createStore({
     payment,
     statistics,
     works,
+    customers,
     general
 	}
 })

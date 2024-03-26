@@ -3,7 +3,7 @@
     density="compact" 
     icon="mdi-menu-open"
     style="position:fixed;top:113px;right:5px;z-index: 10005;opacity: 0.2;"
-    @click="showToolbar=!showToolbar"
+    @click="swapToolbar"
     :title="$t('Toolbar')"
   >
   </v-btn>
@@ -16,7 +16,7 @@
       elevation="10"
       v-show="showToolbar"
     >
-      <v-table style="width: 100%;" theme="dark">
+      <v-table style="width: 100%;" theme="dark" id="formtable">
         <thead>
           <tr>
             <th class="text-left">
@@ -153,8 +153,19 @@
           v-model="calculationData.name"
           :error-messages="errors.name"
         >
-        </v-text-field>           
-          <v-text-field 
+        </v-text-field>
+        <v-autocomplete
+          v-model="calculationData.customer_id"
+          :items="customers"
+          item-title="name"
+          item-value="id"
+          density="compact"
+          :closeOnSelect="true"
+          :menu-props="{ top: true, offsetY: true }"
+          :label="$t('Customer')"
+          clearable
+        ></v-autocomplete>          
+        <v-text-field 
           type="number"
           :label="$t('Working days')"
           v-model="calculationData.days"
@@ -207,7 +218,7 @@
         url: '/customers',
         method: 'GET',
         data: null,
-        mutation: ''
+        mutation: 'setCustomers'
       });
       this.currentWork = this.allWorks[0];
       this.currentWorkId = this.currentWork.id;
@@ -231,9 +242,9 @@
         this.modal = true;
       },
       async submit() {
-        this.calculationData.works = JSON.stringify(this.selectedWorks);
+        this.calculationData.works = this.selectedWorks;
         this.calculationData.customer_id = 1;
-        this.calculationData.sum = 1;
+        this.calculationData.sum = this.calculationSum;
         let method = !!this.calculationData.id ? 'PUT' : 'POST';
         let url = !!this.calculationData.id ? '/calculations/' + this.calculationData.id : '/calculations';
         await this.$store.dispatch('httpRequest', {
@@ -242,7 +253,10 @@
           data: this.calculationData,
           mutation: ''
         });
-      this.errors = this.$store.getters.httpErrors;
+        this.errors = this.$store.getters.httpErrors;
+      },
+      swapToolbar() {
+        this.showToolbar = !this.showToolbar;
       }
     },
     computed: {
@@ -279,9 +293,28 @@
         });
         return result;    
       },
+      customers() {
+        return this.$store.getters.allCustomers;
+      },
+      calculationSum() {
+        let sum = 0;
+        this.selectedWorks.forEach(work => {
+          sum += work.qty * work.price;
+        });
+        return sum;
+      },
       dataTableStyle() {
-        let mt = this.showToolbar ? 'margin-top:210px;' : 'margin-top:0;';
+        let mt = this.showToolbar ? ('margin-top:' + this.tableHeight + 'px;') : 'margin-top:0;';
         return 'transition: margin 700ms;' + mt;
+      },
+      tableHeight() {
+        let formTable = document.getElementById("formtable");
+        let h = formTable?.getBoundingClientRect()?.height;
+        if(this.showToolbar && !!h) {
+          return h;
+        } else {
+          return 237;
+        }
       }
     }
   }

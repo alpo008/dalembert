@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 
 class Calculation extends Model
 {
@@ -14,15 +15,15 @@ class Calculation extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'customer_id', 'sum', 'works', 'days', 'comments'];
+    protected $fillable = ['name', 'customer_id', 'sum', 'works', 'days', 'comments', 'works'];
 
     /**
      *
      * @var array
      */
     protected $casts = [
+        'works' => 'array',
         'created_at' => 'datetime:Y-m-d H:i:s',
-        'updated_at' => 'datetime:Y-m-d H:i:s',
-        'works' => 'array'
+        'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
 }
