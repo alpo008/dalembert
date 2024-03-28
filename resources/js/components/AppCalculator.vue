@@ -8,10 +8,17 @@
   >
   </v-btn>
 
-  <Transition name="slide-fade">
+  <Transition name="bounce">
     <v-system-bar 
       color="transparent"
-      style="padding: 15px 0;justify-content:center;top:187px;backdrop-filter: blur(10px);background-color:transparent;"
+      style="
+        justify-content:center;
+        top:-4px;
+        padding: 0;
+        height: auto;
+        position:relative;
+        backdrop-filter: blur(10px);
+        background-color:transparent;"
       class="rounded"
       elevation="10"
       v-show="showToolbar"
@@ -107,7 +114,6 @@
   <v-table
     elevation="10"
     v-if="selectedWorks.length"
-    :style="dataTableStyle"
   >
     <tbody>
       <tr v-for="selectedWork in selectedWorks" :key="selectedWork.id">
@@ -302,19 +308,6 @@
           sum += work.qty * work.price;
         });
         return sum;
-      },
-      dataTableStyle() {
-        let mt = this.showToolbar ? ('margin-top:' + this.tableHeight + 'px;') : 'margin-top:0;';
-        return 'transition: margin 700ms;' + mt;
-      },
-      tableHeight() {
-        let formTable = document.getElementById("formtable");
-        let h = formTable?.getBoundingClientRect()?.height;
-        if(this.showToolbar && !!h) {
-          return h;
-        } else {
-          return 237;
-        }
       }
     }
   }
@@ -330,7 +323,7 @@
 
   .slide-fade-enter-from,
   .slide-fade-leave-to {
-    transform: translateX(20px);
+    transform: scale(0.1, 0.1);
     opacity: 0;
   }
 .bounce-enter-active {
@@ -344,7 +337,7 @@
     transform: scale(0);
   }
   50% {
-    transform: scale(1.25);
+    transform: scale(0.25);
   }
   100% {
     transform: scale(1);
