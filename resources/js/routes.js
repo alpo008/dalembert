@@ -8,6 +8,7 @@ import AppDiagrams from './components/AppDiagrams.vue';
 import AppAirmax from './components/AppAirmax.vue';
 import AppAirmaxClient from './components/AppAirmaxClient.vue';
 import AppStatistics from './components/AppStatistics.vue';
+import AppCalculator from './components/AppCalculator.vue';
 import AppWorks from './components/AppWorks.vue';
 
 export default VueRouter.createRouter({
@@ -97,6 +98,19 @@ export default VueRouter.createRouter({
                     redirect: '/'
                 },
                 searchBar: true,
+                menuItem: true
+            }
+        },
+        {
+            path: '/calculator',
+            name: 'Price calculator',
+            component: AppCalculator,
+            meta: {
+                auth: {
+                    roles: ['super', 'admin'],
+                    redirect: '/'
+                },
+                searchBar: false,
                 menuItem: true
             }
         },

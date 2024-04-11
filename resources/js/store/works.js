@@ -13,6 +13,7 @@ export default {
 		setCurrentWork(state, payload) {
 			if(typeof(payload.current) === 'object') {
 				state.current = payload.current;
+				state.all = state.all.filter(el => el.id !== payload.current.id);
 				state.all.push(state.current);
 			}		
 		},
@@ -29,5 +30,8 @@ export default {
 		allWorks(state) {
 			return state.all;
 		},
+	    workById: (state) => (id) => {
+	      return state.all.find(work => work.id === id)
+	    }
 	}
 }

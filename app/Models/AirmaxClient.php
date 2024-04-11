@@ -10,6 +10,7 @@ use App\Models\Attachment;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class AirmaxClient extends Model
 {
@@ -109,12 +110,13 @@ class AirmaxClient extends Model
             ->where('payer_type', '=', 'App\\Models\\AirmaxClient')
             ->where('doi', '>', $yearAgo);
         })->select('place', 'name', 'phone', 'ip_address', 'active');
-        $remindQuery = AirmaxClient::with('payments')->whereIn('id', function(Builder $query) use($timeToPay, $yearAgo){
-            $query->select('payer_id')
-            ->from('payments')
-            ->where('payer_type', '=', 'App\\Models\\AirmaxClient')
-            ->whereBetween('doi', [$yearAgo, $timeToPay]);
-        })->select('place', 'name', 'phone', 'ip_address', 'active');
+        $toRemind = DB::table('payments')
+            ->select(DB::raw('payer_id, MAX(doi)  last_paid'))
+            ->havingBetween('last_paid', [$yearAgo, $timeToPay])
+            ->groupBy('payer_id')          
+            ->get()
+            ->toArray();
+        $remindQuery = AirmaxClient::with('payments')->whereIn('id', array_column($toRemind, 'payer_id'))->select('place', 'name', 'phone', 'ip_address', 'active');
 
         switch ($keyword) {
             case self::CLIENTS_ALL :
