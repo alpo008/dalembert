@@ -3,8 +3,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import AppHome from './components/AppHome.vue';
 import AppLogin from './components/AppLogin.vue';
-import AppDiagram from './components/AppDiagram.vue';
-import AppDiagrams from './components/AppDiagrams.vue';
+import AppCustomer from './components/AppCustomer.vue';
+import AppCustomers from './components/AppCustomers.vue';
 import AppAirmax from './components/AppAirmax.vue';
 import AppAirmaxClient from './components/AppAirmaxClient.vue';
 import AppStatistics from './components/AppStatistics.vue';
@@ -32,21 +32,29 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/diagrams/:id(\\d+)',
-            name: 'Diagram',
-            component: AppDiagram,
+            path: '/customers/:id(\\d+)',
+            name: 'Customer',
+            component: AppCustomer,
             meta: {
+                auth: {
+                    roles: ['super'],
+                    redirect: '/'
+                },
                 searchBar: false,
                 menuItem: false
             }
         },
         {
-            path: '/diagrams',
-            name: 'Diagrams',
-            component: AppDiagrams,
+            path: '/customers',
+            name: 'Customers',
+            component: AppCustomers,
             meta: {
-                searchBar: false,
-                menuItem: false
+                auth: {
+                    roles: ['super'],
+                    redirect: '/'
+                },
+                searchBar: true,
+                menuItem: true
             }
         },
         {
