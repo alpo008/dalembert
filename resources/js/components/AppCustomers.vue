@@ -1,6 +1,17 @@
 <template>
-  <h1> Customers page</h1>
-  <v-data-table :headers="tableHeaders" :items="customers" item-key="title" class="elevation-1">
+  <h1> {{ $t('Customers') }}</h1>
+  <v-data-table :headers="tableHeaders" :items="allCustomers" item-key="title" class="elevation-1">
+    <template v-slot:item.name="{ item }">
+      <v-chip variant="elevated" :to="'/customers/'+ getCustomer(item, 'id')"
+        color="success">
+        {{ getCustomer(item, 'name') }}
+      </v-chip>
+    </template>
+    <template v-slot:item.address="{ item }">
+      <div class="text-truncate" style="max-width: 130px;">
+         {{ getCustomer(item, 'address') }}
+      </div>
+    </template>
     <template v-slot:item.action="{ item }">
       <v-btn
         icon="mdi-square-edit-outline"
@@ -36,6 +47,11 @@ export default {
           key: 'name'
         },
         {
+          title: this.$t('Address'),
+          align: 'left',
+          key: 'address'
+        },
+        {
           title: '',
           align: 'center',
           key: 'action'
@@ -50,23 +66,22 @@ export default {
       data: null,
       mutation: 'setCustomers'
     });
-    this.customers = this.$store.getters.allCustomers;
-    console.log(this.customers)
+    this.customers = this.$store.getters.allCustomers
   },
   methods: {
     test(tableItem) {
-      console.log(tableItem.raw)
-    }
+    },
+    getCustomer(value, param) {
+      return value.raw[param];
+    },
   },
   computed: {
     allCustomers() {
       const allCustomers = this.$store.getters.allCustomers;
-      console.log(allCustomers)
       const searchString = this.$store.getters.searchKey.toLowerCase();
-      return allCustomers;
-/*      return allCustomers.filter(customer => {
-        return (!!customer.title && customer.title.toLowerCase().indexOf(searchString) !== -1)
-      });*/
+      return allCustomers.filter(customer => {
+        return (!!customer.name && customer.name.toLowerCase().indexOf(searchString) !== -1)
+      });
     },
     notEmpty() {
       return this.allCustomers.length;
