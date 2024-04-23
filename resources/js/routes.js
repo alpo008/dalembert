@@ -41,7 +41,8 @@ export default VueRouter.createRouter({
                     redirect: '/'
                 },
                 searchBar: false,
-                menuItem: false
+                menuItem: false,
+                showEditorButton: true
             }
         },
         {
@@ -93,7 +94,8 @@ export default VueRouter.createRouter({
                     redirect: '/'
                 },
                 searchBar: false,
-                menuItem: false
+                menuItem: false,
+                showEditorButton: true
             }
         },
         {

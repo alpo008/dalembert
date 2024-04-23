@@ -2,7 +2,8 @@ export default {
 	state : {
 		searchString: '',
 		httpErrors: {},
-		loading: false
+		loading: false,
+		editorMode: false
 	},
 	mutations : {
 		setSearchKey(state, payload) {
@@ -21,6 +22,9 @@ export default {
 		},
 		setHttpLoadingState(state,payload) {
 			state.loading = !!payload;
+		},
+		swapEditorMode(state, payload) {
+			state.editorMode = !state.editorMode;
 		}
 	},
 	actions : {
@@ -84,6 +88,9 @@ export default {
 		},
 		httpErrors(state) {
 			return state.httpErrors;
+		},
+		canEdit(state) {
+			return state.editorMode;
 		}
 	}
 }

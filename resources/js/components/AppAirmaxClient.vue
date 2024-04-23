@@ -398,6 +398,10 @@
         catch (e) { }
         return null;
       }
+    },
+    watch: {
+      "$store.state.general.editorMode"(e) {
+      }
     }
   }
 </script>

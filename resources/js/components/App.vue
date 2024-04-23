@@ -48,6 +48,12 @@
 
         <v-menu location="bottom">
           <template v-slot:activator="{ props }">
+            <v-btn 
+              :icon="editorIcon" 
+              v-if="$auth.check(['super']) & showEditorButton"
+              @click="swapEditor"
+            >              
+            </v-btn>
             <v-btn
               variant="text" 
               :icon="userIcon"
@@ -118,6 +124,7 @@
         searchString: '',
         showWeather: false,
         searchBar: false,
+        showEditorButton: false,
         overlay: false,
         menuItems: []
       }
@@ -160,6 +167,9 @@
             makeRequest: true,
             redirect: {name: 'login'},
         }).catch(e => console.warn(e));
+      },
+      swapEditor() {
+        this.$store.commit('swapEditorMode');
       }
     },
     computed: {
@@ -193,11 +203,18 @@
         return this.menuItems.filter(item => {
           return item?.roles === 'any' || this.$auth.check(item?.roles);
         });
+      },
+      editorIcon() {
+        if (this.$store.getters.canEdit) {
+          return 'mdi-pencil-off';
+        }
+        return 'mdi-pencil';
       }
     },
     watch: {
       $route(to, from) {
         this.searchBar = !!to.meta?.searchBar;
+        this.showEditorButton = !!to.meta?.showEditorButton;
         this.searchString = '';
         this.$store.commit('setSearchKey', this.searchString);
       },
