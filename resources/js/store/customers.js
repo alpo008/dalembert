@@ -21,7 +21,7 @@ export default {
 			return state.all;
 		},
 	    customerById: (state) => (id) => {
-	      return state.all.find(customer => customer.id === id)
+	      return state.all.find(customer => customer.id === id);
 	    }
 	}
 }

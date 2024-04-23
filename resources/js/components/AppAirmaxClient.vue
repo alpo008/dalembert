@@ -259,7 +259,6 @@
             :error-messages="errors.router_mac"
           >
           </v-text-field>
-          </div>
           <widget-confirm ref="confirm"></widget-confirm>
         </v-window-item>
         <v-window-item value="documents">
