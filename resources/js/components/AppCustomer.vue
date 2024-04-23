@@ -50,35 +50,79 @@
         :error-messages="errors.comments"
       >       
       </v-textarea>
+      <GMapMap
+        v-if="showMap"
+        :center="customerData.location"
+        :zoom="13"
+        map-type-id="terrain"
+        style="width: 100%; height: 300px; margin: 3px;"
+        @click="handleMapClick"
+      >
+        <GMapMarker :position="customerData.location"/>
+      </GMapMap>
+      <v-btn
+        icon="mdi-content-save"
+        v-if="editable&&$auth.check('super')"
+        @click="save"
+        :title="$t('Save')"
+      >
+      </v-btn>
   </v-card>
 </template>
 <script>
-    export default {
-      data: function () {
-        return {
-          customerData: {},
-          errors: {}
-        }
-      },
-      async created() {
-        if (!this.$store.getters.allCustomers.length) {
-          await this.$store.dispatch('httpRequest', {
-            url: '/customers',
-            method: 'GET',
-            data: null,
-            mutation: 'setCustomers'
-          });
-        }
-        this.customerData = this.$store.getters.customerById(parseInt(this.$route.params.id)) ?? {};
-      },
-      computed: {
-        editable() {
-          return this.$store.getters.canEdit;
-        }
-      },
-      watch: {
-          "$store.state.general.editorMode"(e) {
-        }
+  export default {
+    data: function () {
+      return {
+        customerData: {},
+        errors: {},
+        showMap: false
       }
-    } 
+    },
+    async created() {
+      if (!this.$store.getters.allCustomers.length) {
+        await this.$store.dispatch('httpRequest', {
+          url: '/customers',
+          method: 'GET',
+          data: null,
+          mutation: 'setCustomers'
+        });
+        this.customerData = this.$store.getters.customerById(parseInt(this.$route.params.id)) ?? {};
+        this.showMap = this.customerData.location?.lat & this.customerData.location?.lng;
+      } else {
+        this.customerData = this.$store.getters.customerById(parseInt(this.$route.params.id)) ?? {};
+        this.showMap = this.customerData.location?.lat & this.customerData.location?.lng;
+      }
+    },
+    methods: {
+      handleMapClick(e) {
+        if(this.editable) {
+          this.customerData.location.lat = e.latLng.lat();
+          this.customerData.location.lng = e.latLng.lng();
+        }
+      },
+      async save() {
+        let method = !!this.customerData.id ? 'PUT' : 'POST';
+        let url = !!this.customerData.id ? '/customers/' + this.customerData.id : '/works';
+        await this.$store.dispatch('httpRequest', {
+          url: url,
+          method: method,
+          data: this.customerData,
+          mutation: 'setCurrentCustomer'
+        });
+        this.errors = this.$store.getters.httpErrors;
+      }
+    },
+    computed: {
+      editable() {
+        return this.$store.getters.canEdit;
+      },
+      mapCenter() {
+        return JSON.parse(`${process.env.MIX_GM_MAP_CENTER}`);
+      }
+    },
+    watch: {
+        "$store.state.general.editorMode"(e) {
+      }
+    }
+  } 
 </script>

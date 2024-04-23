@@ -69,7 +69,9 @@ Vue.createApp(App)
     .use(auth)
     .use(VueGoogleMaps, {
         load: {
-            key: `${process.env.MIX_GM_API_KEY}`
+            key: `${process.env.MIX_GM_API_KEY}`,
+            loading: 'async',
+            v: 'weekly'
         }
     })
     .mount('#app');

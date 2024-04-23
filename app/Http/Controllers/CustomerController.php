@@ -71,13 +71,20 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\CustomerRequest  $request
+     * @param  \App\ModelsCustomer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CustomerRequest $request, Customer $customer)
     {
-        //
+        $this->authorize('update', $customer);
+        $result = Customer::whereId($request->id)->update($request->all());
+        return response()->json(
+            [
+                'status' => 'success',
+                'current' => Customer::find($request->id)
+            ], 200
+        );
     }
 
     /**
