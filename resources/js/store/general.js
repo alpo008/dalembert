@@ -23,6 +23,9 @@ export default {
 		setHttpLoadingState(state,payload) {
 			state.loading = !!payload;
 		},
+		setEditorMode(state, payload) {
+			state.editorMode = !!payload;
+		},
 		swapEditorMode(state, payload) {
 			state.editorMode = !state.editorMode;
 		}
