@@ -53,9 +53,18 @@
       <GMapMap
         v-if="showMap"
         :center="customerData.location"
-        :zoom="13"
-        map-type-id="terrain"
-        style="width: 100%; height: 300px; margin: 3px;"
+        :zoom="16"
+        map-type-id="hybrid"
+        :streetViewControl="false"
+        :options="{
+          zoomControl: true,
+          mapTypeControl: true,
+          scaleControl: true,
+          streetViewControl: false,
+          rotateControl: false,
+          fullscreenControl: true,
+        }"
+        style="width: 250px; height: 250px; margin-left: auto; margin-right: auto;"
         @click="handleMapClick"
       >
         <GMapMarker :position="customerData.location"/>
