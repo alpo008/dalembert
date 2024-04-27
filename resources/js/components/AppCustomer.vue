@@ -10,7 +10,7 @@
         <v-btn
           icon="mdi-delete-alert-outline"
           v-if="editable&&$auth.check('super')"
-          @click="delete"
+          @click="deleteCustomer"
           style="margin: 0 3%;"
           :title="$t('Delete')"
         >
@@ -95,10 +95,15 @@
       </GMapMap>
     </v-card-text>
   </v-card>
+  <widget-confirm ref="confirm_del"></widget-confirm>
 </template>
 <script>
+  import WidgetConfirm from './widgets/WidgetConfirm.vue';
   const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
   export default {
+    components: {
+      WidgetConfirm
+    },
     data: function () {
       return {
         customerData: {},
@@ -147,9 +152,20 @@
           this.$router.push('/customers/' + this.customerData.id);
         }
       },
-      delete() {
-
-      },
+      deleteCustomer() {
+        this.$refs.confirm_del.open(this.$t('Deletion'), 
+          this.$t('Are you sure?'), { color: '#ff0266' }).then((confirm) => {
+          if(confirm) {
+            this.$store.dispatch('httpRequest', {
+              url: '/customers/' + this.customerData.id,
+              method: 'DELETE',
+              data: this.customerData,
+              mutation: 'afterDeleteCustomer'
+            });
+            this.$router.push('/customers')
+          }
+        });
+    },
       setMap() {
         this.mapCenter = this.customerData.location;
         this.showMap = this.customerData.location?.lat & this.customerData.location?.lng;

@@ -19,7 +19,7 @@
       <v-btn
         icon="mdi-account-plus-outline"
         to="/customers/0"
-        :title="$t('New client')"
+        :title="$t('New customer')"
         style="margin-left:5px;"
       >
       </v-btn>

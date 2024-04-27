@@ -97,11 +97,15 @@ class CustomerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Customer  $work
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Customer $customer)
     {
-        //
+        $this->authorize('delete', $customer);
+        Customer::destroy($customer->id);
+        return response()->json(
+            ['status' => 'success', 'deleted' => $customer->id ], 200
+        );
     }
 }

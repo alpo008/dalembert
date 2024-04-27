@@ -17,6 +17,9 @@ export default {
 				state.all.push(state.current);
 			}		
 		},
+		afterDeleteCustomer(state, payload) {
+			state.all = state.all.filter(el => el.id !== payload.deleted);
+		},
 	},
 	actions: {
 		newAction(context, payload) {
