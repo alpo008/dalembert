@@ -38,12 +38,19 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CustomerRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', Customer::class);
+        $current = Customer::create($request->all());
+        return response()->json(
+            [
+                'status' => 'success',
+                'current' => $current
+            ], 200
+        );
     }
 
     /**

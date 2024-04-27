@@ -1,5 +1,29 @@
 <template>
   <v-card style="margin-top:5px;">
+    <v-card-text>
+      <v-system-bar color="transparent"
+        v-if="editable&&$auth.check('super')"
+        style="height:50px;width:auto;top:160px;right:20px;left:auto;padding: 0 2%;justify-content:center;"
+        class="rounded"
+        elevation="10"
+      >
+        <v-btn
+          icon="mdi-delete-alert-outline"
+          v-if="editable&&$auth.check('super')"
+          @click="delete"
+          style="margin: 0 3%;"
+          :title="$t('Delete')"
+        >
+        </v-btn>
+        <v-btn
+          icon="mdi-content-save"
+          v-if="editable&&$auth.check('super')"
+          @click="save"
+          style="margin: 0 3%;"
+          :title="$t('Save')"
+        >
+        </v-btn>
+      </v-system-bar>
     <v-text-field 
       type="text"
       :label="$t('Name')"
@@ -52,7 +76,7 @@
       </v-textarea>
       <GMapMap
         v-if="showMap"
-        :center="customerData.location"
+        :center="mapCenter"
         :zoom="16"
         map-type-id="hybrid"
         :streetViewControl="false"
@@ -69,22 +93,18 @@
       >
         <GMapMarker :position="customerData.location"/>
       </GMapMap>
-      <v-btn
-        icon="mdi-content-save"
-        v-if="editable&&$auth.check('super')"
-        @click="save"
-        :title="$t('Save')"
-      >
-      </v-btn>
+    </v-card-text>
   </v-card>
 </template>
 <script>
+  const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
   export default {
     data: function () {
       return {
         customerData: {},
         errors: {},
-        showMap: false
+        showMap: false,
+        mapCenter: {}
       }
     },
     async created() {
@@ -95,12 +115,15 @@
           data: null,
           mutation: 'setCustomers'
         });
-        this.customerData = this.$store.getters.customerById(parseInt(this.$route.params.id)) ?? {};
-        this.showMap = this.customerData.location?.lat & this.customerData.location?.lng;
+      }
+      if (this.$route.params.id === '0') {
+        this.customerData = {};
+        this.customerData.location = this.defaultMapCenter;
+        this.$store.commit('setEditorMode', true);
       } else {
         this.customerData = this.$store.getters.customerById(parseInt(this.$route.params.id)) ?? {};
-        this.showMap = this.customerData.location?.lat & this.customerData.location?.lng;
-      }
+      }      
+      this.setMap();
     },
     methods: {
       handleMapClick(e) {
@@ -111,7 +134,7 @@
       },
       async save() {
         let method = !!this.customerData.id ? 'PUT' : 'POST';
-        let url = !!this.customerData.id ? '/customers/' + this.customerData.id : '/works';
+        let url = !!this.customerData.id ? '/customers/' + this.customerData.id : '/customers';
         await this.$store.dispatch('httpRequest', {
           url: url,
           method: method,
@@ -119,13 +142,24 @@
           mutation: 'setCurrentCustomer'
         });
         this.errors = this.$store.getters.httpErrors;
+        if(method === 'POST' && isEmpty(this.errors)) {
+          this.customerData = this.$store.getters.currentCustomer;
+          this.$router.push('/customers/' + this.customerData.id);
+        }
+      },
+      delete() {
+
+      },
+      setMap() {
+        this.mapCenter = this.customerData.location;
+        this.showMap = this.customerData.location?.lat & this.customerData.location?.lng;
       }
     },
     computed: {
       editable() {
         return this.$store.getters.canEdit;
       },
-      mapCenter() {
+      defaultMapCenter() {
         return JSON.parse(`${process.env.MIX_GM_MAP_CENTER}`);
       }
     },

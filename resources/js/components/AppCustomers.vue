@@ -1,5 +1,38 @@
 <template>
   <h1> {{ $t('Customers') }}</h1>
+    <v-btn 
+    density="compact" 
+    icon="mdi-menu-open"
+    style="position:fixed;top:113px;right:5px;"
+    @click="showToolbar=true"
+    :title="$t('Toolbar')"
+  >
+  </v-btn>
+  <Transition name="slide-fade">
+    <v-system-bar 
+      style="height:50px;top:100px;padding: 0 2%;justify-content:center;width: calc((100% - 0px) - 0px);backdrop-filter: blur(10px);background-color:transparent;"
+      class="rounded"
+      elevation="10"
+      v-show="showToolbar"
+    >
+      <v-spacer></v-spacer>
+      <v-btn
+        icon="mdi-account-plus-outline"
+        to="/customers/0"
+        :title="$t('New client')"
+        style="margin-left:5px;"
+      >
+      </v-btn>
+      <v-icon
+        size="x-large"
+        color="black"
+        :title="$t('Hide')"
+        icon="mdi-menu-right-outline"
+        @click="showToolbar=false"
+        style="left:10px;"
+      ></v-icon>
+    </v-system-bar>
+  </Transition>
   <v-data-table :headers="tableHeaders" :items="allCustomers" item-key="title" class="elevation-1">
     <template v-slot:item.name="{ item }">
       <v-chip variant="elevated" :to="'/customers/'+ getCustomer(item, 'id')"
@@ -57,6 +90,7 @@ export default {
           key: 'action'
         }
       ],
+      showToolbar: false
     }
   },
   async created() {
