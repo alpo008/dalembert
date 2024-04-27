@@ -26,6 +26,7 @@
     "watch-poll": "mix watch -- --watch-options-poll=1000"
   },
   "dependencies": {
+    "@fawmi/vue-google-maps": "^0.9.79",
     "@mdi/font": "5.9.55",
     "@websanova/vue-auth": "^4.2.1",
     "bootstrap-vue": "^2.23.1",

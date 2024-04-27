@@ -23,7 +23,7 @@
       <v-window v-model="tab">
         <v-window-item value="settings">
           <v-system-bar color="transparent"
-              v-if="editable&&$auth.check('super')"
+            v-if="editable&&$auth.check('super')"
             style="height:50px;width:auto;top:160px;right:20px;left:auto;padding: 0 2%;justify-content:center;"
             class="rounded"
             elevation="10"
@@ -45,7 +45,6 @@
             >
             </v-btn>
           </v-system-bar>
-          <div @dblclick="swapEditionMode">
           <v-switch 
             v-model="clientData.active" 
             :label="$t('Active')" 
@@ -260,7 +259,6 @@
             :error-messages="errors.router_mac"
           >
           </v-text-field>
-          </div>
           <widget-confirm ref="confirm"></widget-confirm>
         </v-window-item>
         <v-window-item value="documents">
@@ -286,7 +284,6 @@
     },
     data: function () {
       return {
-        editable: false,
         isNew: false,
         place: '',
         clientData: {},
@@ -307,7 +304,7 @@
       this.place = this.$route.params.place;
       if (this.place === 'new') {
         this.isNew = true;
-        this.editable = true;
+        this.$store.commit('setEditorMode', true);
       }
       this.$store.commit('setCurrentPlace', this.place);
       this.clientData = this.$store.getters.currentAirmaxClient;
@@ -336,7 +333,7 @@
         window.open(url, '_system').focus();
       },
       swapEditionMode() {
-        this.editable = !this.editable&this.$auth.check('super');
+        this.$store.commit('swapEditorMode');
       },
       save() {
         let url, method, id;
@@ -397,6 +394,13 @@
         }
         catch (e) { }
         return null;
+      },
+      editable() {
+        return this.$store.getters.canEdit&this.$auth.check('super');
+      }
+    },
+    watch: {
+      "$store.state.general.editorMode"(e) {
       }
     }
   }

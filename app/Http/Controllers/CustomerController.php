@@ -38,12 +38,19 @@ class CustomerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\CustomerRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create', Customer::class);
+        $current = Customer::create($request->all());
+        return response()->json(
+            [
+                'status' => 'success',
+                'current' => $current
+            ], 200
+        );
     }
 
     /**
@@ -71,23 +78,34 @@ class CustomerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Http\Requests\CustomerRequest  $request
+     * @param  \App\ModelsCustomer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CustomerRequest $request, Customer $customer)
     {
-        //
+        $this->authorize('update', $customer);
+        $result = Customer::whereId($request->id)->update($request->all());
+        return response()->json(
+            [
+                'status' => 'success',
+                'current' => Customer::find($request->id)
+            ], 200
+        );
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Customer  $work
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Customer $customer)
     {
-        //
+        $this->authorize('delete', $customer);
+        Customer::destroy($customer->id);
+        return response()->json(
+            ['status' => 'success', 'deleted' => $customer->id ], 200
+        );
     }
 }

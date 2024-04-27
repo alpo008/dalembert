@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Casts\Coords;
 
 class Customer extends Model
 {
@@ -18,6 +19,6 @@ class Customer extends Model
      * @var array
      */
     protected $casts = [
-        'location' => 'array'
+        'location' => Coords::class
     ];
 }
