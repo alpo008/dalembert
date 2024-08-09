@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Models\Payment;
 use App\Models\Attachment;
+use App\Models\AirmaxActivity;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
@@ -82,6 +84,14 @@ class AirmaxClient extends Model
     public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'morphable');
+    }
+
+    /**
+     * Get the airmax client activities report.
+     */
+    public function airmaxActivities(): HasMany
+    {
+        return $this->hasMany(AirmaxActivity::class);
     }
 
 

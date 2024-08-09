@@ -13,16 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('calculations', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-            $table->string('name')->comment('Text identifier');
-            $table->bigInteger('customer_id');
-            $table->decimal('sum', $precision = 8, $scale = 2)->comment('Total sum');
-            $table->json('works')->comment('Works list');
-            $table->integer('days')->comment('Works duration')->nullable();
-            $table->text('comments')->comment('Comments')->nullable();
-        });
+        if ( !Schema::hasTable('calculations') ) {
+            Schema::create('calculations', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps();
+                $table->string('name')->comment('Text identifier');
+                $table->bigInteger('customer_id');
+                $table->decimal('sum', $precision = 8, $scale = 2)->comment('Total sum');
+                $table->json('works')->comment('Works list');
+                $table->integer('days')->comment('Works duration')->nullable();
+                $table->text('comments')->comment('Comments')->nullable();
+            });
+        }
     }
 
     /**

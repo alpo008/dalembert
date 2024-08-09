@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AirmaxClient;
+use App\Models\AirmaxActivity;
 use Carbon\Carbon;
 
 class AirmaxActivityController extends Controller
@@ -15,11 +16,15 @@ class AirmaxActivityController extends Controller
      */
     public function index()
     {
-        $allClients = AirmaxClient::select('id','ip_address')->limit(2)->get()->toArray();
+        $allClients = AirmaxClient::select('id','ip_address')
+            ->with('airmaxActivities')
+            ->limit(3)
+            ->get()
+            ->toArray();
         return response()->json(
             [
                 'status' => 'success',
-                'clients' => $allClients
+                'airmax_clients' => $allClients
             ], 200
         );
     }
@@ -42,7 +47,18 @@ class AirmaxActivityController extends Controller
      */
     public function store(Request $request)
     {
-        $date = Carbon::now('Europe/Moscow');
+        $dateFormat = 'Y-m-d H:i:s';
+        $dayAgo = Carbon::now('Europe/Moscow')->subMinutes(1)->format($dateFormat);
+
+        $airmaxActivities = $request->all();
+
+        if(!empty($airmaxActivities) && is_array($airmaxActivities)) {
+            foreach($airmaxActivities as &$airmaxActivity) {
+                if($id = $airmaxActivity['airmax_client_id']) {
+                    $lastActivity = AirmaxActivity::updateStatus($airmaxActivity);
+                }
+            }
+        }
     }
 
     /**
