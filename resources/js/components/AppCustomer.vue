@@ -80,6 +80,7 @@
         :center="mapCenter"
         :zoom="16"
         map-type-id="hybrid"
+        ref="customerMapRef"
         :streetViewControl="false"
         :options="{
           zoomControl: true,
@@ -129,11 +130,14 @@
       } else {
         this.customerData = this.$store.getters.customerById(parseInt(this.$route.params.id)) ?? {};
       }      
-      this.setMap();
+      this.setMap(this.customerData.location);
     },
     methods: {
       handleMapClick(e) {
         if(this.editable) {
+          this.$refs.customerMapRef.$mapPromise.then((mapInstance) => {
+            //TODO
+        });
           this.customerData.location.lat = e.latLng.lat();
           this.customerData.location.lng = e.latLng.lng();
         }
@@ -167,8 +171,8 @@
           }
         });
     },
-      setMap() {
-        this.mapCenter = this.customerData.location;
+      setMap(location) {
+        this.mapCenter = location;
         this.showMap = this.customerData.location?.lat & this.customerData.location?.lng;
       }
     },
