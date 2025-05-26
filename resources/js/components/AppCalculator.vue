@@ -273,7 +273,6 @@
           mutation: ''
         });
         this.errors = this.$store.getters.httpErrors;
-        console.log(this.errors)
         if (isEmpty(this.errors)) {
           this.modal = false;
         }
