@@ -18,7 +18,7 @@ class Coords implements CastsAttributes
     public function get($model, string $key, $value, array $attributes)
     {
         $arr = json_decode($value, true);
-        return array_map('floatval', $arr);
+        return is_array($arr) ? array_map('floatval', $arr) : null;
     }
 
     /**

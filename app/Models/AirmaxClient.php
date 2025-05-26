@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use App\Casts\Coords;
 
 class AirmaxClient extends Model
 {
@@ -63,7 +64,7 @@ class AirmaxClient extends Model
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
         'active' => 'boolean',
-        //'location' => 'array'
+        'location' => Coords::class
     ];
 
     /**

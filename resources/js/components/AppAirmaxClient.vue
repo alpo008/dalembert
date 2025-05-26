@@ -111,18 +111,6 @@
           >
           </v-text-field>
           <v-text-field 
-            type="text"
-            :label="$t('Location')"
-            ref="location"
-            v-if="!!clientData.location|editable"
-            v-model="clientData.location"
-            :readonly="!editable"
-            append-icon="mdi-map"
-            @click:append=""
-            :error-messages="errors.location"
-          >
-          </v-text-field>
-          <v-text-field 
             type="date"
             :label="$t('Installed on')"
             ref="installed_on"
@@ -444,10 +432,12 @@
           catch (e) { }
       },
       handleMapClick(e) {
-        let newLocation = {};
-        newLocation.lat = e.latLng.lat();
-        newLocation.lng = e.latLng.lng();
-        this.markerPosition = newLocation;
+        if (this.editable) {
+          let newLocation = {};
+          newLocation.lat = e.latLng.lat();
+          newLocation.lng = e.latLng.lng();
+          this.markerPosition = newLocation;
+        }
       },
       setLocation() {
         let loc = this.markerPosition;
@@ -468,7 +458,7 @@
         }
       },
       hasLocation() {
-        return this.clientData.location !== null;
+        return !isEmpty(this.clientData.location);
       },
       defaultMapCenter() {
         return JSON.parse(`${process.env.MIX_GM_MAP_CENTER}`);
