@@ -286,7 +286,10 @@
                   style="width: 70vw; height: 70vw; margin-left: auto; margin-right: auto;"
                   @click="handleMapClick"
                 >
-                  <GMapMarker :position="markerPosition"/>
+                  <GMapMarker 
+                    :position="markerPosition" 
+                    :icon="markerIcon" 
+                    :title="markerTitle"/>
                 </GMapMap>
                </v-card-text>
             </v-card>
@@ -326,7 +329,9 @@
           {'title': 'AKM073(4D)', 'value': 'DC:9F:DB:34:13:4D'}
         ],
         mapButton: false,
-        markerPosition: null
+        markerPosition: null,
+        markerIcon: null,
+        markerTitle: null
       }
     },
     async created() {
@@ -347,6 +352,8 @@
       }
       this.$store.commit('setPayments', this.clientData);
       this.markerPosition = this.mapCenter;
+      this.markerIcon =  {url: this.$store.getters.apIconById(this.clientData.id)};
+      this.markerTitle = this.clientData.ap_model;
     },
     methods:{
       copyText(txt){
