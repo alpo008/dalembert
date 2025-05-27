@@ -25,6 +25,7 @@ class AirmaxClient extends Model
     const CLIENTS_DEBTORS = 'overdue';
     const CLIENTS_DEBTORS_BUT_ACTIVE = 'overdueButActive';
     const CLIENTS_TO_REMIND = 'remind';
+    const CLIENTS_WITH_LOCATION = 'withLocation';
 
     /** 
      * @inheritdoc
@@ -150,6 +151,11 @@ class AirmaxClient extends Model
                 break;
             case self::CLIENTS_TO_REMIND :
                 return $remindQuery->where('active', true)->get();
+                break;
+            case self::CLIENTS_WITH_LOCATION :
+                return AirmaxClient::where('active', true)->whereNotNull('location')->select('place', 'ip_address', 
+                    'active', 'ap_mac', 'ap_model', 'location')
+                    ->get();
                 break;
             default:
             return null;

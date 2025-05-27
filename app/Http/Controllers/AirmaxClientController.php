@@ -141,7 +141,10 @@ class AirmaxClientController extends Controller
                     'active' => AirmaxClient::statistics(AirmaxClient::CLIENTS_ACTIVE)->toArray(), 
                     'disabled' => AirmaxClient::statistics(AirmaxClient::CLIENTS_DISABLED)->toArray(), 
                     'overdueButActive' => AirmaxClient::statistics(AirmaxClient::CLIENTS_DEBTORS_BUT_ACTIVE)->toArray(),
-                    'remind' => AirmaxClient::statistics(AirmaxClient::CLIENTS_TO_REMIND)->toArray()
+                    'remind' => AirmaxClient::statistics(AirmaxClient::CLIENTS_TO_REMIND)->toArray(),
+                    'withLocation' => AirmaxClient::statistics(
+                            AirmaxClient::CLIENTS_WITH_LOCATION
+                        )->toArray()
                     ]
                 ]
             ], 200
