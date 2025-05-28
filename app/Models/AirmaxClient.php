@@ -153,9 +153,9 @@ class AirmaxClient extends Model
                 return $remindQuery->where('active', true)->get();
                 break;
             case self::CLIENTS_WITH_LOCATION :
-                return AirmaxClient::where('active', true)->whereNotNull('location')->select('place', 'ip_address', 
-                    'active', 'ap_mac', 'ap_model', 'location')
-                    ->get();
+                return AirmaxClient::where('active', true)->whereNotNull('location')->select(
+                    'id', 'place', 'ip_address', 'active', 'ap_mac', 'ap_model', 'location'
+                )->get();
                 break;
             default:
             return null;

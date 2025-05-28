@@ -77,6 +77,38 @@
         </v-data-table>
       </v-expansion-panel-text>
     </v-expansion-panel>
+    <v-expansion-panel v-if="haveAirmaxStatistics('withLocation')">
+      <v-expansion-panel-title>
+        {{ $t('Map') }} ( {{ getAirmaxStatistics('withLocation').length }} )
+      </v-expansion-panel-title>
+      <v-expansion-panel-text>
+        <GMapMap
+          v-if="haveAirmaxStatistics('withLocation')"
+          :center="mapCenter"
+          :zoom="17"
+          map-type-id="hybrid"
+          ref="activeAirmaxClientMapRef"
+          :streetViewControl="false"
+          :options="{
+            zoomControl: true,
+            mapTypeControl: true,
+            scaleControl: true,
+            streetViewControl: false,
+            rotateControl: false,
+            fullscreenControl: true,
+          }"
+          style="width: 90vw; height: 90vw; margin-left: auto; margin-right: auto;"
+        >
+          <GMapMarker
+            v-for="mapMarker in mapMarkers"
+            :position="mapMarker.position" 
+            :icon="mapMarker.icon" 
+            :title="mapMarker.title"
+            @click="handleMarkerClick(mapMarker)"
+          />
+        </GMapMap>
+      </v-expansion-panel-text>
+    </v-expansion-panel>
   </v-expansion-panels>
 </template>
 <script>
@@ -87,6 +119,7 @@ export default {
   data: function () {
     return {
       statistics: {},
+      mapMarkers: []
     }
   },
   async created() {
@@ -96,7 +129,9 @@ export default {
       data: null,
       mutation: 'setStatistics'
     });
+    await this.$store.dispatch('updateAirmaxClients');
     this.statistics = this.$store.getters.allStatistics;
+    this.createMarkersArray();
   },
   methods: {
     getAirmaxClient(value, param) {
@@ -126,6 +161,22 @@ export default {
       }
       return result;
     },
+    createMarkersArray() {
+      if (this. haveAirmaxStatistics('withLocation')) {
+        this.mapMarkers = [];
+        let clients = this.statistics.airmax['withLocation'];
+        clients.forEach(client => {
+          let markerData = {};
+          markerData.icon = {url: this.$store.getters.apIconById(client.id)};
+          markerData.position = client.location;
+          markerData.title = client.place + ' => ' + client.ap_model;
+          this.mapMarkers.push(markerData)
+        });
+      }
+    },
+    handleMarkerClick(clientData) {
+      //TODO
+    }
   },
   computed: {
     airmaxTablesHeaders() {
@@ -149,6 +200,9 @@ export default {
     },
     isReady() {
       return !isEmpty(this.statistics?.airmax);
+    },
+    mapCenter() {
+      return JSON.parse(`${process.env.MIX_GM_MAP_CENTER}`);
     }
   }
 }
