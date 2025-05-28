@@ -1,17 +1,18 @@
 <template>
-  <v-card style="margin-top:5px;">
+  <v-card style="margin-top:35px;">
     <v-card-text>
       <v-system-bar color="transparent"
         v-if="editable&&$auth.check('super')"
-        style="height:50px;width:auto;top:160px;right:20px;left:auto;padding: 0 2%;justify-content:center;"
+        style="height:50px;top:100px;padding: 0 2%;justify-content:center;width: calc((100% - 0px) - 0px);backdrop-filter: blur(10px);background-color:transparent;"
         class="rounded"
         elevation="10"
       >
+        <v-spacer></v-spacer>
         <v-btn
           icon="mdi-delete-alert-outline"
           v-if="editable&&$auth.check('super')"
           @click="deleteCustomer"
-          style="margin: 0 3%;"
+          style="margin: 0 2px;"
           :title="$t('Delete')"
         >
         </v-btn>
@@ -19,7 +20,7 @@
           icon="mdi-content-save"
           v-if="editable&&$auth.check('super')"
           @click="save"
-          style="margin: 0 3%;"
+          style="margin: 0 2px;"
           :title="$t('Save')"
         >
         </v-btn>
@@ -79,6 +80,7 @@
         :center="mapCenter"
         :zoom="16"
         map-type-id="hybrid"
+        ref="customerMapRef"
         :streetViewControl="false"
         :options="{
           zoomControl: true,
@@ -128,11 +130,14 @@
       } else {
         this.customerData = this.$store.getters.customerById(parseInt(this.$route.params.id)) ?? {};
       }      
-      this.setMap();
+      this.setMap(this.customerData.location);
     },
     methods: {
       handleMapClick(e) {
         if(this.editable) {
+          this.$refs.customerMapRef.$mapPromise.then((mapInstance) => {
+            //TODO
+        });
           this.customerData.location.lat = e.latLng.lat();
           this.customerData.location.lng = e.latLng.lng();
         }
@@ -166,8 +171,8 @@
           }
         });
     },
-      setMap() {
-        this.mapCenter = this.customerData.location;
+      setMap(location) {
+        this.mapCenter = location;
         this.showMap = this.customerData.location?.lat & this.customerData.location?.lng;
       }
     },

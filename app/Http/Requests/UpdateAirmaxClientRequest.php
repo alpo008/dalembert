@@ -25,7 +25,9 @@ class UpdateAirmaxClientRequest extends FormRequest
     {
         return [
             'place' => 'required|max:30|unique:airmax_clients,place,' . ($this->id ?? 0),
-            'location' => 'json|nullable',
+            'location' => 'nullable',
+            'location.lat' => 'decimal:2,18',
+            'location.lng' => 'decimal:2,18',
             'name' => 'required|string|max:100|nullable',
             'email' => 'email:rfc,dns|nullable|unique:airmax_clients,email,' . ($this->id ?? 0),
             'phone' => 'nullable|regex:/^\+?\d{11,12}?$/|unique:airmax_clients,phone,' . ($this->id ?? 0),

@@ -153,6 +153,18 @@
       elevation="4"
       rounded
     >
+      <v-toolbar
+        dark
+        prominent
+      >
+        <v-toolbar-title>{{ $t('Calculation saving') }}</v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-btn icon @click="modal = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-toolbar>
       <v-card-text>
         <v-text-field 
           :label="$t('Denotation')"
@@ -192,6 +204,7 @@
 </template>
 
 <script>
+  const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
   export default {
     data: function () {
       return {
@@ -260,6 +273,9 @@
           mutation: ''
         });
         this.errors = this.$store.getters.httpErrors;
+        if (isEmpty(this.errors)) {
+          this.modal = false;
+        }
       },
       swapToolbar() {
         this.showToolbar = !this.showToolbar;

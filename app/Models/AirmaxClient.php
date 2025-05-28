@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Models\Payment;
 use App\Models\Attachment;
+use App\Models\AirmaxActivity;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use App\Casts\Coords;
 
 class AirmaxClient extends Model
 {
@@ -22,6 +25,7 @@ class AirmaxClient extends Model
     const CLIENTS_DEBTORS = 'overdue';
     const CLIENTS_DEBTORS_BUT_ACTIVE = 'overdueButActive';
     const CLIENTS_TO_REMIND = 'remind';
+    const CLIENTS_WITH_LOCATION = 'withLocation';
 
     /** 
      * @inheritdoc
@@ -61,7 +65,7 @@ class AirmaxClient extends Model
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s',
         'active' => 'boolean',
-        //'location' => 'array'
+        'location' => Coords::class
     ];
 
     /**
@@ -82,6 +86,14 @@ class AirmaxClient extends Model
     public function attachments(): MorphMany
     {
         return $this->morphMany(Attachment::class, 'morphable');
+    }
+
+    /**
+     * Get the airmax client activities report.
+     */
+    public function airmaxActivities(): HasMany
+    {
+        return $this->hasMany(AirmaxActivity::class);
     }
 
 
@@ -139,6 +151,11 @@ class AirmaxClient extends Model
                 break;
             case self::CLIENTS_TO_REMIND :
                 return $remindQuery->where('active', true)->get();
+                break;
+            case self::CLIENTS_WITH_LOCATION :
+                return AirmaxClient::where('active', true)->whereNotNull('location')->select(
+                    'id', 'place', 'ip_address', 'active', 'ap_mac', 'ap_model', 'location'
+                )->get();
                 break;
             default:
             return null;

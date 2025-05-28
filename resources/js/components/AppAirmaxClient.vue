@@ -24,7 +24,7 @@
         <v-window-item value="settings">
           <v-system-bar color="transparent"
             v-if="editable&&$auth.check('super')"
-            style="height:50px;width:auto;top:160px;right:20px;left:auto;padding: 0 2%;justify-content:center;"
+            style="height:50px;width:auto;top:160px;right:80px;left:auto;padding: 0 2%;justify-content:center;"
             class="rounded"
             elevation="10"
           >
@@ -49,7 +49,16 @@
             v-model="clientData.active" 
             :label="$t('Active')" 
             :readonly="!editable"
-          >            
+          >   
+            <template v-slot:append>
+              <v-btn icon 
+                v-if="hasLocation || this.editable" 
+                @click="mapButton=true" 
+                size="small"
+                style="top:-10px;">
+                <v-icon>mdi-map</v-icon>
+              </v-btn>
+            </template>         
           </v-switch>
           <v-text-field 
             type="text"
@@ -99,18 +108,6 @@
             append-icon="mdi-email"
             @click:append="sendEmail(clientData.email)"
             :error-messages="errors.email"
-          >
-          </v-text-field>
-          <v-text-field 
-            type="text"
-            :label="$t('Location')"
-            ref="location"
-            v-if="!!clientData.location|editable"
-            v-model="clientData.location"
-            :readonly="!editable"
-            append-icon="mdi-map"
-            @click:append="openGeo(formattedLocation)"
-            :error-messages="errors.location"
           >
           </v-text-field>
           <v-text-field 
@@ -260,6 +257,43 @@
           >
           </v-text-field>
           <widget-confirm ref="confirm"></widget-confirm>
+
+          <v-dialog eager v-model="mapButton" style="width:80vw;">
+            <v-card style="min-height:90vh" id="client_location">
+              <v-toolbar dark prominent>
+                <template v-slot:append>
+                  <v-btn icon @click="mapButton=false">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </template>
+              </v-toolbar>
+              <v-card-text> 
+                <GMapMap
+                  v-if="mapButton"
+                  :center="mapCenter"
+                  :zoom="17"
+                  map-type-id="hybrid"
+                  ref="airmaxClientMapRef"
+                  :streetViewControl="false"
+                  :options="{
+                    zoomControl: true,
+                    mapTypeControl: true,
+                    scaleControl: true,
+                    streetViewControl: false,
+                    rotateControl: false,
+                    fullscreenControl: true,
+                  }"
+                  style="width: 70vw; height: 70vw; margin-left: auto; margin-right: auto;"
+                  @click="handleMapClick"
+                >
+                  <GMapMarker 
+                    :position="markerPosition" 
+                    :icon="markerIcon" 
+                    :title="markerTitle"/>
+                </GMapMap>
+               </v-card-text>
+            </v-card>
+          </v-dialog>
         </v-window-item>
         <v-window-item value="documents">
           <app-documents :clientid="clientData.id" objectname="AirmaxClient"></app-documents>
@@ -293,7 +327,11 @@
           {'title': 'AKM071(EE)', 'value': '00:27:22:12:DF:EE'}, 
           {'title': 'AKM072(7F)', 'value': '00:27:22:12:DF:7F'}, 
           {'title': 'AKM073(4D)', 'value': 'DC:9F:DB:34:13:4D'}
-        ]
+        ],
+        mapButton: false,
+        markerPosition: null,
+        markerIcon: null,
+        markerTitle: null
       }
     },
     async created() {
@@ -308,7 +346,14 @@
       }
       this.$store.commit('setCurrentPlace', this.place);
       this.clientData = this.$store.getters.currentAirmaxClient;
+
+      if(/{"lat":"\d{1,3}\.?\d+?","lng":"\d{1,3}\.?\d+?"}/.test(this.clientData.location)) {
+        this.formatLocation();
+      }
       this.$store.commit('setPayments', this.clientData);
+      this.markerPosition = this.mapCenter;
+      this.markerIcon =  {url: this.$store.getters.apIconById(this.clientData.id)};
+      this.markerTitle = this.clientData.ap_model;
     },
     methods:{
       copyText(txt){
@@ -349,6 +394,7 @@
         method = this.isNew ? 'POST' : 'PUT';
         delete this.clientData.payments;
         delete this.clientData.attachments;
+        this.setLocation();
         this.$store.dispatch('httpRequest', {
           url: url,
           method: method,
@@ -382,21 +428,47 @@
             }
           });
         }
+      },
+      formatLocation () {
+        try {      
+          let loc = JSON.parse(this.clientData.location);
+            if (typeof(loc) === 'object' && loc !== null && typeof(loc.lat) !== 'undefined' && typeof(loc.lng) !== 'undefined') {
+              this.clientData.location = {lat: parseFloat(loc.lat), lng: parseFloat(loc.lng)};
+            }
+          }
+          catch (e) { }
+      },
+      handleMapClick(e) {
+        if (this.editable) {
+          let newLocation = {};
+          newLocation.lat = e.latLng.lat();
+          newLocation.lng = e.latLng.lng();
+          this.markerPosition = newLocation;
+        }
+      },
+      setLocation() {
+        let loc = this.markerPosition;
+        if (typeof(loc) === 'object' && loc !== null && typeof(loc.lat) !== 'undefined' && typeof(loc.lng) !== 'undefined') {
+          this.clientData.location = {lat: parseFloat(loc.lat), lng: parseFloat(loc.lng)};
+        }
       }
     },
     computed: {
-      formattedLocation () {
-      try {      
-        let loc = JSON.parse(this.clientData.location);
-          if (typeof(loc) === 'object' && loc !== null && typeof(loc.lat) !== 'undefined' && typeof(loc.lng) !== 'undefined') {
-            return '(' + loc.lat + ',' + loc.lng + ')';
-          }
-        }
-        catch (e) { }
-        return null;
-      },
       editable() {
         return this.$store.getters.canEdit&this.$auth.check('super');
+      },
+      mapCenter() {
+        if (this.hasLocation) {
+          return this.clientData.location;
+        } else {
+          return this.editable ? this.defaultMapCenter : null;
+        }
+      },
+      hasLocation() {
+        return !isEmpty(this.clientData.location);
+      },
+      defaultMapCenter() {
+        return JSON.parse(`${process.env.MIX_GM_MAP_CENTER}`);
       }
     },
     watch: {
