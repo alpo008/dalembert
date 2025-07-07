@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Dalembert</title>
+        <title>{{ __(env('APP_NAME')) }}</title>
         <link rel="icon" type="image/x-icon" href="/favicon.svg">
 
         <!-- Fonts -->
