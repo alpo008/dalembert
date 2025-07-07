@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/{vue_capture?}', function () {
- return view('welcome');
+ return view('welcome', ['wx' => Storage::get('meteo/wx.xml')]);
 })->where('vue_capture', '[\/\w\.-]*');
