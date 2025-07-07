@@ -10,7 +10,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\CalculationController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\AirmaxActivityController;
+use App\Http\Controllers\MeteoController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,7 @@ Route::apiResource('works', WorkController::class);
 Route::apiResource('customers', CustomerController::class);
 Route::apiResource('calculations', CalculationController::class);
 Route::apiResource('airmax-activity', AirmaxActivityController::class)->only(['index', 'store']);
+Route::apiResource('meteo', MeteoController::class)->only(['index', 'store']);
 
 Route::get('attachments/{obj}/{id}', 'App\Http\Controllers\AttachmentController@show');
 Route::post('attachments/download', 'App\Http\Controllers\AttachmentController@download');
