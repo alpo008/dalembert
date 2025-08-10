@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\LocalWeather;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/{vue_capture?}', function () {
- return view('welcome', ['wx' => Storage::get('meteo/wx.xml')]);
+	$test = new LocalWeather();
+ return view('welcome', ['wx' => $test]);
 })->where('vue_capture', '[\/\w\.-]*');
