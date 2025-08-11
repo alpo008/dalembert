@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use App\Models\OpenMeteoWeather;
+
 
 class TgBotController extends Controller
 {
@@ -13,7 +16,11 @@ class TgBotController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(
+            [
+                'status' => 'success',
+                'active' => true          
+            ], 200);
     }
 
     /**
@@ -34,7 +41,12 @@ class TgBotController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $openMeteoWeather = new OpenMeteoWeather();
+        return response()->json(
+            [
+                'status' => 'success',
+                'data' => $openMeteoWeather->getCurrentValue('time', true)          
+            ], 200);
     }
 
     /**
