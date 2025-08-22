@@ -37,16 +37,18 @@ class TgBotController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 
      */
     public function store(Request $request)
     {
         $openMeteoWeather = new OpenMeteoWeather();
-        return response()->json(
+/*        return response()->json(
             [
                 'status' => 'success',
-                'data' => $openMeteoWeather->getCurrentValue('time', true)          
-            ], 200);
+                'data' => $openMeteoWeather->getCurrentValue('time', true),
+                'txt' => $openMeteoWeather->description()       
+            ], 200);*/
+            return $openMeteoWeather->description();
     }
 
     /**

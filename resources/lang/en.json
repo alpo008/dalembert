@@ -1,6 +1,7 @@
 {
 	"403 Access denied": "403 Access denied",
 	"Access": "Access",
+	"Barometer": "Barometer",
 	"Clear sky": "Clear sky",
 	"Dense drizzle": "Dense drizzle",
 	"Dense freezing drizzle": "Dense freezing drizzle",
@@ -10,17 +11,22 @@
 	"Heavy rain": "Heavy rain",
 	"Heavy snow fall": "Heavy snow fall",
 	"Heavy snow showers": "Heavy snow showers",
+	"hPa": "hPa",
 	"Light drizzle": "Light drizzle",
 	"Light freezing drizzle": "Light freezing drizzle",
 	"Light freezing rain": "Light freezing rain", 
     "Mainly clear": "Mainly clear",
     "Map": "Map",
+    "mm": "mm",
 	"Moderate drizzle": "Moderate drizzle",
 	"Moderate rain": "Moderate rain",
 	"Moderate rain showers": "Moderate rain showers",
 	"Moderate snow fall": "Moderate snow fall",
+	"m/s": "m/s",
+    "N/A": "N/A",
     "Overcast": "Overcast",			
     "Partly cloudy": "Partly cloudy", 
+    "Rain": "Rain",
 	"Rime fog": "Rime fog",  
 	"Slight rain": "Slight rain",
 	"Slight rain showers": "Slight rain showers",  
@@ -32,5 +38,6 @@
 	"Thunderstorm with sligh hail": "Thunderstorm with sligh hail", 
 	"Violent rain shower": "Violent rain shower",
 	"User": "User",
-	"Username": "User name"
+	"Username": "User name",
+	"Wind": "Wind"
 }
