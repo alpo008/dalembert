@@ -126,8 +126,12 @@ class OpenMeteoWeather
         $this->forecast = $forecast->json();
 	}
 
-	/** Checks if stored forecast is out of time or not */
-	private function isOutOfTime(string|null $stored): bool
+	/** Checks if stored forecast is out of time or not 
+	 * 
+	 * @param string|null $wistored
+	 * @return boolean
+	 * */
+	private function isOutOfTime(string|null $stored): boolean
 	{
 		if(empty($stored)) {
 			return true;
