@@ -41,8 +41,9 @@ class TgBotController extends Controller
      */
     public function store(Request $request)
     {
+
         $openMeteoWeather = new OpenMeteoWeather();
-/*        return response()->json(
+        /* return response()->json(
             [
                 'status' => 'success',
                 'data' => $openMeteoWeather->getCurrentValue('time', true),

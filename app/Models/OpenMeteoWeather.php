@@ -29,7 +29,7 @@ class OpenMeteoWeather
 	/** Gets weather parameters values with or without units 
 	 *
 	 * @param string $name
-	 * @param boolean $withUnit
+	 * @param bool $withUnit
 	 * @return string
 	 * */
 	public function getCurrentValue($name, $withUnit = false): string
@@ -129,9 +129,9 @@ class OpenMeteoWeather
 	/** Checks if stored forecast is out of time or not 
 	 * 
 	 * @param string|null $stored
-	 * @return boolean
+	 * @return bool
 	 * */
-	private function isOutOfTime(string|null $stored): boolean
+	private function isOutOfTime(string|null $stored): bool
 	{
 		if(empty($stored)) {
 			return true;
