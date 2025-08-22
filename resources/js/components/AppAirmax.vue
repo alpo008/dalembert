@@ -157,7 +157,8 @@
       },
       exportSql() {
         axios.get('export/backup', {responseType: 'blob'}).then((response) => {
-          FileSaver.saveAs(response.data, 'backup.sql');
+          let file_name = new Date().toISOString().split('T')[0] + ' backup.sql';
+          FileSaver.saveAs(response.data, file_name);
         }).catch((error) => {
           let message = error.message ?? this.$t('Could not Download the Excel report');
           this.$store.commit('setHttpErrors', message);
