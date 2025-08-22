@@ -128,7 +128,7 @@ class OpenMeteoWeather
 
 	/** Checks if stored forecast is out of time or not 
 	 * 
-	 * @param string|null $wistored
+	 * @param string|null $stored
 	 * @return boolean
 	 * */
 	private function isOutOfTime(string|null $stored): boolean
