@@ -133,7 +133,7 @@ class TgBotController extends Controller
     private function sendTgMessage(array $getQuery)
     {
         $tgToken = env('TG_TOKEN');
-        $res = Http::get("https://api.telegram.org/bot". $tgToken ."/sendMessage" . http_build_query($getQuery));
+        $res = Http::get("https://api.telegram.org/bot". $tgToken ."/sendMessage?" . http_build_query($getQuery));
 /*        $ch = curl_init("https://api.telegram.org/bot". $tgToken ."/sendMessage?" . http_build_query($getQuery));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
