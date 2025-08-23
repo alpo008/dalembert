@@ -141,6 +141,6 @@ class TgBotController extends Controller
         $res = curl_exec($ch);
         curl_close($ch);*/
 
-        $this->writeLogFile('ok' => Arr::get($res, 'ok'), true);
+        $this->writeLogFile(['ok' => Arr::get($res, 'ok')], true);
     }
 }
