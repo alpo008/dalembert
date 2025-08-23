@@ -54,7 +54,7 @@ class TgBotController extends Controller
                 'txt' => $openMeteoWeather->description()       
             ], 200);*/
             //return $openMeteoWeather->description();
-        if($chatId) {
+        if(true) {
             $arrayQuery = [
                 'chat_id'       => $chatId,
                 'text'          => $openMeteoWeather->description(),
