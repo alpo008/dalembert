@@ -43,6 +43,8 @@ class TgBotController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+        $textMessage = Arr::get($input, 'message.text');
+        $chatId = Arr::get($input, 'message.chat.id');
         $this->writeLogFile(json_encode($input, JSON_PRETTY_PRINT));
         $openMeteoWeather = new OpenMeteoWeather();
         /* return response()->json(
@@ -51,7 +53,15 @@ class TgBotController extends Controller
                 'data' => $openMeteoWeather->getCurrentValue('time', true),
                 'txt' => $openMeteoWeather->description()       
             ], 200);*/
-            return $openMeteoWeather->description();
+            //return $openMeteoWeather->description();
+        if($chatId) {
+            $arrayQuery = [
+                'chat_id'       => $chatId,
+                'text'          => $openMeteoWeather->description(),
+                'parse_mode'    => "html",
+            ];
+            $this->sendTgMessage($arrayQuery);
+        }
     }
 
     /**
@@ -117,5 +127,18 @@ class TgBotController extends Controller
                 $now." ".print_r($string, true)."\r\n"
             );
         }
+    }
+
+    private function sendTgMessage(array $arrayQuery)
+    {
+        $tgToken = env('TG_TOKEN');
+        $ch = curl_init("https://api.telegram.org/bot". $tgToken ."/sendMessage?" . http_build_query($getQuery));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        $res = curl_exec($ch);
+        curl_close($ch);
+
+        $this->writeLogFile(json_encode($res, JSON_PRETTY_PRINT));
     }
 }
