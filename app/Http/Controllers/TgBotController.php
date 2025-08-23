@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
 use App\Models\OpenMeteoWeather;
@@ -132,13 +133,14 @@ class TgBotController extends Controller
     private function sendTgMessage(array $getQuery)
     {
         $tgToken = env('TG_TOKEN');
-        $ch = curl_init("https://api.telegram.org/bot". $tgToken ."/sendMessage?" . http_build_query($getQuery));
+        $res = Http::get("https://api.telegram.org/bot". $tgToken ."/sendMessage" . http_build_query($getQuery));
+/*        $ch = curl_init("https://api.telegram.org/bot". $tgToken ."/sendMessage?" . http_build_query($getQuery));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_HEADER, false);
         $res = curl_exec($ch);
-        curl_close($ch);
+        curl_close($ch);*/
 
-        $this->writeLogFile($res);
+        $this->writeLogFile($res, true);
     }
 }
