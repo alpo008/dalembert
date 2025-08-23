@@ -129,7 +129,7 @@ class TgBotController extends Controller
         }
     }
 
-    private function sendTgMessage(array $arrayQuery)
+    private function sendTgMessage(array $getQuery)
     {
         $tgToken = env('TG_TOKEN');
         $ch = curl_init("https://api.telegram.org/bot". $tgToken ."/sendMessage?" . http_build_query($getQuery));
