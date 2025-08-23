@@ -48,14 +48,7 @@ class TgBotController extends Controller
         $chatId = Arr::get($input, 'message.chat.id');
         $this->writeLogFile(json_encode($input, JSON_PRETTY_PRINT));
         $openMeteoWeather = new OpenMeteoWeather();
-        /* return response()->json(
-            [
-                'status' => 'success',
-                'data' => $openMeteoWeather->getCurrentValue('time', true),
-                'txt' => $openMeteoWeather->description()       
-            ], 200);*/
-            //return $openMeteoWeather->description();
-        if(true) {
+        if(!!$chatId) {
             $arrayQuery = [
                 'chat_id'       => $chatId,
                 'text'          => $openMeteoWeather->description(),
@@ -134,13 +127,6 @@ class TgBotController extends Controller
     {
         $tgToken = env('TG_TOKEN');
         $res = Http::get("https://api.telegram.org/bot". $tgToken ."/sendMessage", $getQuery);
-/*        $ch = curl_init("https://api.telegram.org/bot". $tgToken ."/sendMessage?" . http_build_query($getQuery));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        $res = curl_exec($ch);
-        curl_close($ch);*/
-
         //$this->writeLogFile($res, true);
     }
 }
