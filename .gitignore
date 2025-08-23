@@ -38,6 +38,9 @@ sftp-config.json
 # Data files
 /resources/data
 
+# Temporary scripts
+/resources/scripts
+
 # translations symlinks
 /lang/en/en.json
 /lang/ru/ru.json

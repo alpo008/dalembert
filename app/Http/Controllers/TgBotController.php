@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
 use App\Models\OpenMeteoWeather;
 
@@ -41,7 +42,8 @@ class TgBotController extends Controller
      */
     public function store(Request $request)
     {
-
+        $input = $request->all();
+        $this->writeLogFile(json_encode($input, JSON_PRETTY_PRINT));
         $openMeteoWeather = new OpenMeteoWeather();
         /* return response()->json(
             [
@@ -95,5 +97,25 @@ class TgBotController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Writes TG messages into log-file.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    private function writeLogFile(string $string, bool $clear = false)
+    {
+        $now = date("Y-m-d H:i:s");
+        if(!$clear) {
+            Storage::disk('local')->append('tg-bot/messages.log', 
+                $now." ".$string."\r\n"
+            );
+        } else {
+            $a = Storage::disk('local')->put('tg-bot/messages.log', 
+                $now." ".print_r($string, true)."\r\n"
+            );
+        }
     }
 }
