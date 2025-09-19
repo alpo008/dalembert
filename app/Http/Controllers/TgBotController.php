@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr;
-use App\Models\OpenMeteoWeather;
+use App\Models\EcowittWeather;
 
 
 class TgBotController extends Controller
@@ -47,11 +47,11 @@ class TgBotController extends Controller
         $textMessage = Arr::get($input, 'message.text');
         $chatId = Arr::get($input, 'message.chat.id');
         $this->writeLogFile(json_encode($input, JSON_PRETTY_PRINT));
-        $openMeteoWeather = new OpenMeteoWeather();
+        $weather = new EcowittWeather();
         if(!!$chatId) {
             $arrayQuery = [
                 'chat_id'       => $chatId,
-                'text'          => $openMeteoWeather->description(),
+                'text'          => $weather->description(),
                 'parse_mode'    => "html",
             ];
             $this->sendTgMessage($arrayQuery);

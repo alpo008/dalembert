@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\LocalWeather;
+use App\Models\EcowittWeather;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +15,6 @@ use App\Models\LocalWeather;
 */
 
 Route::get('/{vue_capture?}', function () {
-	$test = new LocalWeather();
+	$test = new EcowittWeather();
  return view('welcome', ['wx' => $test]);
 })->where('vue_capture', '[\/\w\.-]*');

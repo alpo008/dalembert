@@ -12,12 +12,14 @@
 	"Heavy snow fall": "Heavy snow fall",
 	"Heavy snow showers": "Heavy snow showers",
 	"hPa": "hPa",
+	"Humidity": "Humidity",
 	"Light drizzle": "Light drizzle",
 	"Light freezing drizzle": "Light freezing drizzle",
 	"Light freezing rain": "Light freezing rain", 
     "Mainly clear": "Mainly clear",
     "Map": "Map",
     "mm": "mm",
+    "mmHg": "mmHg",
 	"Moderate drizzle": "Moderate drizzle",
 	"Moderate rain": "Moderate rain",
 	"Moderate rain showers": "Moderate rain showers",
@@ -39,5 +41,6 @@
 	"Violent rain shower": "Violent rain shower",
 	"User": "User",
 	"Username": "User name",
-	"Wind": "Wind"
+	"Wind": "Wind",
+	"Wind gust": "Wind gust"
 }
