@@ -65,7 +65,7 @@ class OpenMeteoWeather
 	public function description(): string
 	{
 		$result = '';
-		$result .= date('Y.m.d H:m', $this->getCurrentValue('time')) . PHP_EOL;
+		$result .= date('Y.m.d H:i', $this->getCurrentValue('time')) . PHP_EOL;
 		$result .= $this->getWmoText() . ', ';
 		$result .= $this->getCurrentValue('temperature_2m', true) . PHP_EOL;
 		$result .= 	__('Wind') . ': ' . $this->windRumb() . ' (' .
