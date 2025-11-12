@@ -48,7 +48,7 @@ class TgBotController extends Controller
         $textMessage = Arr::get($input, 'message.text');
         $chatId = Arr::get($input, 'message.chat.id');
         $this->writeLogFile(json_encode($input, JSON_PRETTY_PRINT));
-        if ($textMessage === "\/current") {
+        if ($textMessage === "/current") {
             $weather = new EcowittWeather();
             $text = $weather->description();
         }
