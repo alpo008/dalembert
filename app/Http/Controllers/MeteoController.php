@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\EcowittWeather;
 
 class MeteoController extends Controller
 {
@@ -14,14 +15,11 @@ class MeteoController extends Controller
      */
     public function index()
     {
-        $meteoData = Storage::get('meteo/wx.xml');
-        $meteoObject = simplexml_load_string($meteoData, "SimpleXMLElement", LIBXML_NOCDATA);
-        $meteoJson = json_encode($meteoObject);
-        $meteoArray = json_decode($meteoJson, TRUE);
+        $wx = new EcowittWeather();
         return response()->json(
             [
                 'status' => 'success',
-                'meteoData' => $meteoArray          
+                'all' => $wx->all()         
             ], 200);
     }
 

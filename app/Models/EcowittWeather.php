@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class EcowittWeather
 {
 	const REFRESHING_TIME = 180;  //TODO
-	protected $forecast;
+	protected $weatherData;
 
 	public function __construct()
 	{
@@ -17,10 +17,10 @@ class EcowittWeather
 		if($this->isOutOfTime($stored)) {
 			$this->refresh();
 			Storage::disk('local')->put('meteo/ecowitt.json', 
-				json_encode($this->forecast, JSON_PRETTY_PRINT)
+				json_encode($this->weatherData, JSON_PRETTY_PRINT)
 			);
 		} else {
-			$this->forecast = json_decode($stored, true);
+			$this->weatherData = json_decode($stored, true);
 		}
 	}
 
@@ -32,11 +32,11 @@ class EcowittWeather
 	 * */
 	public function getCurrentValue($name, $withUnit = false): string
 	{
-		$result = Arr::get($this->forecast, 
+		$result = Arr::get($this->weatherData, 
 			"data.$name.value"
 		);
 		if($withUnit) {
-			$result .= ' ' . __(Arr::get($this->forecast, 
+			$result .= ' ' . __(Arr::get($this->weatherData, 
 				"data.$name.unit"));
 		}
 		return $result;
@@ -52,8 +52,12 @@ class EcowittWeather
 		if (!is_numeric($windDirection)) {
 			return "";
 		}
+		$rumb = $windDirection + 11.25;
+		if ($rumb > 360) {
+			$rumb = $rumb - 360;
+		}
 		$rumbs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
-		return $rumbs[$windDirection % 16];
+		return $rumbs[$rumb % 22.5];
 	}
 
 	/** Gets general weather description
@@ -63,7 +67,7 @@ class EcowittWeather
 	public function description(): string
 	{
 		$result = '';
-		$result .= date('Y.m.d H:i', Arr::get($this->forecast, 'time')) . PHP_EOL;
+		$result .= date('Y.m.d H:i', Arr::get($this->weatherData, 'time')) . PHP_EOL;
 		$result .= $this->getCurrentValue('outdoor.temperature', true) . PHP_EOL;
 		$result .= 	__('Wind') . ': ' . $this->windRumb() . ' (' .
 				$this->getCurrentValue('wind.wind_direction', true) . '), ' .
@@ -81,10 +85,15 @@ class EcowittWeather
 		return $result;
 	}
 
+	public function all()
+	{
+		return $this->weatherData;
+	}
+
 	/** Updates weather data from server */
 	private function refresh()
 	{
-        $forecast = Http::get(env('ECOWITT_API_URL'), [
+        $weatherData = Http::get(env('ECOWITT_API_URL'), [
 			'application_key' => env('ECOWITT_APP_KEY'),
 			'api_key' => env('ECOWITT_API_KEY'),
 			'mac' => env('ECOWITT_STATION_MAC'),
@@ -96,7 +105,7 @@ class EcowittWeather
 			'solar_irradiance_unitid' => '14',
 			'capacity_unitid' => '24',
         ]);
-        $this->forecast = $forecast->json();
+        $this->weatherData = $weatherData->json();
 	}
 
 		/** Checks if stored forecast is out of time or not 

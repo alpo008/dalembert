@@ -34,6 +34,7 @@ sftp-config.json
 /src-cordova/node_modules
 /src-cordova/plugins
 /public/cordova.js
+/public/gweather
 
 # Data files
 /resources/data
