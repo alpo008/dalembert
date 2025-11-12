@@ -44,14 +44,19 @@ class TgBotController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
+        $text = __('Incorrect command');
         $textMessage = Arr::get($input, 'message.text');
         $chatId = Arr::get($input, 'message.chat.id');
         $this->writeLogFile(json_encode($input, JSON_PRETTY_PRINT));
-        $weather = new EcowittWeather();
+        if ($textMessage === "\/current") {
+            $weather = new EcowittWeather();
+            $text = $weather->description();
+        }
+        
         if(!!$chatId) {
             $arrayQuery = [
                 'chat_id'       => $chatId,
-                'text'          => $weather->description(),
+                'text'          => $text,
                 'parse_mode'    => "html",
             ];
             $this->sendTgMessage($arrayQuery);
