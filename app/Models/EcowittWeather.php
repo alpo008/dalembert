@@ -57,7 +57,7 @@ class EcowittWeather
 			$rumb = $rumb - 360;
 		}
 		$rumbs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
-		return $rumbs[fllor($rumb / 22.5)];
+		return $rumbs[floor($rumb / 22.5)];
 	}
 
 	/** Gets general weather description
