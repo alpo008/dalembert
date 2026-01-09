@@ -1,30 +1,11 @@
 <template>
-<!--  <div>
-     <v-img
-      style="height:82vh;top:-20px;"
-      aspect-ratio="16/9"
-      cover
-      src="./img/bg-energy.jpg"
-    ></v-img>
-  </div> -->
-
   <v-parallax
     src="./img/bg-energy.jpg"
     class="mt-n10"
   >
     <div class="d-flex flex-column fill-height justify-start align-center text-white mt-10">
-      <h1 class="text-h4 font-weight-thin mb-4">
-        Vuetify
-      </h1>
+
       <h4 class="subheading">
-        <v-list class="text-h5 bg-transparent">
-            <v-list-item
-              v-for="(item, i) in itemsAvailable"
-              :key="i"
-            >
-              {{ item.label }}  {{ item.value }}  {{ item.unit }}
-            </v-list-item>
-        </v-list>
       </h4>
     </div>
   </v-parallax>

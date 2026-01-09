@@ -9,7 +9,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-<!--         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.8.95/css/materialdesignicons.css"> -->
+
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
 
         <!-- Styles -->
@@ -24,8 +24,18 @@
         </style>
     </head>
     <body class="antialiased">
+      <div id="weatherapp" 
+        style="
+            position: absolute;
+            z-index: 9999;
+            top: 97px;
+            width: -webkit-fill-available;
+        "
+        ></div>
 
         <div id="app"></div>
         <script src="{{ mix('js/app.js') }}" defer></script>
+    <script type="module" crossorigin src="/gweather/index-ujXVFluN.js"></script>
+    <link rel="stylesheet" crossorigin href="/gweather/index-BkOg1j4E.css">
     </body>
 </html>
