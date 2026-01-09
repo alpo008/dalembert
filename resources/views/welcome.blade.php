@@ -35,7 +35,9 @@
 
         <div id="app"></div>
         <script src="{{ mix('js/app.js') }}" defer></script>
-    <script type="module" crossorigin src="/gweather/index-ujXVFluN.js"></script>
-    <link rel="stylesheet" crossorigin href="/gweather/index-BkOg1j4E.css">
+        @if(env('GWEATHER_DISPLAY'))
+            <script type="module" crossorigin src="/gweather/widget.js"></script>
+            <link rel="stylesheet" crossorigin href="/gweather/widget.css">
+        @endif
     </body>
 </html>
