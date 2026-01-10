@@ -13,9 +13,7 @@
     class="mt-n10"
   >
     <div class="d-flex flex-column fill-height justify-start align-center text-white mt-10">
-      <h1 class="text-h4 font-weight-thin mb-4">
-        Vuetify
-      </h1>
+
       <h4 class="subheading">
         <v-list class="text-h5 bg-transparent">
             <v-list-item
