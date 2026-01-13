@@ -24,7 +24,7 @@
     ></v-progress-circular>
   </v-overlay>
 
-  <v-card v-if="$auth.ready()">
+  <v-card image="/img/bg-gl.jpg" min-height="100vh" v-if="$auth.ready()">
     <v-layout>
       <v-app-bar
         color="primary"

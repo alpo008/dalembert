@@ -92,7 +92,7 @@
   </Transition>
   <v-table
     fixed-header
-    style="height:90%;width:90%;margin-top: 30px;"
+    style="margin-top: 26px;"
     class="table-condensed"
   >
     <thead>
