@@ -43,11 +43,6 @@ class TgBotController extends Controller
      */
     public function store(Request $request)
     {
-        $this->sendTgMessage([
-            'chat_id'       => ,
-                'text'          => 'Check Bot',
-                'parse_mode'    => "html",
-        ]);
         $input = $request->all();
         $text = __('Incorrect command');
         $textMessage = Arr::get($input, 'message.text');
@@ -66,6 +61,13 @@ class TgBotController extends Controller
             ];
             $this->sendTgMessage($arrayQuery);
         }
+
+                    $arrayQuery = [
+                'chat_id'       => $chatId,
+                'text'          => $text,
+                'parse_mode'    => "html",
+            ];
+            $this->sendTgMessage($arrayQuery);
     }
 
     /**
