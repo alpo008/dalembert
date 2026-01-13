@@ -14,9 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/{vue_capture?}', function () {
-<<<<<<< HEAD
- return view('welcome');
-=======
+
 /*	$test = new EcowittWeather()*/;
  return view('welcome', ['wx' => []]);
 >>>>>>> main
