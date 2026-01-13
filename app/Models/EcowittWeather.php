@@ -93,6 +93,7 @@ class EcowittWeather
 	/** Updates weather data from server */
 	private function refresh()
 	{
+        die(env('ECOWITT_API_URL'));
         $weatherData = Http::get(env('ECOWITT_API_URL'), [
 			'application_key' => env('ECOWITT_APP_KEY'),
 			'api_key' => env('ECOWITT_API_KEY'),
