@@ -17,5 +17,5 @@ Route::get('/{vue_capture?}', function () {
 
 /*	$test = new EcowittWeather()*/;
  return view('welcome', ['wx' => []]);
->>>>>>> main
+
 })->where('vue_capture', '[\/\w\.-]*');
