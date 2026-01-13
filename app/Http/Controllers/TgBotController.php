@@ -43,6 +43,11 @@ class TgBotController extends Controller
      */
     public function store(Request $request)
     {
+        $this->sendTgMessage([
+            'chat_id'       => ,
+                'text'          => 'Check Bot',
+                'parse_mode'    => "html",
+        ]);
         $input = $request->all();
         $text = __('Incorrect command');
         $textMessage = Arr::get($input, 'message.text');
@@ -133,6 +138,6 @@ class TgBotController extends Controller
         $tgApiUrl = config('custom.telegram.token');
         $tgToken = config('custom.telegram.api_url');
         $res = Http::get($tgApiUrl . $tgToken ."/sendMessage", $getQuery);
-        $this->writeLogFile($res, true);
+        //$this->writeLogFile($res, true);
     }
 }
