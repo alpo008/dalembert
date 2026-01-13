@@ -51,7 +51,6 @@ class TgBotController extends Controller
         if ($textMessage === "/current") {
             $weather = new EcowittWeather();
             $text = $weather->description();
-            $this->writeLogFile(json_encode($text, JSON_PRETTY_PRINT));
         }
         
         if(!!$chatId) {
@@ -60,7 +59,6 @@ class TgBotController extends Controller
                 'text'          => $text,
                 'parse_mode'    => "html",
             ];
-                        $this->writeLogFile(json_encode($arrayQuery, JSON_PRETTY_PRINT));
             $this->sendTgMessage($arrayQuery);
         }
     }
@@ -134,6 +132,9 @@ class TgBotController extends Controller
     {
         $tgApiUrl = config('custom.telegram.token');
         $tgToken = config('custom.telegram.api_url');
+        $this->writeLogFile(json_encode([
+            1 => $tgToken, 2 => $tgApiUrl
+        ], JSON_PRETTY_PRINT));
         $res = Http::get($tgApiUrl . $tgToken ."/sendMessage", $getQuery);
         //$this->writeLogFile($res, true);
     }
