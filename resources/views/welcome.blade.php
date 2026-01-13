@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ __(env('APP_NAME')) }}</title>
+        <title>{{ config('app.name') }}</title>
         <link rel="icon" type="image/x-icon" href="/favicon.svg">
 
         <!-- Fonts -->
@@ -35,9 +35,5 @@
 
         <div id="app"></div>
         <script src="{{ mix('js/app.js') }}" defer></script>
-        @if(env('GWEATHER_DISPLAY'))
-            <script type="module" crossorigin src="/gweather/widget.js"></script>
-            <link rel="stylesheet" crossorigin href="/gweather/widget.css">
-        @endif
     </body>
 </html>

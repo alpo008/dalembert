@@ -100,8 +100,8 @@ class OpenMeteoWeather
 	/** Updates weather data from server */
 	private function refresh()
 	{
-        $coords = json_decode(env('MIX_GM_MAP_CENTER'), true);
-        $forecast = Http::get(env('OPEN_METEO_API_URL') , [
+        $coords = json_decode(config('custom.google_maps.default_map_center', true);
+        $forecast = Http::get(config('custom.open_meteo.api_url'), , [
             'latitude' => Arr::get($coords, 'lat'),
             'longitude' => Arr::get($coords, 'lng'),
             //'hourly' => ['temperature_2m', 'apparent_temperature', 'rain', 'showers', 'snowfall', 'snow_depth'],
@@ -119,7 +119,7 @@ class OpenMeteoWeather
              ],
             'windspeed_unit'=> 'ms',
             'daily' => ['sunrise', 'sunset'],
-            'timezone' => env('DEFAULT_TIMEZONE'),
+            'timezone' => config('custom.default_timezone'),
             'timeformat' => 'unixtime'
             //'current_weather' => true
         ]);

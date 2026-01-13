@@ -57,7 +57,7 @@ class HomeController extends Controller
 
         if ($this->locationWasChanged(compact('oldLat', 'oldLng', 'lat', 'lng')) || $this->forecastIsStale($weather)) {
             $latlng = $lat . ',' . $lng;
-            $openMeteoApiUrl = env('OPEN_METEO_API_URL');
+            $openMeteoApiUrl = config('custom.open_meteo.api_url');
             $forecast = Http::get($openMeteoApiUrl , [
                 'latitude' => $validated['lat'],
                 'longitude' => $validated['lng'],
@@ -71,8 +71,8 @@ class HomeController extends Controller
             $weather = $forecast->json();
             $weather['updated'] = true;
 
-            $geocodingApiUrl = env('GM_API_URL');
-            $geocodingApiKey = env('GM_API_KEY');
+            $geocodingApiUrl = config('custom.google_maps.geocode_api_url');
+            $geocodingApiKey = config('custom.google_maps.api_key');
 
             $location = Http::get($geocodingApiUrl , [
                 'latlng' => $latlng,

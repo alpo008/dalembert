@@ -93,11 +93,10 @@ class EcowittWeather
 	/** Updates weather data from server */
 	private function refresh()
 	{
-        die(env('ECOWITT_API_URL'));
-        $weatherData = Http::get(env('ECOWITT_API_URL'), [
-			'application_key' => env('ECOWITT_APP_KEY'),
-			'api_key' => env('ECOWITT_API_KEY'),
-			'mac' => env('ECOWITT_STATION_MAC'),
+        $weatherData = Http::get(config('custom.ecowitt.api_url'), [
+			'application_key' => config('custom.ecowitt.app_key'),
+			'api_key' => config('custom.ecowitt.api_key'),
+			'mac' => config('custom.ecowitt.station_mac'),
 			'call_back' => 'all',
 			'temp_unitid' => '1',
 			'pressure_unitid' => '5',
