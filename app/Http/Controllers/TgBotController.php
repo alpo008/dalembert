@@ -132,13 +132,8 @@ class TgBotController extends Controller
     {
         $tgApiUrl = config('custom.telegram.api_url');
         $tgToken = config('custom.telegram.token');
-
-        $logg = [
-            'url' => $tgApiUrl . $tgToken ."/sendMessage",
-            'query' => $getQuery
-        ];
-
-                $this->writeLogFile(json_encode($logg, JSON_PRETTY_PRINT));
         $res = Http::get($tgApiUrl . $tgToken ."/sendMessage", $getQuery);
+
+        $this->writeLogFile(json_encode($res, JSON_PRETTY_PRINT));
     }
 }
