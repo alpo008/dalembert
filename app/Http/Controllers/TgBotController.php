@@ -139,8 +139,7 @@ class TgBotController extends Controller
             'url' => $tgApiUrl . $tgToken ."/sendMessage",
             'query' => $getQuery
         ];
-        $this->writeLogFile($logg, true);
+        $this->writeLogFile(json_encode($logg, JSON_PRETTY_PRINT);
         $res = Http::get($tgApiUrl . $tgToken ."/sendMessage", $getQuery);
-
     }
 }
