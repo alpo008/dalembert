@@ -12,7 +12,7 @@
   </v-btn>
   <Transition name="slide-fade">
     <v-system-bar 
-      style="height:50px;top:100px;padding: 0 2%;justify-content:center;width: calc((100% - 0px) - 0px);backdrop-filter: blur(10px);background-color:transparent;"
+      style="height:50px;top:100px;padding: 0 2%;justify-content:center;width: calc((100% - 0px) - 0px);backdrop-filter: blur(10px);background-color:rgba(255,255,255, 0.3);"
       class="rounded"
       elevation="10"
       v-show="showToolbar"
