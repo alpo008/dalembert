@@ -61,13 +61,6 @@ class TgBotController extends Controller
             ];
             $this->sendTgMessage($arrayQuery);
         }
-
-                    $arrayQuery = [
-                'chat_id'       => $chatId,
-                'text'          => $text,
-                'parse_mode'    => "html",
-            ];
-            $this->sendTgMessage($arrayQuery);
     }
 
     /**
@@ -137,6 +130,7 @@ class TgBotController extends Controller
 
     private function sendTgMessage(array $getQuery)
     {
+        $this->writeLogFile(json_encode([1=> 'sending'], JSON_PRETTY_PRINT));
         $tgApiUrl = config('custom.telegram.token');
         $tgToken = config('custom.telegram.api_url');
         $res = Http::get($tgApiUrl . $tgToken ."/sendMessage", $getQuery);
