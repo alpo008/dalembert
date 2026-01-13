@@ -24,15 +24,6 @@
         </style>
     </head>
     <body class="antialiased">
-      <div id="weatherapp" 
-        style="
-            position: absolute;
-            z-index: 9999;
-            top: 97px;
-            width: -webkit-fill-available;
-        "
-        ></div>
-
         <div id="app"></div>
         <script src="{{ mix('js/app.js') }}" defer></script>
     </body>

@@ -310,6 +310,7 @@ export default {
         this.getWxData();
         this.timer = setInterval(this.getWxData, 300000);
       }
+      this.chartMode=false;
       this.show = !this.show;  
     },
     showChart(wx_param) {
@@ -692,8 +693,8 @@ export default {
       background-color: rgb(43, 46, 53);
       border-radius: 1rem;
       box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
-      position: fixed;
       transition: width 0.5s linear;
+      padding: 2px 0;
   }
 
   .weather h2 {
@@ -862,12 +863,11 @@ export default {
   .close-icon-right {
       position: absolute;
       right: 7px;
-      top: 5px;
       cursor: pointer;
       border: 1px solid grey;
       border-radius: 50%;
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
   }
 
   .link-icon-left:hover, .link-icon-right:hover, .close-icon-right:hover {
