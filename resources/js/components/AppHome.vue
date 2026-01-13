@@ -2,7 +2,6 @@
   <v-parallax
     src="./img/bg-gl.jpg"
     class="mt-n10"
-    style=""
   >
     <div class="d-flex flex-column fill-height justify-start align-center text-white mt-10">
     </div>
