@@ -131,9 +131,22 @@ class TgBotController extends Controller
     private function sendTgMessage(array $getQuery)
     {
         $this->writeLogFile(json_encode([1=> 'sending'], JSON_PRETTY_PRINT));
+
+
+
         $tgApiUrl = config('custom.telegram.token');
         $tgToken = config('custom.telegram.api_url');
-        $res = Http::get($tgApiUrl . $tgToken ."/sendMessage", $getQuery);
-        //$this->writeLogFile($res, true);
+
+                $ch = curl_init("https://api.telegram.org/bot". $tgToken ."/sendMessage?" . http_build_query($getQuery));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_HEADER, false);
+
+$resultQuery = curl_exec($ch);
+curl_close($ch);
+
+
+        //$res = Http::get($tgApiUrl . $tgToken ."/sendMessage", $getQuery);
+        $this->writeLogFile($resultQuery, true);
     }
 }
