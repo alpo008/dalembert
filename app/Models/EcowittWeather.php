@@ -51,7 +51,7 @@ class EcowittWeather
 		$windDirection = $this->getCurrentValue('wind.wind_direction');
 		$windSpeed = $this->getCurrentValue('wind.wind_speed');
 		$windGust = $this->getCurrentValue('wind.wind_gust');
-		if (!is_numeric($windDirection) || ($windSpeed = "0.0")) {
+		if (!is_numeric($windDirection) || !(intval($windSpeed) + intval($windGust))) {
 			return "";
 		}
 		$rumb = $windDirection + 11.25;
