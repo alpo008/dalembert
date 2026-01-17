@@ -71,7 +71,9 @@ class EcowittWeather
 		$result = '';
 		$result .= date('Y.m.d H:i', Arr::get($this->weatherData, 'time')) . PHP_EOL;
 		$result .= $this->getCurrentValue('outdoor.temperature', true) . PHP_EOL;
-		$result .= 	__('Wind') . ': ' . $this->windRumb() .
+		$windDirection = !empty($this->windRumb()) ? ' (' .
+			$this->getCurrentValue('wind.wind_direction', true) . '), ' : '';
+		$result .= 	__('Wind') . ': ' . $this->windRumb() . $windDirection .
 				$this->getCurrentValue('wind.wind_speed', true) . PHP_EOL;
 		$result .= 	__('Wind gust') . ': ' . 
 			$this->getCurrentValue('wind.wind_gust', true) . PHP_EOL;
