@@ -49,7 +49,9 @@ class EcowittWeather
 	public function windRumb(): string
 	{
 		$windDirection = $this->getCurrentValue('wind.wind_direction');
-		if (!is_numeric($windDirection)) {
+		$windSpeed = $this->getCurrentValue('wind.wind_speed.value');
+		$windGust = $this->getCurrentValue('wind.wind_gust.value');
+		if (!is_numeric($windDirection) || !(($windSpeed + $windGust) * 1)) {
 			return "";
 		}
 		$rumb = $windDirection + 11.25;
@@ -69,8 +71,9 @@ class EcowittWeather
 		$result = '';
 		$result .= date('Y.m.d H:i', Arr::get($this->weatherData, 'time')) . PHP_EOL;
 		$result .= $this->getCurrentValue('outdoor.temperature', true) . PHP_EOL;
-		$result .= 	__('Wind') . ': ' . $this->windRumb() . ' (' .
-				$this->getCurrentValue('wind.wind_direction', true) . '), ' .
+		$windDirection = !empty($this->windRumb()) ? ' (' .
+				$this->getCurrentValue('wind.wind_direction', true) . '), ' : '';
+		$result .= 	__('Wind') . ': ' . $this->windRumb() . $windDirection .
 				$this->getCurrentValue('wind.wind_speed', true) . PHP_EOL;
 		$result .= 	__('Wind gust') . ': ' . 
 			$this->getCurrentValue('wind.wind_gust', true) . PHP_EOL;
