@@ -73,10 +73,13 @@ class EcowittWeather
 		$result .= $this->getCurrentValue('outdoor.temperature', true) . PHP_EOL;
 		$windDirection = !empty($this->windRumb()) ? ' (' .
 			$this->getCurrentValue('wind.wind_direction', true) . '), ' : '';
+		$showWindGust = !!intval($this->getCurrentValue('wind.wind_gust'));
 		$result .= 	__('Wind') . ': ' . $this->windRumb() . $windDirection .
 				$this->getCurrentValue('wind.wind_speed', true) . PHP_EOL;
-		$result .= 	__('Wind gust') . ': ' . 
-			$this->getCurrentValue('wind.wind_gust', true) . PHP_EOL;
+		if ($showWindGust) {
+			$result .= 	__('Wind gust') . ': ' . 
+				$this->getCurrentValue('wind.wind_gust', true) . PHP_EOL;
+		}
 		$result .= __('Barometer') . ': ' .
 					$this->getCurrentValue('pressure.absolute', true) . PHP_EOL;
 		$result .= __('Humidity') . ': ' .
