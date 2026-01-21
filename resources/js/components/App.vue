@@ -29,8 +29,9 @@
       <v-app-bar
         color="primary"
         prominent
+        v-if="showNavs"
       >
-        <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" v-if="$auth.check(['admin', 'super'])">
+        <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer" v-if="$auth.check(['admin', 'super']) && showNavs">
         </v-app-bar-nav-icon>
           <v-spacer v-if="!searchBar"></v-spacer>
           <v-text-field 
@@ -59,6 +60,7 @@
               :icon="userIcon"
               v-bind="props"
               :title="userName"
+              v-if="showNavs"
             >
             </v-btn>
           </template>
@@ -85,7 +87,7 @@
         v-model="drawer"
         location="start"
         temporary
-        v-if="$auth.check(['admin', 'super'])"
+        v-if="$auth.check(['admin', 'super']) && showNavs"
       >
         <v-list>
           <v-list-item
@@ -112,7 +114,8 @@
 
 <script>
   const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
-  import WidgetWeather from './widgets/WidgetWeather.vue'
+  import WidgetWeather from './widgets/WidgetWeather.vue';
+
   export default {
     components: {
       WidgetWeather
@@ -126,7 +129,8 @@
         searchBar: false,
         showEditorButton: false,
         overlay: false,
-        menuItems: []
+        menuItems: [],
+        showNavs: false
       }
     },
     mounted() {
@@ -213,6 +217,7 @@
     },
     watch: {
       $route(to, from) {
+        this.showNavs = !to.meta?.hideNavs;
         this.searchBar = !!to.meta?.searchBar;
         this.showEditorButton = !!to.meta?.showEditorButton;
         this.searchString = '';

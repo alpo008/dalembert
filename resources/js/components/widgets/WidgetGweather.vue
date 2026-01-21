@@ -1,5 +1,5 @@
 <template>
-  <main class="main-section">
+  <main class="main-section" style="margin-top:-67px;">
     <div class="weather" :style="toggler_style">
       <h2 @click="start">{{ _t('Our meteostation') }}</h2>
       <div v-if="show"> 

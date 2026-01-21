@@ -10,6 +10,7 @@ import AppAirmaxClient from './components/AppAirmaxClient.vue';
 import AppStatistics from './components/AppStatistics.vue';
 import AppCalculator from './components/AppCalculator.vue';
 import AppWorks from './components/AppWorks.vue';
+import AppGlobus from './components/AppGlobus.vue';
 
 export default VueRouter.createRouter({
     routes: [
@@ -122,6 +123,16 @@ export default VueRouter.createRouter({
                 },
                 searchBar: false,
                 menuItem: true
+            }
+        },
+        {
+            path: '/globus',
+            name: 'VMPK Globus',
+            component: AppGlobus,
+            meta: {
+                searchBar: false,
+                menuItem: false,
+                hideNavs: true
             }
         },
     ],
