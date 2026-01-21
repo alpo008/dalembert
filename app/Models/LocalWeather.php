@@ -4,58 +4,108 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * This is the model class for Generic Meteostation api
+ *
+ * @property integer $updatedAt
+ * @property float $temperature
+ * @property string $temperatureUnit
+ * @property float $feelsLike
+ * @property string $feelsLikeUnit
+ * @property float $dewPoint
+ * @property string $dewPointUnit
+ * @property float $humidity
+ * @property string $humidityUnit
+ * @property float $solar
+ * @property string $solarUnit
+ * @property integer $uvi
+ * @property string $uviUnit
+ * @property float $rainRate
+ * @property string $rainRateUnit
+ * @property float $windSpeed
+ * @property string $windSpeedUnit
+ * @property float $windGust
+ * @property string $windGustUnit
+ * @property integer $windDirection
+ * @property string $windDirectionUnit
+ * @property float $pressureAbsolute
+ * @property string $pressureAbsoluteUnit
+ * @property float $pressureRelative
+ * @property string $pressureRelativeUnit
+ */
 
 class LocalWeather
 {
-	 public function __construct()
-	 {
-	 	$xml = Storage::get('meteo/wx.xml');
-	    $wxObject = simplexml_load_string($xml, "SimpleXMLElement", LIBXML_NOCDATA);
-	    $wxJson = json_encode($wxObject);
-	    $wxArray = json_decode($wxJson, TRUE);
-	    $fullArray = $wxArray['channel'] ?? [];
-	    $items = $fullArray['item'] ?? [];
-	    foreach ($fullArray as $k => $v) {
-	    	if (!is_array($v)) {
-	    		$this->$k = $v;
-	    	}
-	    }
-	    $this->current = (object) ($items[0] ?? []);
-	    $this->daily = (object) ($items[1] ?? []);
-	    $this->monthly = (object) ($items[2] ?? []);
-	    $this->yearly = (object) ($items[3] ?? []);
+	public $updatedAt;
+	public $temperature;
+	public $temperatureUnit;
+	public $feelsLike;
+	public $feelsLikeUnit;
+	public $dewPoint;
+	public $dewPointUnit;
+	public $humidity;
+	public $humidityUnit;
+	public $solar;
+	public $solarUnit;
+	public $uvi;
+	public $uviUnit;
+	public $rainRate;
+	public $rainRateUnit;
+	public $windSpeed;
+	public $windSpeedUnit;
+	public $windGust;
+	public $windGustUnit;
+	public $windDirection;
+	public $windDirectionUnit;
+	public $pressureRelative;
+	public $pressureRelativeUnit;
 
-	    $this->current->description = $this->parseDescription($this->current->description);
-	    $this->daily->description = $this->parseDescription($this->daily->description);
-	    $this->monthly->description = $this->parseDescription($this->monthly->description);
-	    $this->yearly->description = $this->parseDescription($this->yearly->description);
 
-	 }
-
-	 public $title;
-	 public $link;
-	 public $description;
-	 public $language;
-	 public $pubDate;
-	 public $lastBuildDate;
-	 public $docs;
-	 public $generator;
-	 public $ttl;
-	 public $current;
-	 public $daily;
-	 public $monthly;
-	 public $yearly;
-
-	 protected function parseDescription($description) {
-		$cleanedString = trim(preg_replace('/\s\s+/',"",$description));
-		$cleanedArray = explode(';', $cleanedString);
-		$resultArray = [];
-		foreach($cleanedArray as $item) {
-			$key_value = explode(': ', trim($item));
-			if(!empty($key_value[0]) && !empty($key_value[1])) {
-				$resultArray[trim($key_value[0])] = trim($key_value[1]);
-			}
+	/** Converts wind direction to rumbs 
+	 * 
+	 * @return string
+	 * */
+	public function windRumb(): string
+	{
+		if (!boolval($this->windDirection) || 
+			($this->windSpeed === 0.0  && $this->windGust === 0.0)
+		) {
+			return "";
 		}
-		return (object) $resultArray;	
-	 }
+		$rumb = $this->windDirection + 11.25;
+		if ($rumb > 360) {
+			$rumb = $rumb - 360;
+		}
+		$rumbs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
+		return $rumbs[floor($rumb / 22.5)];
+	}
+
+	/** Creates generic weather description
+	 *
+	 * @return string
+	 * */
+	public function description(): string
+	{
+		$result = '';
+		$result .= date('Y.m.d H:i', $this->updatedAt) . PHP_EOL;
+		$result .= $this->temperature . ' ' . $this->temperatureUnit . PHP_EOL;
+		$windDirection = !empty($this->windRumb()) ? ' (' .
+			$this->windDirection . ' ' . $this->windDirectionUnit . '), ' : '';
+		$showWindGust = !!intval($this->windGust);
+		$result .= 	__('Wind') . ': ' . $this->windRumb() . $windDirection .
+				$this->windSpeed . PHP_EOL;
+		if ($showWindGust) {
+			$result .= 	__('Wind gust') . ': ' . 
+				$this->windGust . ' ' . $this->windGustUnit . PHP_EOL;
+		}
+		$result .= __('Barometer') . ': ' .
+					$this->pressureAbsolute . ' ' . $this->pressureAbsoluteUnit . PHP_EOL;
+		$result .= __('Humidity') . ': ' .
+					$this->humidity . ' ' . $this->humidityUnit . PHP_EOL;
+		if($this->rainRate != 0){
+			$result .= __('Rain') . ': ' .
+			$this->rainRate . ' ' . $this->rainRateUnit . PHP_EOL;
+		}
+		return $result;
+	}
 }

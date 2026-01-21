@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use App\Models\LocalWeather;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Storage;
 
-class EcowittWeather
+/**
+ * This is the model class for Ecowitt Meteostation api
+ */
+
+class EcowittWeather extends LocalWeather
 {
 	const REFRESHING_TIME = 180;  //TODO
 	protected $weatherData;
@@ -22,73 +27,80 @@ class EcowittWeather
 		} else {
 			$this->weatherData = json_decode($stored, true);
 		}
-	}
 
-	/** Gets weather parameters values with or without units 
-	 *
-	 * @param string $name
-	 * @param bool $withUnit
-	 * @return string
-	 * */
-	public function getCurrentValue($name, $withUnit = false): string
-	{
-		$result = Arr::get($this->weatherData, 
-			"data.$name.value"
+		$this->updatedAt = intval(Arr::get($this->weatherData, 'time'));
+		$this->temperature = floatval(Arr::get($this->weatherData, 
+			"data.outdoor.temperature.value"
+		));
+		$this->temperatureUnit = Arr::get($this->weatherData, 
+			"data.outdoor.temperature.unit"
 		);
-		if($withUnit) {
-			$result .= ' ' . __(Arr::get($this->weatherData, 
-				"data.$name.unit"));
-		}
-		return $result;
-	}
-
-	/** Converts wind direction to rumbs 
-	 * 
-	 * @return string
-	 * */
-	public function windRumb(): string
-	{
-		$windDirection = $this->getCurrentValue('wind.wind_direction');
-		$windSpeed = $this->getCurrentValue('wind.wind_speed');
-		$windGust = $this->getCurrentValue('wind.wind_gust');
-		if (!is_numeric($windDirection) || !(intval($windSpeed) + intval($windGust))) {
-			return "";
-		}
-		$rumb = $windDirection + 11.25;
-		if ($rumb > 360) {
-			$rumb = $rumb - 360;
-		}
-		$rumbs = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW'];
-		return $rumbs[floor($rumb / 22.5)];
-	}
-
-	/** Gets general weather description
-	 *
-	 * @return string
-	 * */
-	public function description(): string
-	{
-		$result = '';
-		$result .= date('Y.m.d H:i', Arr::get($this->weatherData, 'time')) . PHP_EOL;
-		$result .= $this->getCurrentValue('outdoor.temperature', true) . PHP_EOL;
-		$windDirection = !empty($this->windRumb()) ? ' (' .
-			$this->getCurrentValue('wind.wind_direction', true) . '), ' : '';
-		$showWindGust = !!intval($this->getCurrentValue('wind.wind_gust'));
-		$result .= 	__('Wind') . ': ' . $this->windRumb() . $windDirection .
-				$this->getCurrentValue('wind.wind_speed', true) . PHP_EOL;
-		if ($showWindGust) {
-			$result .= 	__('Wind gust') . ': ' . 
-				$this->getCurrentValue('wind.wind_gust', true) . PHP_EOL;
-		}
-		$result .= __('Barometer') . ': ' .
-					$this->getCurrentValue('pressure.absolute', true) . PHP_EOL;
-		$result .= __('Humidity') . ': ' .
-					$this->getCurrentValue('outdoor.humidity', true) . PHP_EOL;
-		if($this->getCurrentValue('rainfall.rain_rate') != 0){
-			$result .= __('Rain') . ': ' .
-			$this->getCurrentValue('rainfall.rain_rate', true) . PHP_EOL;
-		}
-		return $result;
+		$this->feelsLike = floatval(Arr::get($this->weatherData, 
+			"data.outdoor.feels_like.value"
+		));
+		$this->feelsLikeUnit = Arr::get($this->weatherData, 
+			"data.outdoor.feels_like.unit"
+		);
+		$this->dewPoint = floatval(Arr::get($this->weatherData, 
+			"data.outdoor.dew_point.value"
+		));
+		$this->dewPointUnit = Arr::get($this->weatherData, 
+			"data.outdoor.dew_point.unit"
+		);
+		$this->humidity = floatval(Arr::get($this->weatherData, 
+			"data.outdoor.humidity.value"
+		));
+		$this->humidityUnit = Arr::get($this->weatherData, 
+			"data.outdoor.humidity.unit"
+		);
+		$this->solar = floatval(Arr::get($this->weatherData, 
+			"data.solar_and_uvi.solar.value"
+		));
+		$this->solarUnit = Arr::get($this->weatherData, 
+			"data.solar_and_uvi.solar.unit"
+		);
+		$this->uvi = intval(Arr::get($this->weatherData, 
+			"data.solar_and_uvi.uvi.value"
+		));
+		$this->uviUnit = Arr::get($this->weatherData, 
+			"data.solar_and_uvi.uvi.unit"
+		);
+		$this->rainRate = floatval(Arr::get($this->weatherData, 
+			"data.rainfall.rain_rate.value"
+		));
+		$this->rainRateUnit = Arr::get($this->weatherData, 
+			"data.rainfall.rain_rate.unit"
+		);
+		$this->windSpeed = floatval(Arr::get($this->weatherData, 
+			"data.wind.wind_speed.value"
+		));
+		$this->windSpeedUnit = Arr::get($this->weatherData, 
+			"data.wind.wind_gust.unit"
+		);
+		$this->windGust = floatval(Arr::get($this->weatherData, 
+			"data.wind.wind_gust.value"
+		));
+		$this->windGustUnit = Arr::get($this->weatherData, 
+			"data.wind.wind_gust.unit"
+		);
+		$this->windDirection = intval(Arr::get($this->weatherData, 
+			"data.wind.wind_direction.value"
+		));
+		$this->windDirectionUnit = Arr::get($this->weatherData, 
+			"data.wind.wind_direction.unit"
+		);
+		$this->pressureRelative = floatval(Arr::get($this->weatherData, 
+			"data.pressure.relative.value"
+		));
+		$this->pressureRelativeUnit = Arr::get($this->weatherData, 
+			"data.pressure.relative.unit"
+		);
+		$this->pressureAbsolute = floatval(Arr::get($this->weatherData, 
+			"data.pressure.absolute.value"
+		));
+		$this->pressureAbsoluteUnit = Arr::get($this->weatherData, 
+			"data.pressure.absolute.unit"
+		);
 	}
 
 	public function all()
