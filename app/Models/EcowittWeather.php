@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Storage;
 class EcowittWeather extends LocalWeather
 {
 	const REFRESHING_TIME = 180;  //TODO
-	protected $weatherData;
 
-	public function __construct()
+	public function __construct($params = [])
 	{
+		parent::__construct($params);
 		$stored = Storage::disk('local')->get('meteo/ecowitt.json');
 		if($this->isOutOfTime($stored)) {
 			$this->refresh();

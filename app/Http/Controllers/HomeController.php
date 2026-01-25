@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OpenMeteoWeather;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Arr;
@@ -57,18 +58,9 @@ class HomeController extends Controller
 
         if ($this->locationWasChanged(compact('oldLat', 'oldLng', 'lat', 'lng')) || $this->forecastIsStale($weather)) {
             $latlng = $lat . ',' . $lng;
-            $openMeteoApiUrl = config('custom.open_meteo.api_url');
-            $forecast = Http::get($openMeteoApiUrl , [
-                'latitude' => $validated['lat'],
-                'longitude' => $validated['lng'],
-                //'hourly' => ['temperature_2m', 'apparent_temperature', 'rain', 'showers', 'snowfall', 'snow_depth'],
-                'windspeed_unit'=> 'ms',
-                'daily' => ['sunrise', 'sunset'],
-                'timezone' => $timeZone,
-                'current_weather' => true
-            ]);
+            $weatherModel = new OpenMeteoWeather(['location' => compact('lat', 'lng')]);
 
-            $weather = $forecast->json();
+            $weather = $weatherModel->weatherData;
             $weather['updated'] = true;
 
             $geocodingApiUrl = config('custom.google_maps.geocode_api_url');
@@ -82,7 +74,7 @@ class HomeController extends Controller
 
             $locationData = $location->json();
 
-            $city = 'Unknown';
+            $city = __('Unknown place');
 
             if($addressComponents = array_get($locationData, 'results.0.address_components')) {
                 foreach($addressComponents as $val) {

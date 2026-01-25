@@ -9,12 +9,11 @@ use Illuminate\Support\Facades\Storage;
 
 class OpenMeteoWeather extends LocalWeather
 {
-	const REFRESHING_TIME = 10;  //TODO
+	const REFRESHING_TIME = 1200;  //TODO
 
-	protected $weatherData;
-
-	public function __construct()
+	public function __construct($params = [])
 	{
+		parent::__construct($params);
 		$stored = Storage::disk('local')->get('meteo/openmeteo.json');
 		if($this->isOutOfTime($stored)) {
 			$this->refresh();
@@ -154,15 +153,15 @@ class OpenMeteoWeather extends LocalWeather
         return __($wmoCodes[$wmoCode]);
 	}
 
-
 	/** Updates weather data from server */
 	private function refresh()
 	{
         $coords = json_decode(config('custom.google_maps.default_map_center'), true);
 		$openMeteoApiUrl = config('custom.open_meteo.api_url');
             $weatherData = Http::get($openMeteoApiUrl , [
-                'latitude' => $coords['lat'],
-                'longitude' => $coords['lng'],
+                'latitude' => $this->location['lat'],
+                'longitude' => $this->location['lng'],
+                'daily' => ['sunrise', 'sunset'],
                 'current' => [
             	'temperature_2m',
             	'dew_point_2m',
@@ -179,8 +178,8 @@ class OpenMeteoWeather extends LocalWeather
              	'diffuse_radiation',
              	'weather_code'
              ],
+                             'current_weather' => true,
             'windspeed_unit'=> 'ms',
-            'daily' => ['sunrise', 'sunset'],
             'timezone' => config('custom.default_timezone'),
             'timeformat' => 'unixtime'
             ]);

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Storage;
 /**
  * This is the model class for Generic Meteostation api
  *
+ * @property array $location
+ * @property array $weatherData
  * @property integer $updatedAt
  * @property float $temperature
  * @property string $temperatureUnit
@@ -36,6 +38,8 @@ use Illuminate\Support\Facades\Storage;
 
 class LocalWeather
 {
+	public $weatherData;
+	protected $location;
 	public $updatedAt;
 	public $temperature;
 	public $temperatureUnit;
@@ -59,6 +63,18 @@ class LocalWeather
 	public $windDirectionUnit;
 	public $pressureRelative;
 	public $pressureRelativeUnit;
+
+	public function __construct($params)
+	{
+		foreach($params as $k => $v) {
+			$this->$k = $v;
+		}
+		if(empty($this->location)) {
+			$this->location = json_decode(
+				config('custom.google_maps.default_map_center'), true
+			);
+		}
+	}
 
 
 	/** Converts wind direction to rumbs 
