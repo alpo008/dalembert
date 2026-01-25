@@ -881,6 +881,7 @@ export default {
   .close-icon-right {
       position: absolute;
       right: 7px;
+      transform: translate(0px, -50px);
       cursor: pointer;
       border: 1px solid grey;
       border-radius: 50%;
