@@ -11,6 +11,7 @@ import AppStatistics from './components/AppStatistics.vue';
 import AppCalculator from './components/AppCalculator.vue';
 import AppWorks from './components/AppWorks.vue';
 import AppGlobus from './components/AppGlobus.vue';
+import AppStickers from './components/AppStickers.vue';
 
 export default VueRouter.createRouter({
     routes: [
@@ -133,6 +134,19 @@ export default VueRouter.createRouter({
                 searchBar: false,
                 menuItem: false,
                 hideNavs: true
+            }
+        },
+        {
+            path: '/stickers',
+            name: 'Stickers management',
+            component: AppStickers,
+            meta: {
+                auth: {
+                    roles: ['super', 'admin'],
+                    redirect: '/'
+                },
+                searchBar: false,
+                menuItem: true
             }
         },
     ],
