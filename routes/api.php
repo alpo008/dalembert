@@ -12,6 +12,7 @@ use App\Http\Controllers\CalculationController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MeteoController;
 use App\Http\Controllers\TgBotController;
+use App\Http\Controllers\StickerController;
 
 
 /*
@@ -41,6 +42,7 @@ Route::apiResource('calculations', CalculationController::class);
 Route::apiResource('airmax-activity', AirmaxActivityController::class)->only(['index', 'store']);
 Route::apiResource('meteo', MeteoController::class)->only(['index', 'store']);
 Route::apiResource('tg-bot', TgBotController::class)->only(['index', 'store']);
+Route::apiResource('stickers', StickerController::class);
 
 Route::get('attachments/{obj}/{id}', 'App\Http\Controllers\AttachmentController@show');
 Route::post('attachments/download', 'App\Http\Controllers\AttachmentController@download');
