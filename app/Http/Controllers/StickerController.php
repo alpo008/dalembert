@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Sticker;
+use App\Models\Attachment;
 use App\Http\Requests\StickerRequest;
+use Illuminate\Support\Facades\Auth;
+use App\Traits\MediaUploader;
 
 class StickerController extends Controller
 {
+    use MediaUploader;
+
     /**
      * Display a listing of the resource.
      *
@@ -38,6 +44,16 @@ class StickerController extends Controller
         $this->authorize('create', Sticker::class);
         $request->merge(['created_by' => Auth::id()]);
         $current = Sticker::create($request->all());
+        $media = $this->sticker($request);
+        if(!!$media && $media->save()) {
+            $this->attach($current::class, $current->id, $media);
+        }
+        return response()->json(
+            [
+                'status' => 'success',
+                'current' => Sticker::with('attachments')->find($current->id)
+            ], 200
+        );
     }
 
     /**

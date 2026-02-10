@@ -72,6 +72,35 @@ trait MediaUploader
     }
 
     /** 
+     * Create Media object for Sticker
+     * @param  [type] $request [description]
+     * @return null|Media
+     */
+    public function sticker($request): ?Media
+    {     
+        $file = $request->file('file');
+        if(!($file instanceof UploadedFile)) {
+            return null;
+        }
+
+        $this->media = new Media ([
+            'name' => __('Sticker'),
+            'file_name' => $file->getClientOriginalName(),
+            'mime_type' => $file->getClientMimeType(),
+            'path' => 'stickers',                
+            'disk' => 'local',
+            'file' => $request->file('file'),
+            'collection' => 'Stickers',
+            'size' => $file->getSize(),
+            'uploaded_by' => Auth::id(),
+            'description' => 'Uploaded sticker attachment',
+            'doi' => $request->get('doi')
+        ]);
+        $this->media->setFile($file);
+        return $this->media;
+    }
+
+    /** 
      * Attach uploaded media to morphable
      * @param  integer $morphableType
      * @param  integer $morphableId 

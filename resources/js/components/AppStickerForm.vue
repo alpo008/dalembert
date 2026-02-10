@@ -97,12 +97,12 @@ export default {
       if(!!this.file) {
         formData.append('file', this.file);
       }
-      formData.append('amount', this.stickerData.amount);
+      formData.append('message', this.stickerData.message);
       formData.append('doi', this.stickerData.doi);
-      formData.append('payer_type', this.stickerData.payer_type);
-      formData.append('payer_id', this.stickerData.payer_id);
-      formData.append('comments', this.stickerData.comments);
-      formData.append('destination', this.stickerData.destination);
+      formData.append('valid_until', this.stickerData.valid_until);
+      formData.append('contact_name', this.stickerData.contact_name);
+      formData.append('contact_phone', this.stickerData.contact_phone);
+      formData.append('contact_email', this.stickerData.contact_email);
       await this.$store.dispatch('httpRequest', {
         url: '/stickers',
         method: 'POST',

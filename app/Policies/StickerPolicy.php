@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-class PaymentPolicy
+class StickerPolicy
 {
     use HandlesAuthorization;
 
