@@ -26,13 +26,13 @@ class StickerRequest extends FormRequest
     {
         return [
             'contact_name' => 'nullable|max:50', 
-            'contact_email' => 'nullable|max:100|email:rfc,dns',
-            'contact_phone' => 'nullable|max:30|regex:/^\+?\d{11,12}?$/',
+            'contact_email' => 'nullable|max:100|string|email:rfc,dns',
+            'contact_phone' => 'nullable|max:30|string|regex:/^\+?\d{11,12}?$/',
             'priority' => 'integer|between:1,3',
-            'message' => 'string|max:255',
+            'message' => 'nullable|string',
             'doi' => 'date',
             'valid_until' => 'date',
-            'file' => ['sometimes', File::types(['jpg', 'png' , 'jpeg', 'tiff', 'pdf'])->max(2048)]
+            'file' => ['sometimes', File::types(['jpg', 'png' , 'jpeg', 'tiff'])->max(2048)]
         ];
     }
 }

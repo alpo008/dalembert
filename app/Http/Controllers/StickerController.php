@@ -88,13 +88,29 @@ class StickerController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  StickerRequest  $request
-     * @param  int  $id
+     * @param  App\Http\Requests\StickerRequest  $request
+     * @param  App\Models\Sticker $sticker
      * @return \Illuminate\Http\Response
      */
-    public function update(StickerRequest $request, $id)
+    public function update(StickerRequest $request, Sticker $sticker)
     {
-        //
+        $this->authorize('update', $sticker);
+        $result = Sticker::whereId($sticker->id)->update($request->except([
+            'attachments', '_method', 'file'
+        ]));
+        $media = $this->sticker($request);
+        if(!!$result && !!$media && $media->save()) {
+            $sticker->attachments()->each(function($attachment) {
+                $attachment->delete(); 
+            });
+            $this->attach($sticker::class, $sticker->id, $media);
+        }
+        return response()->json(
+            [
+                'status' => 'success',
+                'current' => Sticker::with('attachments')->find($sticker->id)
+            ], 200
+        );
     }
 
     /**

@@ -15,6 +15,7 @@ export default {
 		setCurrentSticker(state, payload) {
 			if(typeof(payload.current) === 'object') {
 				state.current = payload.current;
+				state.all = state.all.filter(el => el.id !== payload.current.id);
 				state.all.push(state.current);
 			}		
 		},

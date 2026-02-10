@@ -9,8 +9,8 @@
   <v-text-field 
     type="date"
     :label="$t('Date of expire')"
-    v-model="stickerData.doi"
-    :error-messages="errors.doi"
+    v-model="stickerData.valid_until"
+    :error-messages="errors.valid_until"
   >           
   </v-text-field>
   <v-text-field 
@@ -18,7 +18,7 @@
     :label="$t('Name')"
     ref="name"
     v-model="stickerData.contact_name"
-    :error-messages="errors.name"
+    :error-messages="errors.contact_name"
     counter="50"
   >
   </v-text-field>
@@ -27,7 +27,7 @@
     :label="$t('Phone')"
     ref="phone"
     v-model="stickerData.contact_phone"
-    :error-messages="errors.phone"
+    :error-messages="errors.contact_phone"
   >
   </v-text-field>
   <v-text-field 
@@ -35,7 +35,7 @@
     label="E-mail"
     ref="email"
     v-model="stickerData.contact_email"
-    :error-messages="errors.email"
+    :error-messages="errors.contact_email"
   >
   </v-text-field>
   <v-select
@@ -88,18 +88,40 @@ export default {
       this.file = this.$refs.file.files[0];
     },
     async save() {
+      let url = !!this.stickerData.id ? '/stickers/' + this.stickerData.id : '/stickers';
       const formData = new FormData();
       if(!!this.file) {
         formData.append('file', this.file);
       }
-      formData.append('message', this.stickerData.message);
+      if(!!this.stickerData.id) {
+        formData.append('_method', 'put');
+      }
       formData.append('doi', this.stickerData.doi);
       formData.append('valid_until', this.stickerData.valid_until);
-      formData.append('contact_name', this.stickerData.contact_name);
-      formData.append('contact_phone', this.stickerData.contact_phone);
-      formData.append('contact_email', this.stickerData.contact_email);
+      if (this.stickerData.message !== null && this.stickerData.message !== undefined) {
+          formData.append('message', this.stickerData.message);
+      } else {
+          formData.append('message', '');
+      }
+      if (this.stickerData.contact_name !== null && this.stickerData.contact_name !== undefined) {
+          formData.append('contact_name', this.stickerData.contact_name);
+      } else {
+          formData.append('contact_name', '');
+      }
+      if (this.stickerData.contact_phone !== null && this.stickerData.contact_phone !== undefined) {
+          formData.append('contact_phone', this.stickerData.contact_phone);
+      } else {
+          formData.append('contact_phone', '');
+      }
+      if (this.stickerData.contact_email !== null && this.stickerData.contact_email !== undefined) {
+          formData.append('contact_email', this.stickerData.contact_email);
+      } else {
+          formData.append('contact_email', '');
+      }
+      formData.append('priority', this.stickerData.priority);
+
       await this.$store.dispatch('httpRequest', {
-        url: '/stickers',
+        url: url,
         method: 'POST',
         data: formData,
         mutation: 'setCurrentSticker'

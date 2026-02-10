@@ -44,6 +44,14 @@ class Sticker extends Model
     ];
 
     /**
+     * @var array
+     */
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s'
+    ];
+
+    /**
      * Get all of the attachments.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
