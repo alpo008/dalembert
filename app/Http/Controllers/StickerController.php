@@ -20,7 +20,14 @@ class StickerController extends Controller
      */
     public function index()
     {
-        //
+        $this->authorize('viewAny', Sticker::class);
+        $allStickers = Sticker::with('attachments')->get()->toArray();
+        return response()->json(
+            [
+                'status' => 'success',
+                'stickers' => $allStickers
+            ], 200
+        );
     }
 
     /**
@@ -93,11 +100,15 @@ class StickerController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Sticker $sticker
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Sticker $sticker)
     {
-        //
+        $this->authorize('delete', $sticker);
+        Sticker::destroy($sticker->id);
+        return response()->json(
+            ['status' => 'success', 'deleted' => $sticker->id ], 200
+        );
     }
 }

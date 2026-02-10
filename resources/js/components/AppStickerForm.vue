@@ -64,18 +64,13 @@
 <script>
 const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
 export default {
+  props: {
+    sticker: Object
+  },
   data: function () {
     return {
       file: null,
-      stickerData: {
-        message: '',
-        doi: new Date().toISOString().slice(0,10),
-        valid_until: new Date().toISOString().slice(0,10),
-        contact_name: '',
-        contact_phone: '',
-        contact_email: '',
-        priority: 3,
-      },
+      stickerData: {},
       priorities: [
         {title: this.$t('Low'), value: 3},
         {title: this.$t('Medium'), value: 2},
@@ -86,7 +81,7 @@ export default {
     }
   },
   mounted() {
-
+    this.stickerData = this.sticker;
   },
   methods: {
     uploadFile() {

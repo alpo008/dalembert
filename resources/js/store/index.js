@@ -8,6 +8,7 @@ import statistics from './statistics';
 import works from './works';
 import customers from './customers';
 import general from './general';
+import sticker from './sticker';
 
 export const store = createStore({
 /*  state () {
@@ -23,6 +24,7 @@ export const store = createStore({
     statistics,
     works,
     customers,
-    general
+    general,
+    sticker
 	}
 })

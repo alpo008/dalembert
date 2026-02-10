@@ -1,7 +1,7 @@
 <template>
 	<v-system-bar 
 		color="transparent"
-		style="height:50px;width: calc((100% - 10px) - 20px);top:160px;left:16px;"
+		style="height:50px;width: calc((100% - 10px) - 20px);top:104px;left:16px;"
 		class="rounded"
 	>
 		<v-btn
@@ -14,48 +14,26 @@
 		</v-btn>
 	</v-system-bar>
 
-  <v-table v-if="true">
-    <thead>
-      <tr>
-        <th class="text-left pa-1 text-break">
-          {{ $t('Date') }}
-        </th>
-        <th class="text-left pa-1 text-break">
-          {{ $t('Amount') }}
-        </th>
-        <th class="text-left pa-1 text-break">
-          {{ $t('Destination') }}
-        </th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-<!--       <tr
-        v-for="sticker in allStickers"
-        :key="sticker.id"
+  <v-data-table :headers="tableHeaders" :items="allStickers" item-key="id" class="elevation-1">
+    <template v-slot:item.action="{ item }">
+      <v-btn
+        icon="mdi-square-edit-outline"
+        @click="editSticker(item)"
+        style="margin: 0 1%;"
+        :title="$t('Edit')"
+        v-if="$auth.check('super')"
       >
-        <td class="pa-1">
-          {{ formatDate(sticker.doi, 'D.M.YYYY') }}
-      	</td>
-        <td class="pa-1">{{ sticker.amount }}</td>
-        <td>{{ sticker.destination }}</td>
-        <td class="pa-1">
-        	<v-btn density="compact" class="px-1" icon="mdi-eye-outline" @click="viewMedia(sticker)" v-if="hasMedia(sticker)"></v-btn>
-        </td>
-        <td class="pa-1">
-        	<v-btn 
-        		density="compact" 
-        		class="px-1" 
-        		icon="mdi-delete-forever-outline" 
-        		@click="deleteSticker(sticker)"
-						v-if="canDelete(sticker)"       		
-      		>      			
-      		</v-btn>
-        </td>
-      </tr> -->
-    </tbody>
-  </v-table>
+      </v-btn>
+      <v-btn
+        icon="mdi-delete-forever-outline"
+        @click="deleteSticker(item)"
+        style="margin: 0 1%;"
+        :title="$t('Delete')"
+        v-if="$auth.check('super')"
+      >
+      </v-btn>
+    </template>
+</v-data-table>
 <!--   <v-dialog eager v-model="preview" style="width:60vw;">
 	  <v-card style="min-height:90vh" id="media-preview">
 	    <v-toolbar
@@ -108,7 +86,7 @@
 	      </v-btn>
 	    </v-toolbar>
       <v-card-text>
-      	<app-sticker-form></app-sticker-form>
+      	<app-sticker-form :sticker="currentSticker"></app-sticker-form>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -128,10 +106,32 @@
 			return {
 				modal: false,
 				attachmentData: {},
-				allStickers: {},
+				currentSticker: {},
 				mediaContents: '',
 				preview: false,
-				mediaPreview: {}
+				mediaPreview: {},
+        tableHeaders: [
+          {
+            title: this.$t('Date of issue'),
+            align: 'left',
+            key: 'doi'
+          },
+          {
+            title: this.$t('Date of expire'),
+            align: 'left',
+            key: 'valid_until'
+          },
+          {
+            title: this.$t('Publisher'),
+            align: 'center',
+            key: 'contact_name'
+          },
+          {
+            title: '',
+            align: 'center',
+            key: 'action'
+          }
+        ],
 			}
 		},
 		async created() {
@@ -141,45 +141,38 @@
 	        data: null,
 	        mutation: 'setStickers'
 	      });
-	      this.allStickers = this.$store.getters.allStickers;
 		},
 		methods: {
       addSticker() {
+      	this.currentSticker = {
+	        message: '',
+	        doi: new Date().toISOString().slice(0,10),
+	        valid_until: new Date().toISOString().slice(0,10),
+	        contact_name: '',
+	        contact_phone: '',
+	        contact_email: '',
+	        priority: 3,
+	      }
         this.modal = true;
       },
-      async addAttachment() {
-	      await this.$store.dispatch('httpRequest', {
-	        url: '/attachments',
-	        method: 'POST',
-	        data: this.attachmentData,
-	        mutation: 'setCurrentDocument'
-	      });
-	      this.errors = this.$store.getters.httpErrors;
-	  		if (!isEmpty(this.errors)) {
-		  		console.error(this.errors);
-	  		} else {
-		  		this.modal = false;
-		  		this.allStickers = this.$store.getters.allStickers;
-	  		}
+      editSticker(dataTableItem) {
+        this.currentSticker = dataTableItem.raw;
+        this.modal = true;
       },
-      canDelete(sticker) {
-      	let id = this.userId;
-      	return ((id === sticker.created_by) || this.$auth.check('super'));
-      },
-      deleteSticker(sticker) {
-        if (!isNaN(sticker.id)) {
-          this.$refs.confirm_del.open(this.$t('Deletion'), 
-            this.$t('Are you sure?'), { color: '#ff0266' }).then((confirm) => {
-            if(confirm) {
-    		      this.$store.dispatch('httpRequest', {
-				        url: '/stickers/' + sticker.id,
-				        method: 'DELETE',
-				        data: sticker,
-				        mutation: 'afterDeleteSticker'
-				      }).then(() => {this.allStickers = this.$store.getters.allStickers;});
-            }
-          });
-        }
+      deleteSticker(dataTableItem) {
+      	if (!isNaN(dataTableItem.raw.id)) {
+      	  this.$refs.confirm_del.open(this.$t('Deletion'), 
+      	    this.$t('Are you sure?'), { color: '#ff0266' }).then((confirm) => {
+      	    if(confirm) {
+      	      this.$store.dispatch('httpRequest', {
+      	        url: '/stickers/' + dataTableItem.raw.id,
+      	        method: 'DELETE',
+      	        data: dataTableItem.raw,
+      	        mutation: 'afterDeleteSticker'
+      	      });
+      	    }
+      	  });
+      	}
       },
       async viewMedia(sticker) {
       	if (!isEmpty(sticker.attachments) && !!sticker.attachments[0]?.id) {
@@ -205,6 +198,9 @@
       }
 		},
 		computed: {
+      allStickers() {
+        return this.$store.getters.allStickers;
+      },
 			userId() {
 				let user = this.$auth.user();
 				return user?.id;
