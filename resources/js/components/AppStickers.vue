@@ -1,9 +1,20 @@
 <template>
 	<v-system-bar 
 		color="transparent"
-		style="height:50px;width: calc((100% - 10px) - 20px);top:104px;left:16px;"
+		style="
+			height:50px;width: calc((100% - 10px) - 20px);
+			top:104px;left:16px;
+			justify-content:space-between;"
 		class="rounded"
 	>
+    <v-checkbox
+      style="max-width:fit-content;margin-right:30px;"    
+      v-model="activityFilter"
+      color="success"
+      hide-details
+      :label="$t('Active only')"
+    >
+    </v-checkbox>
 		<v-btn
 			icon="mdi-note-plus-outline"
 			@click="addSticker"
@@ -14,7 +25,7 @@
 		</v-btn>
 	</v-system-bar>
 
-  <v-data-table :headers="tableHeaders" :items="allStickers" item-key="id" class="elevation-1">
+  <v-data-table :headers="tableHeaders" :items="allStickers" item-key="id" class="elevation-1 mt-14">
     <template v-slot:item.action="{ item }">
       <v-btn
         icon="mdi-image-outline"
@@ -99,6 +110,7 @@
 
 <script>
 	const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
+  import moment from "moment/dist/moment";
   import WidgetConfirm from './widgets/WidgetConfirm.vue';
 	import AppStickerForm from './AppStickerForm.vue';
 	export default {
@@ -114,6 +126,7 @@
 				mediaContents: '',
 				preview: false,
 				mediaPreview: {},
+				activityFilter: false,
         tableHeaders: [
           {
             title: this.$t('Date of issue'),
@@ -194,6 +207,9 @@
       hasMedia(sticker) {
       	return (!isEmpty(sticker.attachments) && !!sticker.attachments[0]?.id);	
       },
+      isActive(sticker) {
+      	return moment(sticker.valid_until).isAfter(moment());
+      },
       formatDate(date) {
       	let parts = date.split('-');
       	return parts[2] + '.' + parts[1] + '.' + parts[0];
@@ -201,7 +217,11 @@
 		},
 		computed: {
       allStickers() {
-        return this.$store.getters.allStickers;
+        if(this.activityFilter) {
+        	return this.$store.getters.allStickers.filter(sticker => this.isActive(sticker));
+        } else {
+        	return this.$store.getters.allStickers;
+        }
       },
 			userId() {
 				let user = this.$auth.user();

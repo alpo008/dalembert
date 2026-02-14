@@ -14,24 +14,24 @@
     </v-btn>
   </v-system-bar>
   <v-data-table :headers="tableHeaders" :items="allWorks" item-key="title" class="elevation-1">
-      <template v-slot:item.action="{ item }">
-        <v-btn
-          icon="mdi-square-edit-outline"
-          @click="editWork(item)"
-          style="margin: 0 1%;"
-          :title="$t('Edit')"
-          v-if="$auth.check('super')"
-        >
-        </v-btn>
-        <v-btn
-          icon="mdi-delete-forever-outline"
-          @click="deleteWork(item)"
-          style="margin: 0 1%;"
-          :title="$t('Delete')"
-          v-if="$auth.check('super')"
-        >
-        </v-btn>
-      </template>
+    <template v-slot:item.action="{ item }">
+      <v-btn
+        icon="mdi-square-edit-outline"
+        @click="editWork(item)"
+        style="margin: 0 1%;"
+        :title="$t('Edit')"
+        v-if="$auth.check('super')"
+      >
+      </v-btn>
+      <v-btn
+        icon="mdi-delete-forever-outline"
+        @click="deleteWork(item)"
+        style="margin: 0 1%;"
+        :title="$t('Delete')"
+        v-if="$auth.check('super')"
+      >
+      </v-btn>
+    </template>
   </v-data-table>
 
   <v-dialog
