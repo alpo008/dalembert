@@ -201,6 +201,7 @@
 	"validation.string": "Поле :attribute должно быть текстовой строкой",
 	"validation.unique": "Такой :attribute уже используется",
 	"validation.uploaded": "Невозможно загрузить файл",
+	"View": "Просмотр",
 	"wires": "жил",
 	"Work title": "Наименование работ",
 	"Wrong credentials": "Неверные учетные данные",

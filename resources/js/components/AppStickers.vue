@@ -17,6 +17,14 @@
   <v-data-table :headers="tableHeaders" :items="allStickers" item-key="id" class="elevation-1">
     <template v-slot:item.action="{ item }">
       <v-btn
+        icon="mdi-image-outline"
+        @click="viewMedia(item.raw)"
+        style="margin: 0 1%;"
+        :title="$t('View')"
+        v-if="$auth.check('super')  && hasMedia(item.raw)"
+      >
+      </v-btn>
+      <v-btn
         icon="mdi-square-edit-outline"
         @click="editSticker(item)"
         style="margin: 0 1%;"
@@ -34,36 +42,32 @@
       </v-btn>
     </template>
 </v-data-table>
-<!--   <v-dialog eager v-model="preview" style="width:60vw;">
-	  <v-card style="min-height:90vh" id="media-preview">
-	    <v-toolbar
-	      dark
-	      prominent
-	    >
-	      <v-toolbar-title>{{ mediaPreview.doi }} ( {{ mediaPreview.destination }} )</v-toolbar-title>
 
-	      <v-spacer></v-spacer>
-
-	      <v-btn icon @click="preview = false">
-	        <v-icon>mdi-close</v-icon>
-	      </v-btn>
-	    </v-toolbar>
-	    <v-card-text> {{ mediaPreview.comments }} </v-card-text>
-	    <iframe 
-	    	:src="mediaContents" 
-	    	frameborder="0" 
-	    	style="min-height:80vh; text-align:center; padding: 0.5rem 1rem;" 
-	    	allowfullscreen
-	    	v-if="mediaPreview.mime_type==='application/pdf'"
-	    	>	    		
-    	</iframe>
-    	<img
-    		:src="mediaContents" 
-    		v-else
-    		style="width: 55vw;"
-    	/>
-	  </v-card>
-	</v-dialog> -->
+<v-dialog eager v-model="preview" style="width:60vw;">
+  <v-card style="min-height:90vh" id="media-preview">
+    <v-toolbar
+      dark
+      prominent
+    >
+      <v-btn icon @click="preview = false" style="position:absolute;right:0">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+    </v-toolbar>
+    <iframe 
+    	:src="mediaContents" 
+    	frameborder="0" 
+    	style="min-height:80vh; text-align:center; padding: 0.5rem 1rem;" 
+    	allowfullscreen
+    	v-if="mediaPreview.mime_type==='application/pdf'"
+    	>	    		
+  	</iframe>
+  	<img
+  		:src="mediaContents" 
+  		v-else
+  		style="width: 55vw;"
+  	/>
+  </v-card>
+</v-dialog>
   
   <v-dialog
     v-model="modal"
@@ -184,8 +188,6 @@
 		      });
   	      this.mediaContents = this.$store.getters.fileContents;
 		      this.mediaPreview = sticker.attachments[0].media;
-		      this.mediaPreview.comments = sticker.comments;
-		      this.mediaPreview.destination = sticker.destination;
 	      	this.preview = true;
       	}
       },
