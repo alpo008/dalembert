@@ -32,7 +32,6 @@ export default {
 			state.all = state.all.filter(el => el.id !== payload.deleted);
 		},
 		setMediaContents(state, payload) {
-			console.log(payload);
 			state.fileContents = payload.contents;
 		},
 	},

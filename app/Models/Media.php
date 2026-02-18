@@ -18,7 +18,12 @@ class Media extends Model
         parent::boot();
 
         static::deleting(function($model) { 
-            Storage::disk($model->disk)->delete($model->path);
+            if ($model->disk === 'public') {
+                $path = str_replace('public/', '', $model->path);
+            } else {
+                $path = $model->path;
+            }
+            Storage::disk($model->disk)->delete($path);
         });
     }
 
@@ -99,7 +104,6 @@ class Media extends Model
                 $this->path .= '/' . $name;
             }
             Storage::disk($this->disk)->put($dir, $this->file);
-            $storagePath = $this->disk === 'public' ? 'app/public/' : 'app/';
             $this->file_hash = hash_file('sha256', 
                 storage_path(path: $storagePath . $dir . "/{$name}")
             );
