@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\OpenMeteoWeather;
+use App\Models\Sticker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Arr;
@@ -144,6 +145,23 @@ class HomeController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Get data for globus homepage
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function globus()
+    {
+        //
+        return response()->json(
+            [
+                'status' => 'success',
+                'active_stickers' => Sticker::getActive()
+            ], 200
+        );
     }
 
     /**

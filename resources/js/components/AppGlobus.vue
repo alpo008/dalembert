@@ -1,52 +1,25 @@
 <template>
   <widget-gweather/>
-  <v-card class="mx-auto" 
-  style="
-    position: fixed;
-    top: 83px;
-    background: transparent;
-    z-index: -1;
-    justify-self: flex-end;
-    align-self: anchor-center;
-  ">
-    <v-container fluid>
-      <v-row dense>
-        <v-col
-          v-for="card in cards"
-          :key="card.title"
-          max-width="360"
-        >
-          <v-card theme="dark" style="background-color:rgba(33,33,33, 0.4);">
-            <v-img
-              :src="card.src"
-              class="white--text align-end"
-              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
-              height="200px"
-            >
-              <v-card-title v-text="card.title"></v-card-title>
-              <v-card-text v-text="card.text"></v-card-text>
-            </v-img>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-
-              <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-
-              <v-btn icon>
-                <v-icon>mdi-bookmark</v-icon>
-              </v-btn>
-
-              <v-btn icon>
-                <v-icon>mdi-share-variant</v-icon>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-card>
+<v-carousel v-if="stickers.length" class="position-fixed" style="z-index:-1;top:98px;">
+  <v-carousel-item
+    v-for="(sticker, i) in stickers"
+    :key="i"
+    :src="imagePath(sticker)"
+  >
+    <v-sheet
+      color="rgba(128,128,128,0.4)"
+      height="100%"
+      tile
+    >
+      <div class="d-flex fill-height justify-center align-center">
+        <div class="text-h2">
+          {{ sticker.contact_name }}
+        </div>
+      </div>
+    </v-sheet>
+  </v-carousel-item>
+</v-carousel>
 </template>
 <script>
   const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
@@ -57,30 +30,33 @@
     },
     data: function () {
       return {
-        cards: [
-          { 
-            title: 'Pre-fab homes', 
-            src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg',
-            text: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis, doloribus, repellat. Suscipit tenetur doloribus corrupti molestiae, aspernatur fugiat. Animi sapiente alias, quam. Quos animi porro enim eveniet cum ab iure.', 
-            flex: 6 
-          },
-          { title: 'Favorite road trips', 
-            src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg',
-            text: 'Suscipit tenetur doloribus corrupti molestiae, aspernatur fugiat. Animi sapiente alias, quam. Quos animi porro enim eveniet cum ab iure.', 
-            flex: 6 
-          },
-          { 
-            title: 'Best airlines', 
-            src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg',
-            text: 'Animi sapiente alias, quam. Quos animi porro enim eveniet cum ab iure.', 
-            flex: 6 
-          },
-        ]
+        stickers: []
       }
     },
     async created() {
+      await this.$store.dispatch('httpRequest', {
+        url: '/home/globus',
+        method: 'POST',
+        data: null,
+        mutation: 'setStickers'
+      });
+      this.stickers = this.$store.getters.activeStickers;
     },
     methods: {
+      hasImage(sticker) {
+        let attachment = sticker.attachments[0];
+        if (typeof attachment === 'undefined' || typeof attachment.media === 'undefined') {
+          return false;
+        }
+        return true;
+      },
+      imagePath(sticker) {
+        if (this.hasImage(sticker)) {
+          return sticker.attachments[0].media.path.replace('public', '/storage');
+        } else {
+        return null;
+        }
+      }
     },
     computed: {
     }

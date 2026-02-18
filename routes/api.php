@@ -55,6 +55,8 @@ Route::group(['prefix' => 'export'], function () {
 
 Route::get('payments/{obj}/{id}', 'App\Http\Controllers\PaymentController@show');
 
+Route::post('home/globus', 'App\Http\Controllers\HomeController@globus');
+
 Route::prefix('auth')->group(function () {
         Route::post('register', 'App\Http\Controllers\AuthController@register');
         Route::post('login', 'App\Http\Controllers\AuthController@login');

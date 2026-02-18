@@ -60,4 +60,10 @@ class Sticker extends Model
     {
         return $this->morphMany(Attachment::class, 'morphable')->with('media');
     }
+
+    public static function getActive()
+    {
+        $today = date('Y-m-d', time());
+        return self::with('attachments')->where('valid_until', '>=', $today)->get();
+    }
 }

@@ -88,7 +88,7 @@ trait MediaUploader
             'file_name' => $file->getClientOriginalName(),
             'mime_type' => $file->getClientMimeType(),
             'path' => 'stickers',                
-            'disk' => 'local',
+            'disk' => 'public',
             'file' => $request->file('file'),
             'collection' => 'Stickers',
             'size' => $file->getSize(),

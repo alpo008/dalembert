@@ -91,9 +91,18 @@ class Media extends Model
         if($this->file instanceof \Illuminate\Http\UploadedFile) {
             $name = $this->file->hashName();
             $dir = $this->path;
-            $this->path .= '/' . $name;
-            Storage::disk('local')->put($dir, $this->file);
-            $this->file_hash = hash_file('sha256', storage_path(path: "app/" . $dir . "/{$name}"));
+            if ($this->disk === 'public') {
+                $storagePath = 'app/public/';
+                $this->path = 'public/' . $this->path . '/' . $name;
+            } else {
+                $storagePath = 'app/';
+                $this->path .= '/' . $name;
+            }
+            Storage::disk($this->disk)->put($dir, $this->file);
+            $storagePath = $this->disk === 'public' ? 'app/public/' : 'app/';
+            $this->file_hash = hash_file('sha256', 
+                storage_path(path: $storagePath . $dir . "/{$name}")
+            );
             return true;
         }
         return false;

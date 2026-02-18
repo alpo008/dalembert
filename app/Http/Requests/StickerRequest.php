@@ -26,7 +26,8 @@ class StickerRequest extends FormRequest
     {
         return [
             'contact_name' => 'nullable|max:50', 
-            'contact_email' => 'nullable|max:100|string|email:rfc,dns',
+            //'contact_email' => 'nullable|max:100|string|email:rfc,dns',
+            'contact_email' => 'nullable|max:100|string',
             'contact_phone' => 'nullable|max:30|string|regex:/^\+?\d{11,12}?$/',
             'priority' => 'integer|between:1,3',
             'message' => 'nullable|string',

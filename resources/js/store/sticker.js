@@ -4,7 +4,8 @@ export default {
 		    all: [],
 		    current: {},
 		    uploaded: {},
-		    fileContents: ''
+		    fileContents: '',
+		    active_stickers: [],
 		},
 	mutations : {
 		setUploaded(state, payload) {
@@ -22,14 +23,18 @@ export default {
 		setStickers(state, payload) {
 			if(typeof(payload.stickers) === 'object') {
 				state.all = payload.stickers;
+			}
+			if(typeof(payload.active_stickers) === 'object') {
+				state.active_stickers = payload.active_stickers;
 			}		
 		},
 		afterDeleteSticker(state, payload) {
 			state.all = state.all.filter(el => el.id !== payload.deleted);
 		},
 		setMediaContents(state, payload) {
+			console.log(payload);
 			state.fileContents = payload.contents;
-		}
+		},
 	},
 	actions: {
 	},
@@ -39,6 +44,12 @@ export default {
 		},
 		allStickers(state) {
 			return state.all;
+		},
+		activeStickers(state) {
+			return state.active_stickers;
+		},
+		stickerMediaContents(state) {
+			return state.fileContents;
 		}
 	}
 }

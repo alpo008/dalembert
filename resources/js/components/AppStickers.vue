@@ -208,7 +208,7 @@
       	return (!isEmpty(sticker.attachments) && !!sticker.attachments[0]?.id);	
       },
       isActive(sticker) {
-      	return moment(sticker.valid_until).isAfter(moment());
+      	return moment(sticker.valid_until).isAfter(moment().subtract(1, 'day'));
       },
       formatDate(date) {
       	let parts = date.split('-');
