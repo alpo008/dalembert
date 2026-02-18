@@ -64,6 +64,10 @@ class Sticker extends Model
     public static function getActive()
     {
         $today = date('Y-m-d', time());
-        return self::with('attachments')->where('valid_until', '>=', $today)->get();
+        return self::with('attachments')
+            ->where('valid_until', '>=', $today)
+            ->orderBy('doi', 'desc')
+            ->orderBy('priority', 'asc')
+            ->get();
     }
 }
