@@ -79,9 +79,9 @@
         </v-menu>
       </v-app-bar>
 
-<!--       <v-system-bar color="primary" style="margin-top:1px;height:32px;" v-if="showWeather">
+      <v-system-bar color="primary" style="margin-top:1px;height:32px;" v-if="showWeather">
         <widget-weather/>
-      </v-system-bar> -->
+      </v-system-bar>
 
       <v-navigation-drawer
         v-model="drawer"
@@ -114,12 +114,12 @@
 
 <script>
   const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
-  //import WidgetWeather from './widgets/WidgetWeather.vue';
+  import WidgetWeather from './widgets/WidgetWeather.vue';
 
   export default {
-/*    components: {
+    components: {
       WidgetWeather
-    },*/
+    },
     data: function () {
       return {
         drawer: false,
@@ -145,12 +145,12 @@
         }
       });
       this.showWeather = false;
-/*      this.$store.dispatch('updateWeather').then(
+      this.$store.dispatch('updateWeather').then(
         () => {
           let weather = this.$store.getters.weather;
           this.showWeather = weather.is_ready;
         }
-      ).catch(err => console.warn(`ERROR(${err.code}): ${err.message}`));*/
+      ).catch(err => console.warn(`ERROR(${err.code}): ${err.message}`));
     },
     methods: {
       switchOff() {

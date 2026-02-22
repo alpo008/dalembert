@@ -79,7 +79,7 @@
   	/>
   </v-card>
 </v-dialog>
-  
+
   <v-dialog
     v-model="modal"
     width="90%"
