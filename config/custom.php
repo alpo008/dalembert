@@ -35,6 +35,7 @@ return [
 
     'ecowitt' => [
         'api_url' => env('ECOWITT_API_URL'),
+        'api_history_url' => env('ECOWITT_API_HISTORY_URL'),
         'api_key' => env('ECOWITT_API_KEY'),
         'app_key' => env('ECOWITT_APP_KEY'),
         'station_mac' => env('ECOWITT_STATION_MAC')

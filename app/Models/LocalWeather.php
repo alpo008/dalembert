@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
  *
  * @property array $location
  * @property array $weatherData
+ * @property array $historyData
  * @property integer $updatedAt
  * @property float $temperature
  * @property string $temperatureUnit
@@ -39,6 +40,7 @@ use Illuminate\Support\Facades\Storage;
 class LocalWeather
 {
 	public $weatherData;
+	public $historyData;
 	protected $location;
 	public $updatedAt;
 	public $temperature;

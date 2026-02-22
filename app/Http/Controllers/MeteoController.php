@@ -19,7 +19,8 @@ class MeteoController extends Controller
         return response()->json(
             [
                 'status' => 'success',
-                'all' => $wx->all()         
+                'all' => $wx->all(),        
+                'history' => $wx->history()      
             ], 200);
     }
 
