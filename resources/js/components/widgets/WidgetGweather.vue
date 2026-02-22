@@ -268,7 +268,19 @@ export default {
   },
   methods: {
     async getWxData() {
-      this.updateHistory();
+      try {
+        const response = await axios(REQUEST_PARAMS.url);
+        this.wxData = response.data.all.data;
+        this.updated_at = new Date().toLocaleTimeString('ru-RU', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false
+        })
+        this.updateHistory(response.data.history);
+      } catch (error) {
+        console.error(this._t('Error fetching weather data:'), error);
+      }
+/*      this.updateHistory();
       try {
         const response = await axios(REQUEST_PARAMS);
         this.wxData = response.data.data;
@@ -279,20 +291,14 @@ export default {
         });
       } catch (error) {
         console.error(this._t('Error fetching weather data:'), error);
-      }
+      }*/
     },
-    async updateHistory() {
+    updateHistory(payload) {
       this.historyData = JSON.parse(localStorage.getItem('history'));
       if (!this.history_is_ready) {
-        try {
-          const response = await axios(HISTORY_REQUEST_PARAMS);
-          this.historyData = response.data.data;
-          let currentTimestamp = Date.now();
-          this.historyData.updated_at = currentTimestamp;
-          localStorage.setItem('history', JSON.stringify(this.historyData));
-        } catch (error) {
-          console.error(this._t('Error fetching history data:'), error);
-        }
+        this.historyData = payload?.data;
+        this.historyData.updated_at = Date.now();
+        localStorage.setItem('history', JSON.stringify(this.historyData));
       }
     },
     setLanguage() {
