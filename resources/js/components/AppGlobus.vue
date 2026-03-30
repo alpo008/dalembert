@@ -5,7 +5,7 @@
   show-arrows="hover"
   interval="10000"
   cycle
-  v-if="stickers.length" 
+  v-if="stickers.length && showStickers" 
   class="position-fixed" 
   style="z-index:-1;top:98px;height:80vh;"
   >
@@ -58,7 +58,8 @@
     },
     data: function () {
       return {
-        stickers: []
+        stickers: [],
+        showStickers: true
       }
     },
     async created() {
@@ -93,6 +94,11 @@
       }
     },
     computed: {
+    },
+    watch: {
+      "$store.state.globus.meteoMode"(payload) {
+        this.showStickers = payload;
+      }
     }
   }
 </script>

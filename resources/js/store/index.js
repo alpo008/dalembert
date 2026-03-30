@@ -9,13 +9,9 @@ import works from './works';
 import customers from './customers';
 import general from './general';
 import sticker from './sticker';
+import globus from './globus';
 
 export const store = createStore({
-/*  state () {
-    return {
-      count: 1
-    }
-  },*/
 	modules: {
 		weather,
     airmax,
@@ -25,6 +21,7 @@ export const store = createStore({
     works,
     customers,
     general,
-    sticker
+    sticker,
+    globus
 	}
 })

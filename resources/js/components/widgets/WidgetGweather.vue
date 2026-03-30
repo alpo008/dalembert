@@ -280,18 +280,6 @@ export default {
       } catch (error) {
         console.error(this._t('Error fetching weather data:'), error);
       }
-/*      this.updateHistory();
-      try {
-        const response = await axios(REQUEST_PARAMS);
-        this.wxData = response.data.data;
-        this.updated_at = new Date().toLocaleTimeString('ru-RU', { 
-          hour: '2-digit', 
-          minute: '2-digit', 
-          hour12: false 
-        });
-      } catch (error) {
-        console.error(this._t('Error fetching weather data:'), error);
-      }*/
     },
     updateHistory(payload) {
       this.historyData = JSON.parse(localStorage.getItem('history'));
@@ -330,9 +318,11 @@ export default {
     start() {
       if (this.show) {
         clearInterval(this.timer);
+        this.$store.commit('setMeteoMode', true);
       } else {
         this.getWxData();
         this.timer = setInterval(this.getWxData, 300000);
+        this.$store.commit('setMeteoMode', false);
       }
       this.chartMode=false;
       this.show = !this.show;  
