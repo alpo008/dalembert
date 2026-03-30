@@ -53,6 +53,18 @@ return [
         'token' => env('TG_TOKEN')
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Logger api settings
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'logger' => [
+        'api_url' => env('LOGGER_API_URL'),
+        'api_key' => env('GLOBUS_API_KEY')
+    ],
+
     'default_timezone' => env('DEFAULT_TIMEZONE')
 
 ];

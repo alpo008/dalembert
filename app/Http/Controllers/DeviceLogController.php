@@ -3,9 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\DeviceLogRequest;
+use App\Http\Middleware\CheckApiKey;
+use App\Models\DeviceLog;
 
 class DeviceLogController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(CheckApiKey::class, ['only' => ['store']]);
+        $this->middleware('auth', ['only' => ['viewAny']]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +22,13 @@ class DeviceLogController extends Controller
      */
     public function index()
     {
-        //
+        $allLogs = DeviceLog::all()->toArray();
+        return response()->json(
+            [
+                'status' => 'success',
+                'logs' => $allLogs
+            ], 200
+        );
     }
 
     /**
@@ -29,16 +44,16 @@ class DeviceLogController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\DeviceLogRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(DeviceLogRequest $request)
     {
-        $this->authorize('viewAny', Customer::class);
+        $created = DeviceLog::create($request->all());
         return response()->json(
             [
                 'status' => 'success',
-                'logs' => $request
+                'current' => $created
             ], 200
         );
     }
