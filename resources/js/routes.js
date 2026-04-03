@@ -149,6 +149,19 @@ export default VueRouter.createRouter({
                 menuItem: true
             }
         },
+        {
+            path: '/devices',
+            name: 'Devices management',
+            component: AppDevices,
+            meta: {
+                auth: {
+                    roles: ['super', 'admin'],
+                    redirect: '/'
+                },
+                searchBar: false,
+                menuItem: true
+            }
+        },
     ],
     scrollBehavior(to, from, savedPosition) {
         return { top: 0 };
