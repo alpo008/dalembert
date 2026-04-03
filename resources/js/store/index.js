@@ -10,18 +10,20 @@ import customers from './customers';
 import general from './general';
 import sticker from './sticker';
 import globus from './globus';
+import device from './device';
 
 export const store = createStore({
 	modules: {
-		weather,
-    airmax,
-    document,
-    payment,
-    statistics,
-    works,
-    customers,
-    general,
-    sticker,
-    globus
+    	weather,
+        airmax,
+        document,
+        payment,
+        statistics,
+        works,
+        customers,
+        general,
+        sticker,
+        globus,
+        device
 	}
 })

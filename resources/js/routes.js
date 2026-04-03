@@ -12,6 +12,7 @@ import AppCalculator from './components/AppCalculator.vue';
 import AppWorks from './components/AppWorks.vue';
 import AppGlobus from './components/AppGlobus.vue';
 import AppStickers from './components/AppStickers.vue';
+import AppDevices from './components/AppDevices.vue';
 
 export default VueRouter.createRouter({
     routes: [
@@ -151,7 +152,7 @@ export default VueRouter.createRouter({
         },
         {
             path: '/devices',
-            name: 'Devices management',
+            name: 'Devices',
             component: AppDevices,
             meta: {
                 auth: {
