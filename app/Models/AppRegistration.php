@@ -36,4 +36,17 @@ class AppRegistration extends Model
             self::APP_GWEATHER => 'Globus Meteo'
         ];
     }
+
+    /**
+     * Generates random string for application key.
+     *
+     * @return string
+     */
+    public static function generateKey(): string
+    {
+        do {
+            $key = str_random(32);
+        } while (!empty(self::firstWhere('app_key', $key)));
+        return $key;
+    }
 }

@@ -3,37 +3,56 @@
 		color="transparent"
 		style="
 			height:50px;width: calc((100% - 10px) - 20px);
-			top:104px;left:16px;
-			justify-content:space-between;"
+			top:104px;left:16px;"
 		class="rounded"
 	>
-<!--     <v-checkbox
-      style="max-width:fit-content;margin-right:30px;"    
-      v-model="activityFilter"
-      color="success"
-      hide-details
-      :label="$t('Active only')"
-    >
-    </v-checkbox>
-		<v-btn
-			icon="mdi-note-plus-outline"
-			@click="addDevice"
-			style="margin: 0 1%;"
-			:title="$t('Add sticker')"
-			v-if="$auth.check(['admin', 'super'])"
-		>
-		</v-btn> -->
+	    <v-btn
+      icon="mdi-note-plus-outline"
+      @click="modal = true"
+      style="margin: 0 1%;"
+      :title="$t('Create application key')"
+      v-if="$auth.check('super')"
+      >
+    </v-btn>
 	</v-system-bar>
 
   <v-data-table :headers="tableHeaders" :items="allDevices" item-key="id" class="elevation-1 mt-14">
 	</v-data-table>
+
+  <v-dialog
+	  v-model="modal"
+	  width="80vw"
+  >
+    <v-card
+      elevation="4"
+      rounded
+    >
+      <v-toolbar
+        dark
+        prominent
+      >
+        <v-toolbar-title>{{ $t('Create application key') }}</v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-btn icon @click="modal = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+      </v-toolbar>
+      <v-card-text>
+        <app-device-key-form/>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
+  import AppDeviceKeyForm from './AppDeviceKeyForm';
 	const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
   import moment from "moment/dist/moment";
 	export default {
 		components: {
+			AppDeviceKeyForm
 		},
 		data: function () {
 			return {
@@ -72,6 +91,7 @@
             key: 'action'
           }
         ],
+        modal: false
 			}
 		},
 		async created() {
