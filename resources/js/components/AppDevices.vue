@@ -44,7 +44,7 @@
             title: this.$t('Was active'),
             align: 'left',
             key: 'created_at',
-            value: item => moment(item.created_at).format("DD.MM.YY HH:MM")
+            value: item => moment(item.created_at).format("DD.MM.YY HH:mm")
           },
           {
             title: this.$t('Model'),
