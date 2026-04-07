@@ -11,6 +11,7 @@ import general from './general';
 import sticker from './sticker';
 import globus from './globus';
 import device from './device';
+import app_registration from './app_registration';
 
 export const store = createStore({
 	modules: {
@@ -24,6 +25,7 @@ export const store = createStore({
         general,
         sticker,
         globus,
-        device
+        device,
+        app_registration
 	}
 })

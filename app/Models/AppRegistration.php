@@ -26,6 +26,16 @@ class AppRegistration extends Model
     }
 
     /**
+     * Unique key for registration purpose only.
+     *
+     * @return string
+     */
+    public function customerKey(): string
+    {
+        return '-' . $this->customer_id . '[' . $this->app_id . ']' . $this->app_key;
+    }
+
+    /**
      * List of available apps.
      *
      * @return array

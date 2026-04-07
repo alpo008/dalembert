@@ -14,6 +14,7 @@ use App\Http\Controllers\MeteoController;
 use App\Http\Controllers\TgBotController;
 use App\Http\Controllers\StickerController;
 use App\Http\Controllers\DeviceLogController;
+use App\Http\Controllers\AppRegistrationController;
 
 
 /*
@@ -45,6 +46,7 @@ Route::apiResource('meteo', MeteoController::class)->only(['index', 'store']);
 Route::apiResource('tg-bot', TgBotController::class)->only(['index', 'store']);
 Route::apiResource('stickers', StickerController::class);
 Route::apiResource('device-log', DeviceLogController::class)->only(['index', 'store']);
+Route::apiResource('app-registration', AppRegistrationController::class);
 
 Route::get('attachments/{obj}/{id}', 'App\Http\Controllers\AttachmentController@show');
 Route::post('attachments/download', 'App\Http\Controllers\AttachmentController@download');
@@ -58,6 +60,8 @@ Route::group(['prefix' => 'export'], function () {
 Route::get('payments/{obj}/{id}', 'App\Http\Controllers\PaymentController@show');
 
 Route::post('home/globus', 'App\Http\Controllers\HomeController@globus');
+
+Route::post('app-registration/key', 'App\Http\Controllers\HomeController@key');
 
 Route::prefix('auth')->group(function () {
         Route::post('register', 'App\Http\Controllers\AuthController@register');

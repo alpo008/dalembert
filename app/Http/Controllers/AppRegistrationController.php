@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\AppRegistration;
 
 class AppRegistrationController extends Controller
 {
@@ -34,7 +35,27 @@ class AppRegistrationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //$this->authorize('viewAny', AppRegistration::class);
+        $request->merge(['app_key' => AppRegistration::generateKey()]);
+        $new = true;
+        $existing = AppRegistration::where('app_id', $request->input('app_id'))
+            ->where('customer_id', $request->input('customer_id'))->first();
+        if ($existing instanceof AppRegistration) {
+            $current = $existing;
+            $new = false;
+        } else {
+            $current = AppRegistration::create($request->all());
+        }
+        $key = '-' . $current->customer_id . '[' . $current->app_id . ']' . $current->app_key;
+
+        return response()->json(
+            [
+                'status' => 'success',
+                'current' => $current,
+                'key' => $current->customerKey(),
+                'new' => $new
+            ], 200
+        );
     }
 
     /**
