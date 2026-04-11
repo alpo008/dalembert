@@ -16,6 +16,7 @@ const translations = {
         "Monthly" : "За месяц",
         "m/s" : "м/с",
         "Our meteostation" : "Наша метеостанция",
+        "Our web camera" : "Наша веб-камера",
         "Per day" : "За день",
         "Per hour" : "За час",
         "Pressure" : "Давление",
@@ -29,6 +30,7 @@ const translations = {
         "UVI" : "УФ индекс",
         "Weekly" : "За неделю",
         "Wind" : "Ветер",
+        "Your browser does not support frames" : "Ваш браузер не поддерживает фреймы",
         "Yearly" : "За год",
         "%": "%",
         "℃": "℃"

@@ -1,8 +1,8 @@
 <template>
-  <main class="main-section" style="margin-top:-67px;">
-    <div class="weather" :style="toggler_style">
-      <h2 @click="start">{{ _t('Our meteostation') }}</h2>
-      <div v-if="show"> 
+  <main class="main-section d-flex flex-wrap" style="margin-top:-67px;">
+    <div class="weather" :style="toggler_style" v-if="!showWebCam">
+      <h2 @click="startMeteo">{{ _t('Our meteostation') }}</h2>
+      <div v-if="showMeteo"> 
         {{ _t('Updated at') }} {{ updated_at }}
         <div class="wrapper" v-if="!chartMode">
           <div class="params_block_wrapper">
@@ -225,6 +225,19 @@
         </div>
       </div>
     </div>
+    <div class="weather" :style="webcam_style" v-if="!showMeteo">
+      <h2 @click="startWebCam">{{ _t('Our web camera') }}</h2>
+      <v-card v-if="showWebCam" class="mt-1">
+        <iframe :src="webCamSrc" 
+          width="95%" height="600" 
+          frameBorder="0" 
+          seamless="seamless" 
+          allowfullscreen
+        >
+          {{ _t('Your browser does not support frames') }} !
+        </iframe>
+      </v-card>
+    </div>
   </main>
 </template>
 
@@ -250,9 +263,11 @@ export default {
       language: 'en-US',
       timer: '',
       updated_at: "",
-      show: false,
+      showMeteo: false,
+      showWebCam: false,
       chartMode: false,
-      dataset: null
+      dataset: null,
+      webCamSrc: `${process.env.MIX_WEBCAM_SRC}`
     };
   },
   async mounted() {
@@ -315,17 +330,27 @@ export default {
       }
       return txt;
     },
-    start() {
-      if (this.show) {
+    startMeteo() {
+      if (this.showMeteo) {
+        this.showWebCam = false;
         clearInterval(this.timer);
-        this.$store.commit('setMeteoMode', true);
+        this.$store.commit('setStickersMode', true);
       } else {
         this.getWxData();
-        this.timer = setInterval(this.getWxData, 300000);
-        this.$store.commit('setMeteoMode', false);
+        this.timer = setInterval(this.getWxData, WEATHER_UPDATES_INTERVAL);
+        this.$store.commit('setStickersMode', false);
       }
       this.chartMode=false;
-      this.show = !this.show;  
+      this.showMeteo = !this.showMeteo;  
+    },
+    startWebCam() {
+      if (!this.showWebCam && !this.showMeteo) {
+        this.$store.commit('setStickersMode', false);
+        this.showWebCam = true;
+      } else {
+        this.$store.commit('setStickersMode', true);
+        this.showWebCam = false;
+      }
     },
     showChart(wx_param) {
       if (wx_param === null) {
@@ -503,8 +528,15 @@ export default {
       return rumbs[Math.floor(rumb / 22.5)];
     },
     toggler_style() {
-      if (!this.show) {
-        return 'width: 270px;left: 0;';
+      if (!this.showMeteo) {
+        return 'width: 270px;left: 0;max-height:64px';
+      } else {
+        return '';
+      }
+    },
+    webcam_style() {
+      if (!this.showWebCam) {
+        return 'width: 270px;left: 0;max-height:64px';
       } else {
         return '';
       }
@@ -528,7 +560,7 @@ export default {
       let temperatureDataset = [];
       Object.keys(temperatureHistory).forEach(key => {
         if (!isNaN(key)) {
-          labels.push(moment.unix(key).format("DD.MM"))
+          labels.push(moment.unix(key).format("DD.MM HH:mm"));
           temperatureDataset.push(parseFloat(temperatureHistory[key]));
         }
       });
@@ -551,7 +583,7 @@ export default {
       let humidityDataset = [];
       Object.keys(humidityHistory).forEach(key => {
         if (!isNaN(key)) {
-          labels.push(moment.unix(key).format("DD.MM"))
+          labels.push(moment.unix(key).format("DD.MM HH:mm"));
           humidityDataset.push(parseFloat(humidityHistory[key]));
         }
       });
@@ -574,7 +606,7 @@ export default {
       let pressureDataset = [];
       Object.keys(pressureHistory).forEach(key => {
         if (!isNaN(key)) {
-          labels.push(moment.unix(key).format("DD.MM"))
+          labels.push(moment.unix(key).format("DD.MM HH:mm"));
           pressureDataset.push(parseFloat(pressureHistory[key]));
         }
       });
@@ -597,7 +629,7 @@ export default {
       let windDataset = [];
       Object.keys(windHistory).forEach(key => {
         if (!isNaN(key)) {
-          labels.push(moment.unix(key).format("DD.MM"))
+          labels.push(moment.unix(key).format("DD.MM HH:mm"));
           windDataset.push(parseFloat(windHistory[key]));
         }
       });
@@ -620,7 +652,7 @@ export default {
       let rainfallDataset = [];
       Object.keys(rainfallHistory).forEach(key => {
         if (!isNaN(key)) {
-          labels.push(moment.unix(key).format("DD.MM"))
+          labels.push(moment.unix(key).format("DD.MM HH:mm"));
           rainfallDataset.push(parseFloat(rainfallHistory[key]));
         }
       });
@@ -644,7 +676,7 @@ export default {
       Object.keys(solarHistory).forEach(key => {
         if (!isNaN(key)) {
           if (moment.unix(key).hour() === 15) {
-            labels.push(moment.unix(key).format("DD.MM"))
+            labels.push(moment.unix(key).format("DD.MM"));
             solarDataset.push(parseFloat(solarHistory[key]));
           }
         }
@@ -701,9 +733,9 @@ export default {
 
   .weather {
       text-align: center;
+      margin: 2px;
       width: 100%;
       color: #fff;
-      margin-bottom: 3rem;
       background-color: rgb(43, 46, 53);
       border-radius: 1rem;
       box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);

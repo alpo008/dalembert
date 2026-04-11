@@ -1,53 +1,54 @@
 <template>
+  
   <widget-gweather/>
 
-<v-carousel 
-  show-arrows="hover"
-  interval="10000"
-  cycle
-  v-if="stickers.length && showStickers" 
-  class="position-fixed" 
-  style="z-index:-1;top:98px;height:80vh;"
-  >
-  <v-carousel-item
-    v-for="(sticker, i) in stickers"
-    :key="i"
-    :src="imagePath(sticker)"
-  >
-    <v-sheet
-      color="rgba(128,128,128,0.4)"
-      height="100%"
-      tile
-      style="justify-items:center;"
+  <v-carousel 
+    show-arrows="hover"
+    interval="10000"
+    cycle
+    v-if="stickers.length && $store.getters.showStickers" 
+    class="position-fixed" 
+    style="z-index:-1;top:98px;height:80vh;"
     >
-      <div class="d-flex flex-column justify-end fill-height pb-8 w-75" style="filter:invert(1);">
-        <div class="text-h6" v-if="!!sticker.message">
-          {{ sticker.message }}
+    <v-carousel-item
+      v-for="(sticker, i) in stickers"
+      :key="i"
+      :src="imagePath(sticker)"
+    >
+      <v-sheet
+        color="rgba(128,128,128,0.4)"
+        height="100%"
+        tile
+        style="justify-items:center;"
+      >
+        <div class="d-flex flex-column justify-end fill-height pb-8 w-75" style="filter:invert(1);">
+          <div class="text-h6" v-if="!!sticker.message">
+            {{ sticker.message }}
+          </div>
+          <div class="text-h6 d-flex justify-start w-100">
+            {{ sticker.contact_name }} &nbsp;
+            <v-btn 
+              density="comfortable"
+              color="rgba(220,220,220,0.3)"
+              icon="mdi-phone" 
+              v-if="!!sticker.contact_phone"
+              @click="phoneCall(sticker)"
+              >
+            </v-btn>
+            &nbsp;
+            <v-btn 
+              density="comfortable"
+              color="rgba(220,220,220,0.3)"
+              icon="mdi-email-fast-outline" 
+              v-if="!!sticker.contact_email"
+              @click="sendEmail(sticker)"
+              >
+            </v-btn>
+          </div>
         </div>
-        <div class="text-h6 d-flex justify-start w-100">
-          {{ sticker.contact_name }} &nbsp;
-          <v-btn 
-            density="comfortable"
-            color="rgba(220,220,220,0.3)"
-            icon="mdi-phone" 
-            v-if="!!sticker.contact_phone"
-            @click="phoneCall(sticker)"
-            >
-          </v-btn>
-          &nbsp;
-          <v-btn 
-            density="comfortable"
-            color="rgba(220,220,220,0.3)"
-            icon="mdi-email-fast-outline" 
-            v-if="!!sticker.contact_email"
-            @click="sendEmail(sticker)"
-            >
-          </v-btn>
-        </div>
-      </div>
-    </v-sheet>
-  </v-carousel-item>
-</v-carousel>
+      </v-sheet>
+    </v-carousel-item>
+  </v-carousel>
 </template>
 <script>
   const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;

@@ -1,11 +1,11 @@
 const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
 export default {
 	state : {
-		    meteoMode: true
+		    stickersMode: true
 		},
 	mutations : {
-		setMeteoMode(state, payload) {
-			state.meteoMode = payload;		
+		setStickersMode(state, payload) {
+			state.stickersMode = payload;		
 		}
 	},
 	actions: {
@@ -15,7 +15,7 @@ export default {
 	},
 	getters: {
 		showStickers(state) {
-			return !state.meteoMode;
+			return state.stickersMode;
 		},
 	}
 }
