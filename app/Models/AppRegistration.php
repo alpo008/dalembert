@@ -26,16 +26,6 @@ class AppRegistration extends Model
     }
 
     /**
-     * Unique key for registration purpose only.
-     *
-     * @return string
-     */
-    public function customerKey(): string
-    {
-        return '-' . $this->customer_id . '[' . $this->app_id . ']' . $this->app_key;
-    }
-
-    /**
      * List of available apps.
      *
      * @return array
@@ -49,14 +39,17 @@ class AppRegistration extends Model
 
     /**
      * Generates random string for application key.
+     * 
+     * @param  integer|string  $appId
+     * @param  integer|string  $customerId
      *
      * @return string
      */
-    public static function generateKey(): string
+    public static function generateKey($appId, $customerId): string
     {
         do {
-            $key = str_random(32);
-        } while (!empty(self::firstWhere('app_key', $key)));
-        return $key;
+            $random = str_random(32);
+        } while (!empty(self::firstWhere('app_key', $random)));
+        return  '-' . $customerId . '[' . $appId . ']' . $random;
     }
 }

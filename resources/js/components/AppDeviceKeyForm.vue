@@ -21,16 +21,15 @@
     type="text"
     ref="key"
     :label="$t('Key')"
-    v-if="!!key"
-    v-model="key"
+    v-if="!!regData.app_key"
+    v-model="regData.app_key"
     readonly
     append-icon="mdi-content-copy"
     @click:append="copyText('key')"
-    :hint="$store.getters.isNewAppRegistrationKey ? $t('New key') : $t('Existing key')"
     persistent-hint
   >
   </v-text-field>
-  <v-btn @click="submit" v-if="!key">{{ $t('Save') }}</v-btn>
+  <v-btn @click="submit" v-if="!regData.app_key">{{ $t('Save') }}</v-btn>
 </template>
 
 <script>
@@ -42,17 +41,17 @@ export default {
         { name: 'Globus-meteo', id: 1 },
         { name: 'Test', id: 2 }
       ],
-      regData: {
-        app_id: null,
-        app_key: null,
-        customer_id: null
-      },
-      key: null,
+      regData: {},
       errors: {}
     }
   },
   async mounted() {
-  await this.$store.dispatch('httpRequest', {
+    this.regData = {
+        app_id: null,
+        app_key: null,
+        customer_id: null
+      };
+    await this.$store.dispatch('httpRequest', {
       url: '/customers',
       method: 'GET',
       data: null,
@@ -69,7 +68,8 @@ export default {
         mutation: 'setCurrentAppRegistration'
       });
       this.errors = this.$store.getters.httpErrors;
-      this.key = this.$store.getters.currentAppRegistrationKey
+      this.regData = this.$store.getters.currentAppRegistration;
+      setTimeout(() => this.copyText('key'), 300);
     },
     copyText(txt){
       const element = this.$refs[txt];

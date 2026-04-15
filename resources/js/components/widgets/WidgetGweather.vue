@@ -226,7 +226,7 @@
       </div>
     </div>
     <div class="weather" :style="webcam_style" v-if="!showMeteo">
-      <h2 @click="startWebCam">{{ _t('Our web camera') }}</h2>
+      <h2 @click="startWebCam" style="min-height:30px;">{{ _t('Our web camera') }}</h2>
       <v-card v-if="showWebCam" class="mt-1">
         <iframe :src="webCamSrc" 
           width="95%" height="600" 

@@ -3,8 +3,6 @@ export default {
 	state : {
 		    all: [],
 		    current: {},
-		    key: '',
-		    new: false
 		},
 	mutations : {
 		setCurrentAppRegistration(state, payload) {
@@ -12,12 +10,6 @@ export default {
 				state.current = payload.current;
 				state.all.push(state.current);
 			}
-			if(typeof(payload.key) === 'string') {
-				state.key = payload.key;
-			}
-			if(typeof(payload.new) === 'boolean') {
-				state.new = payload.new;
-			}		
 		},
 		setAppRegistrations(state, payload) {
 			if(typeof(payload.registrations) === 'object') {
@@ -36,12 +28,6 @@ export default {
 		},
 		allAppRegistrations(state) {
 			return state.all;
-		},
-		currentAppRegistrationKey(state) {
-			return state.key;
-		},
-		isNewAppRegistrationKey(state) {
-			return state.new;
 		}
 	}
 }
