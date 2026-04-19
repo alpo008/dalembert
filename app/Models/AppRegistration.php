@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Customer;
+use App\Models\AppRegistration;
 
 class AppRegistration extends Model
 {
@@ -20,7 +21,7 @@ class AppRegistration extends Model
      * 
      * @return BelongsTo
      */
-    public function airmaxClient(): BelongsTo
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
     }

@@ -52,6 +52,8 @@ Route::get('attachments/{obj}/{id}', 'App\Http\Controllers\AttachmentController@
 Route::post('attachments/download', 'App\Http\Controllers\AttachmentController@download');
 Route::post('airmax-clients/statistics', 'App\Http\Controllers\AirmaxClientController@statistics');
 
+Route::get('app-registration/{uuid}/{app}', 'App\Http\Controllers\AppRegistrationController@show');
+
 Route::group(['prefix' => 'export'], function () {
     Route::get('airmax', 'App\Http\Controllers\ExportController@airmax');
     Route::get('backup', 'App\Http\Controllers\ExportController@backup');

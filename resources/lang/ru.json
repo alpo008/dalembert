@@ -203,6 +203,7 @@
 	"validation.date": "Поле :attribute должно иметь формат даты",
 	"validation.decimal" : "Число :attribute должно содержать :decimal десятичных знаков",
 	"validation.email": "Поле :attribute должно быть действительным адресом электронной почты",
+	"validation.exists": "Такой записи не существует",
 	"validation.file": "Файл не загружен",
 	"validation.mimes": "Допускается загрузка файлов :values",
 	"validation.max.numeric": "Значение :attribute  не должно быть выше :max",
