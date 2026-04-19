@@ -28,7 +28,6 @@ class AppRegistrationRequest extends FormRequest
             'app_id' => 'between:1,2', 
             'device_uuid' => 'required|string|size:16',
             'device_serial' => 'nullable|string',
-//            'app_key' => 'string'
             'app_key' => [
                 'required',
                     Rule::exists('app_registrations')->where(function ($query) {
