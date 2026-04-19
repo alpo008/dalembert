@@ -95,7 +95,7 @@ class AppRegistrationController extends Controller
         $available = AppRegistration::with('customer')
             ->where('app_key', $request->input('app_key'))
             ->where('app_id', $request->input('app_id'))
-            //->where('device_uuid', '=', '')
+            ->where('device_uuid', '=', NULL)
             ->first();
         $available->device_uuid = $request->input('device_uuid');
         $registered = $available->save();
