@@ -3,6 +3,7 @@ const translations = {
         "Absolute" : "Абсолютное",
         "Close" : "Закрыть",
         "Dew point" : "Точка росы",
+        "Download app" : "Скачать приложение",
         "Error fetching weather data:" : "Ошибка получения данных:",
         "Event" : "За сегодня",
         "Feels like" : "Ощущается как",

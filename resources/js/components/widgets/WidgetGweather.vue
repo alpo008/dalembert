@@ -1,10 +1,10 @@
 <template>
   <main class="main-section d-flex flex-wrap" style="margin-top:-67px;">
-    <div class="weather" :style="toggler_style" v-if="!showWebCam">
-      <h2 @click="startMeteo">{{ _t('Our meteostation') }}</h2>
-      <div v-if="showMeteo"> 
+    <div class="weather" :style="tabStyle('meteo')" v-if="mode.showTabs || mode.showMeteo">
+      <h2 @click="startWidget('meteo')">{{ _t('Our meteostation') }}</h2>
+      <div v-if="mode.showMeteo"> 
         {{ _t('Updated at') }} {{ updated_at }}
-        <div class="wrapper" v-if="!chartMode">
+        <div class="wrapper" v-if="!this.mode.showChart">
           <div class="params_block_wrapper">
             <div class="params_block">
               <div class="temp-box">
@@ -215,7 +215,7 @@
             </div>
           </div>
         </div>
-        <div class="wrapper" v-if="chartMode">
+        <div class="wrapper" v-if="mode.showChart">
           <div class="params_block">
             <div class="close-icon-right" @click="showChart(null)" :title="_t('Close')">
                 &#65794;
@@ -225,9 +225,9 @@
         </div>
       </div>
     </div>
-    <div class="weather" :style="webcam_style" v-if="!showMeteo">
-      <h2 @click="startWebCam" style="min-height:30px;">{{ _t('Our web camera') }}</h2>
-      <v-card v-if="showWebCam" class="mt-1">
+    <div class="weather" :style="tabStyle('camera')" v-if="mode.showTabs || mode.showCamera">
+      <h2 @click="startWidget('camera')" style="min-height:32px;">{{ _t('Our web camera') }}</h2>
+      <v-card v-if="mode.showCamera" class="mt-1">
         <iframe :src="webCamSrc" 
           width="95%" height="600" 
           frameBorder="0" 
@@ -236,6 +236,12 @@
         >
           {{ _t('Your browser does not support frames') }} !
         </iframe>
+      </v-card>
+    </div>
+    <div class="weather" :style="tabStyle('form')" v-if="mode.showTabs || mode.showForm">
+      <h2 @click="startWidget('form')">{{ _t('Download app') }}</h2>
+      <v-card v-if="mode.showForm" class="mt-1">
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dicta illum dignissimos maxime praesentium expedita ad, vel harum eligendi libero molestias odio dolore nihil tempore voluptatum sequi quis ducimus officia delectus.
       </v-card>
     </div>
   </main>
@@ -263,9 +269,15 @@ export default {
       language: 'en-US',
       timer: '',
       updated_at: "",
-      showMeteo: false,
-      showWebCam: false,
-      chartMode: false,
+      mode: {
+        showMeteo: false,
+        showCamera: false,
+        showForm: false,
+        showStickers: true,
+        showChart: false,
+        showForm: false,
+        showTabs: true
+      },
       dataset: null,
       webCamSrc: `${process.env.MIX_WEBCAM_SRC}`
     };
@@ -330,31 +342,32 @@ export default {
       }
       return txt;
     },
-    startMeteo() {
-      if (this.showMeteo) {
-        this.showWebCam = false;
-        clearInterval(this.timer);
-        this.$store.commit('setStickersMode', true);
-      } else {
-        this.getWxData();
-        this.timer = setInterval(this.getWxData, WEATHER_UPDATES_INTERVAL);
-        this.$store.commit('setStickersMode', false);
+    startWidget(wid) {
+      switch(wid) {
+        case 'meteo':
+          this.mode.showMeteo = !this.mode.showMeteo;
+          if(this.mode.showMeteo) {
+            this.getWxData();
+            this.timer = setInterval(this.getWxData, WEATHER_UPDATES_INTERVAL);
+            this.$store.commit('setStickersMode', false);
+          } else {
+            clearInterval(this.timer);
+          }
+          this.mode.showChart = false;
+        break;
+        case 'camera':
+          this.mode.showCamera = !this.mode.showCamera;
+        break;
+        case 'form':
+          this.mode.showForm = !this.mode.showForm;
+        break;
       }
-      this.chartMode=false;
-      this.showMeteo = !this.showMeteo;  
-    },
-    startWebCam() {
-      if (!this.showWebCam && !this.showMeteo) {
-        this.$store.commit('setStickersMode', false);
-        this.showWebCam = true;
-      } else {
-        this.$store.commit('setStickersMode', true);
-        this.showWebCam = false;
-      }
+      this.mode.showTabs = !(this.mode.showMeteo || this.mode.showCamera || this.mode.showForm);
+      this.$store.commit('setStickersMode', this.mode.showTabs);
     },
     showChart(wx_param) {
       if (wx_param === null) {
-        this.chartMode = false;
+        this.mode.showChart = false;
       } else {
         switch (wx_param) {
           case 'temperature' :
@@ -378,8 +391,27 @@ export default {
           default:
             this.dataset = this.temperature_history;
         }
-        this.chartMode = true;
+        this.mode.showChart = true;
       }
+    },
+    downloadApk() {
+
+    },
+    tabStyle(tab) {
+      let style;
+      let styleMinimized = 'width: 270px;left: 0;max-height:64px;';
+      switch (tab) {
+        case 'meteo' :
+          style = this.mode.showMeteo ? '' : styleMinimized; 
+          break;
+        case 'camera' :
+          style = this.mode.showCamera ? '' : styleMinimized; 
+          break;
+        case 'form' :
+          style = this.mode.showForm ? '' : styleMinimized; 
+          break;
+      }
+      return style;
     }
   },
   computed: {
@@ -526,20 +558,6 @@ export default {
         15 : 'NNW'
       };
       return rumbs[Math.floor(rumb / 22.5)];
-    },
-    toggler_style() {
-      if (!this.showMeteo) {
-        return 'width: 270px;left: 0;max-height:64px';
-      } else {
-        return '';
-      }
-    },
-    webcam_style() {
-      if (!this.showWebCam) {
-        return 'width: 270px;left: 0;max-height:64px';
-      } else {
-        return '';
-      }
     },
     history_is_ready() {
       if (this.historyData === null || this.historyData.updted_at === undefined) {
@@ -748,6 +766,7 @@ export default {
       margin-bottom: 0.3rem;
       margin-block-start: 0.3rem;
       cursor: pointer;
+      min-height:32px;
   }
 
   .wrapper {
