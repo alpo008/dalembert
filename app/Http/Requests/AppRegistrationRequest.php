@@ -31,7 +31,7 @@ class AppRegistrationRequest extends FormRequest
             'app_key' => [
                 'required',
                     Rule::exists('app_registrations')->where(function ($query) {
-                    $query->whereNull('device_uuid');
+                    $query->whereNull('device_uuid', '<=>', NULL);
                 }),
             ],
         ];
