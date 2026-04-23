@@ -66,27 +66,25 @@
             value: item => moment(item.created_at).format("DD.MM.YY HH:mm")
           },
           {
+            title: this.$t('Customer'),
+            align: 'center',
+            key: 'customer',
+            value: item =>   this.findOrFail(item, 'app_registrations.0.customer.name')
+          },
+          {
             title: this.$t('Model'),
             align: 'left',
-            key: 'model'
+            key: 'model',
+            value: item => item.manufacturer + ' ' + item.model
           },
           {
             title: this.$t('Platform'),
             align: 'left',
-            key: 'platform'
+            key: 'platform',
+            value: item => item.platform + ' - ' + item.version
           },
           {
-            title: this.$t('Version'),
-            align: 'center',
-            key: 'version'
-          },
-          {
-            title: this.$t('Manufacturer'),
-            align: 'center',
-            key: 'manufacturer'
-          },
-          {
-            title: '',
+            title: this.$t('Action'),
             align: 'center',
             key: 'action'
           }
@@ -103,10 +101,20 @@
       });
 		},
 		methods: {
-			test(i) {
-				console.log(i)
-				return 'Test'
-			}
+      findOrFail(obj, path) {
+        if (isEmpty(obj) || !path.length) {
+          return null;
+        }
+        let pathArr = path.split('.');
+        for (let i=0; i < pathArr.length; i++ ) {
+          if (typeof obj[pathArr[i]] === 'undefined') {
+            return null;
+          } else {
+            obj = obj[pathArr[i]];
+          }
+        }
+        return obj;      
+      }
 		},
 		computed: {
       allDevices() {

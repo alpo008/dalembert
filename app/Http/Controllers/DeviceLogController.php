@@ -22,7 +22,7 @@ class DeviceLogController extends Controller
      */
     public function index()
     {
-        $allLogs = DeviceLog::all()->toArray();
+        $allLogs = DeviceLog::with('appRegistrations')->get()->toArray();
         return response()->json(
             [
                 'status' => 'success',
