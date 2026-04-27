@@ -5,9 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\AppRegistration;
 use App\Http\Requests\AppRegistrationRequest;
+use App\Http\Requests\CustomerRequest;
+use App\Http\Middleware\CheckApiKey;
 
 class AppRegistrationController extends Controller
 {
+    /**
+     * AppRegistrationController сщтыекгсещк
+     */
+    public function __construct()
+    {
+        $this->middleware(CheckApiKey::class, ['only' => ['apply']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -103,6 +112,16 @@ class AppRegistrationController extends Controller
             [
                 'status' => 'success',
                 'registered' => $registered
+            ]
+        );
+    }
+
+    public function apply(CustomerRequest $request)
+    {
+        return response()->json(
+            [
+                'status' => 'success',
+                'req' => $request->all()
             ]
         );
     }

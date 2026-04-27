@@ -241,7 +241,46 @@
     <div class="weather" :style="tabStyle('form')" v-if="mode.showTabs || mode.showForm">
       <h2 @click="startWidget('form')">{{ _t('Download app') }}</h2>
       <v-card v-if="mode.showForm" class="mt-1">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dicta illum dignissimos maxime praesentium expedita ad, vel harum eligendi libero molestias odio dolore nihil tempore voluptatum sequi quis ducimus officia delectus.
+        <v-form @submit.prevent="saveCustomer">
+          <v-text-field 
+            type="text"
+            :label="$t('Name')"
+            ref="name"
+            v-model="customerData.name"
+            :error-messages="errors.name"
+            counter="30"
+          >
+          </v-text-field>
+          <v-text-field 
+            type="tel"
+            :label="$t('Phone')"
+            ref="phone"
+            v-model="customerData.phone"
+            :error-messages="errors.phone"
+          >
+          </v-text-field>
+          <v-text-field 
+            type="email"
+            label="E-mail"
+            ref="email"
+            v-model="customerData.email"
+            :error-messages="errors.email"
+            :hint="$t('Real e-mail to send application key')"
+          >
+          </v-text-field>
+          <v-text-field 
+            type="text"
+            :label="$t('Address')"
+            ref="address"
+            v-model="customerData.address"
+            :error-messages="errors.address"
+            :hint="$t('Place number or address')"
+          >
+          </v-text-field>
+          <v-btn class="mt-2" type="submit" block>
+            {{ $t('Save') }}
+          </v-btn>
+        </v-form>
       </v-card>
     </div>
   </main>
@@ -254,8 +293,6 @@
   import moment from "moment/dist/moment";
   import LineChart from "./gwassets/LineChart.vue"
 
-  import HISTORY_REQUEST_PARAMS from "./gwassets/history_request_params.ts";
-
   const HISTORY_UPDATES_INTERVAL = 7200000;  //TODO 2 hours
   const WEATHER_UPDATES_INTERVAL = 300000;  //TODO 5 minutes
 
@@ -266,6 +303,8 @@ export default {
     return {
       wxData: null,
       historyData: null,
+      customerData: {},
+      errors: {},
       language: 'en-US',
       timer: '',
       updated_at: "",
@@ -279,16 +318,12 @@ export default {
         showTabs: true
       },
       dataset: null,
-      webCamSrc: `${process.env.MIX_WEBCAM_SRC}`
+      webCamSrc: `${process.env.MIX_WEBCAM_SRC}`,
+      apiKey: `${process.env.MIX_GLOBUS_API_KEY}`
     };
   },
   async mounted() {
     this.setLanguage();
-    try {
-      const response = await axios('https://electromore.ru/api/meteo');
-    } catch (error) {
-      console.error(this._t('Error fetching weather data:'), error);
-    }
   },
   beforeDestroy() {
     clearInterval(this.timer);
@@ -394,8 +429,15 @@ export default {
         this.mode.showChart = true;
       }
     },
-    downloadApk() {
-
+    async saveCustomer() {
+      let data = Object.assign(this.customerData, {api_key: this.apiKey});
+      await this.$store.dispatch('httpRequest', {
+        url: '/app-registration/apply',
+        method: 'POST',
+        data: data,
+        mutation: ''
+      });
+      this.errors = this.$store.getters.httpErrors;
     },
     tabStyle(tab) {
       let style;
