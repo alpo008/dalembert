@@ -72,15 +72,21 @@
             <v-list-item to="/login" prependIcon="account-lock-open" v-if="!$auth.check()">
               <v-list-item-title>{{ $t('Log in') }}</v-list-item-title>
             </v-list-item>
-<!--             <v-list-item @click="switchOff" prependIcon="close-circle-outline">
-              <v-list-item-title>{{ $t('Close') }}</v-list-item-title>
-            </v-list-item> -->
           </v-list>
         </v-menu>
       </v-app-bar>
 
-      <v-system-bar color="primary" style="margin-top:1px;height:32px;" v-if="showWeather">
+      <v-system-bar 
+        color="#263238" 
+        style="margin-top:1px;height:32px;" 
+        v-if="showWeather"
+      >
         <widget-weather/>
+      </v-system-bar>
+      <v-system-bar color="#263238" style="top:0;height:32px;" v-if="!showNavs">
+        <v-toolbar-title class="ticker">
+          <p>{{ textMessage }}</p>
+        </v-toolbar-title>
       </v-system-bar>
 
       <v-navigation-drawer
@@ -130,7 +136,8 @@
         showEditorButton: false,
         overlay: false,
         menuItems: [],
-        showNavs: false
+        showNavs: false,
+        textMessage: ''
       }
     },
     mounted() {
@@ -144,13 +151,9 @@
           });
         }
       });
-      this.showWeather = false;
-      this.$store.dispatch('updateWeather').then(
-        () => {
-          let weather = this.$store.getters.weather;
-          this.showWeather = weather.is_ready;
-        }
-      ).catch(err => console.warn(`ERROR(${err.code}): ${err.message}`));
+      setTimeout(() => {
+        this.showWeather = this.$route.meta.hideOpenMeteo !== true;
+      }, 3000);
     },
     methods: {
       switchOff() {
@@ -225,6 +228,13 @@
       },
       "$store.state.general.loading"(val) {
         this.overlay = val;
+      },
+      "$store.state.sticker.active_stickers"(val) {
+        val.filter((el) => {
+          if (el.priority === 1 && el.message !== null && el.message !== 'null') {
+            this.textMessage += el.message;
+          }
+        });
       }
     }
   }

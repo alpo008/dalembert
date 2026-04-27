@@ -23,7 +23,11 @@ export default {
     }
   },
   created() {
-    this.weather = this.$store.getters.weather;
+    this.$store.dispatch('updateWeather').then(
+      () => {
+        this.weather = this.$store.getters.weather;
+      }
+    ).catch(err => console.warn(`ERROR(${err.code}): ${err.message}`));
   },
    methods: { 
   },

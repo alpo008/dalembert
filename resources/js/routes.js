@@ -134,7 +134,8 @@ export default VueRouter.createRouter({
             meta: {
                 searchBar: false,
                 menuItem: false,
-                hideNavs: true
+                hideNavs: true,
+                hideOpenMeteo: true
             }
         },
         {

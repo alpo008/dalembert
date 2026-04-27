@@ -260,7 +260,7 @@
   const WEATHER_UPDATES_INTERVAL = 300000;  //TODO 5 minutes
 
 export default {
-  name: "App",
+  name: "GlobusMeteo",
   components: { LineChart },
   data() {
     return {
