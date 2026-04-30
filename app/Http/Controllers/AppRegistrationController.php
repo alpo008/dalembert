@@ -7,6 +7,8 @@ use App\Models\AppRegistration;
 use App\Http\Requests\AppRegistrationRequest;
 use App\Http\Requests\CustomerRequest;
 use App\Http\Middleware\CheckApiKey;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\DownloadApplication;
 
 class AppRegistrationController extends Controller
 {
@@ -118,10 +120,14 @@ class AppRegistrationController extends Controller
 
     public function apply(CustomerRequest $request)
     {
+        $to = config('custom.site.admin_email');
+        $cc = config('custom.site.dev_email');
+        $customerData = $request->all();
+        Mail::to($to)->cc($cc)->send(new DownloadApplication($customerData));
         return response()->json(
             [
                 'status' => 'success',
-                'req' => $request->all()
+                'result' => $result
             ]
         );
     }

@@ -277,7 +277,12 @@
             :hint="$t('Place number or address')"
           >
           </v-text-field>
-          <v-btn class="mt-2" type="submit" block>
+          <v-checkbox 
+            label="В соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных», свободно, своей волей и в своем интересе даю согласие на обработку моих персональных данных с целью регистрации мобильного приложения 'Globus-Meteo'."
+            v-model="submitRegistrationButton"
+          >
+          </v-checkbox>
+          <v-btn class="mt-2" type="submit" block v-if="submitRegistrationButton">
             {{ $t('Save') }}
           </v-btn>
         </v-form>
@@ -319,7 +324,8 @@ export default {
       },
       dataset: null,
       webCamSrc: `${process.env.MIX_WEBCAM_SRC}`,
-      apiKey: `${process.env.MIX_GLOBUS_API_KEY}`
+      apiKey: `${process.env.MIX_GLOBUS_API_KEY}`,
+      submitRegistrationButton: false
     };
   },
   async mounted() {

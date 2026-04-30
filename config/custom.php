@@ -65,6 +65,18 @@ return [
         'api_key' => env('GLOBUS_API_KEY')
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Site settings
+    |--------------------------------------------------------------------------
+    |
+    */
+
+    'site' => [
+        'admin_email' => env('SITE_ADMIN_EMAIL'),
+        'dev_email' => env('SITE_DEV_EMAIL')
+    ],
+
     'default_timezone' => env('DEFAULT_TIMEZONE')
 
 ];
