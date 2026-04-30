@@ -127,7 +127,6 @@ class AppRegistrationController extends Controller
         return response()->json(
             [
                 'status' => 'success',
-                'result' => $result
             ]
         );
     }
