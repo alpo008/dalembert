@@ -283,10 +283,28 @@
           >
           </v-checkbox>
           <v-btn class="mt-2" type="submit" block v-if="submitRegistrationButton">
-            {{ $t('Save') }}
+            {{ $t('Send') }}
           </v-btn>
         </v-form>
       </v-card>
+        <v-dialog
+          v-model="mode.showAlert"
+          width="auto"
+        >
+          <v-card
+            max-width="400"
+            :text="$t('Request has been sent. Wait for an e-mail.')"
+            :title="$t('Information')"
+          >
+            <template v-slot:actions>
+              <v-btn
+                class="ms-auto"
+                type="submit"
+                @click="startWidget('form')"
+              >{{ $t('Yes') }}</v-btn>
+            </template>
+          </v-card>
+        </v-dialog>
     </div>
   </main>
 </template>
@@ -300,6 +318,7 @@
 
   const HISTORY_UPDATES_INTERVAL = 7200000;  //TODO 2 hours
   const WEATHER_UPDATES_INTERVAL = 300000;  //TODO 5 minutes
+  const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
 
 export default {
   name: "GlobusMeteo",
@@ -320,7 +339,8 @@ export default {
         showStickers: true,
         showChart: false,
         showForm: false,
-        showTabs: true
+        showTabs: true,
+        showAlert: false
       },
       dataset: null,
       webCamSrc: `${process.env.MIX_WEBCAM_SRC}`,
@@ -400,7 +420,9 @@ export default {
           this.mode.showCamera = !this.mode.showCamera;
         break;
         case 'form':
+          this.customerData = {};
           this.mode.showForm = !this.mode.showForm;
+          this.mode.showAlert = false;
         break;
       }
       this.mode.showTabs = !(this.mode.showMeteo || this.mode.showCamera || this.mode.showForm);
@@ -444,6 +466,9 @@ export default {
         mutation: ''
       });
       this.errors = this.$store.getters.httpErrors;
+      if(isEmpty(this.errors)) {
+        this.mode.showAlert = true;
+      }
     },
     tabStyle(tab) {
       let style;

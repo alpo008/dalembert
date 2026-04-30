@@ -30,7 +30,7 @@ class CustomerRequest extends FormRequest
             'location' => 'nullable',
             'location.lat' => 'decimal:2,18',
             'location.lng' => 'decimal:2,18',
-            'address' => 'string|max:255|nullable',
+            'address' => 'required|string|max:255',
             'comments' => 'string|nullable'
         ];
     }
