@@ -1,20 +1,20 @@
 <template>
   <main class="main-section d-flex flex-wrap" style="margin-top:-67px;">
     <div class="weather" :style="tabStyle('meteo')" v-if="mode.showTabs || mode.showMeteo">
-      <h2 @click="startWidget('meteo')">{{ _t('Our meteostation') }}</h2>
+      <h2 @click="startWidget('meteo')">{{ $t('Our meteostation') }}</h2>
       <div v-if="mode.showMeteo"> 
-        {{ _t('Updated at') }} {{ updated_at }}
+        {{ $t('Updated at') }} {{ updated_at }}
         <div class="wrapper" v-if="!this.mode.showChart">
           <div class="params_block_wrapper">
             <div class="params_block">
               <div class="temp-box">
                 <div class="link-icon-left chart-link" 
                   @click="showChart('temperature')" 
-                  :title="_t('Show chart')"
+                  :title="$t('Show chart')"
                 >
                 </div>
                 <div class="text-small text-white text-bolder">
-                  {{ _t('Temperature') }}
+                  {{ $t('Temperature') }}
                 </div>
                 <div class="wx_parameter">
                   {{ temperature_out }} 
@@ -23,7 +23,7 @@
                   </span>
                 </div>
                 <div class="text-small">
-                  {{ _t('Feels like') }}
+                  {{ $t('Feels like') }}
                   <span class="text-green">
                     {{ feels_like }} {{ feels_like_unit }}
                   </span>
@@ -32,11 +32,11 @@
               <div class="temp-box">
                 <div class="link-icon-right chart-link" 
                   @click="showChart('humidity')" 
-                  :title="_t('Show chart')"
+                  :title="$t('Show chart')"
                 >
                 </div>
                 <div class="text-small text-white text-bolder">
-                  {{ _t('Humidity') }}
+                  {{ $t('Humidity') }}
                 </div>
                 <div class="wx_parameter">
                   {{ humidity }} 
@@ -45,7 +45,7 @@
                   </span>
                 </div>
                 <div class="text-small">
-                  {{ _t('Dew point') }}
+                  {{ $t('Dew point') }}
                   <span class="text-green">
                     {{ dew_point }} {{ dew_point_unit }}
                   </span>
@@ -56,16 +56,16 @@
           <div class="params_block_wrapper">
                 <div class="link-icon-left chart-link pt-l-4" 
                   @click="showChart('pressure')" 
-                  :title="_t('Show chart')"
+                  :title="$t('Show chart')"
                 >
                 </div>
             <div class="text-small text-white text-bolder">
-              {{ _t('Pressure') }} 
+              {{ $t('Pressure') }} 
             </div>
             <div class="params_block">
               <div class="temp-box">
                 <div class="text-small">
-                  {{ _t('Absolute') }}
+                  {{ $t('Absolute') }}
                 </div>
                 <div class="wx_parameter">
                   {{ pressure_abs }}
@@ -76,7 +76,7 @@
               </div>
               <div class="temp-box">
                 <div class="text-small">
-                  {{ _t('Relative') }}
+                  {{ $t('Relative') }}
                 </div>
                 <div class="wx_parameter">
                   {{ pressure_rel }}
@@ -90,16 +90,16 @@
           <div class="params_block_wrapper">
                 <div class="link-icon-left chart-link pt-l-4" 
                   @click="showChart('solar')" 
-                  :title="_t('Show chart')"
+                  :title="$t('Show chart')"
                 >
                 </div>
             <div class="text-small text-white text-bolder">
-              {{ _t('Solar and UVI') }}
+              {{ $t('Solar and UVI') }}
             </div>
             <div class="params_block">
               <div class="temp-box">
                 <div class="text-small">
-                  {{ _t('Illumination') }}
+                  {{ $t('Illumination') }}
                 </div>
                 <div class="wx_parameter">
                   {{ solar_rounded.value }}
@@ -110,7 +110,7 @@
               </div>
               <div class="temp-box">
                 <div class="text-small">
-                  {{ _t('UVI') }}
+                  {{ $t('UVI') }}
                 </div>
                 <div class="wx_parameter">
                   {{ uvi }}
@@ -124,16 +124,16 @@
           <div class="params_block_wrapper">
               <div class="link-icon-left chart-link pt-l-4" 
                 @click="showChart('wind')" 
-                :title="_t('Show chart')"
+                :title="$t('Show chart')"
               >
               </div>
             <div class="text-small text-white text-bolder">
-              {{ _t('Wind') }}
+              {{ $t('Wind') }}
             </div>
             <div class="params_block">
               <div class="temp-box">
                 <div class="text-small">
-                  {{ _t('Speed') }}
+                  {{ $t('Speed') }}
                 </div>
                 <div class="wx_parameter">
                   {{ wind_speed }}
@@ -154,7 +154,7 @@
               </div>
               <div class="temp-box">
                 <div class="text-small">
-                  {{ _t('Gust') }}
+                  {{ $t('Gust') }}
                 </div>
                 <div class="wx_parameter">
                   {{ wind_gust }}
@@ -168,16 +168,16 @@
           <div class="params_block_wrapper">
             <div class="link-icon-left chart-link pt-l-4" 
               @click="showChart('rainfall')" 
-              :title="_t('Show chart')"
+              :title="$t('Show chart')"
             >
             </div>
             <div class="text-small text-white text-bolder">
-              {{ _t('Rain') }}
+              {{ $t('Rain') }}
             </div>
             <div class="params_block">
               <div class="temp-box">
                 <div class="text-small">
-                  {{ _t('Per hour') }}
+                  {{ $t('Per hour') }}
                 </div>
                 <div class="wx_parameter">
                   {{ rain_hour }} 
@@ -186,7 +186,7 @@
                   </span>
                 </div>
                 <div class="text-small">
-                  {{ _t('Per day') }}
+                  {{ $t('Per day') }}
                 </div>
                 <div class="wx_parameter">
                   {{ rain_day }} 
@@ -197,17 +197,17 @@
               </div>
               <div class="temp-box align-center">
                 <div class="text-small space-between" style="height:2em;">
-                  {{ _t('Weekly') }} <span class="text-green">
+                  {{ $t('Weekly') }} <span class="text-green">
                     {{ rain_week }} {{ rain_unit }}
                   </span>
                 </div>
                 <div class="text-small space-between" style="height:2em;">
-                  {{ _t('Monthly') }} <span class="text-green">
+                  {{ $t('Monthly') }} <span class="text-green">
                     {{ rain_month }} {{ rain_unit }}
                   </span>
                 </div>
                 <div class="text-small space-between" style="height:2em;">
-                  {{ _t('Yearly') }} <span class="text-green">
+                  {{ $t('Yearly') }} <span class="text-green">
                     {{ rain_year }} {{ rain_unit }}
                   </span>
                 </div>
@@ -217,7 +217,7 @@
         </div>
         <div class="wrapper" v-if="mode.showChart">
           <div class="params_block">
-            <div class="close-icon-right" @click="showChart(null)" :title="_t('Close')">
+            <div class="close-icon-right" @click="showChart(null)" :title="$t('Close')">
                 &#65794;
             </div>
             <LineChart :history="dataset" style="" />
@@ -226,7 +226,7 @@
       </div>
     </div>
     <div class="weather" :style="tabStyle('camera')" v-if="mode.showTabs || mode.showCamera">
-      <h2 @click="startWidget('camera')" style="min-height:32px;">{{ _t('Our web camera') }}</h2>
+      <h2 @click="startWidget('camera')" style="min-height:32px;">{{ $t('Our web camera') }}</h2>
       <v-card v-if="mode.showCamera" class="mt-1">
         <iframe :src="webCamSrc" 
           width="95%" height="600" 
@@ -234,12 +234,12 @@
           seamless="seamless" 
           allowfullscreen
         >
-          {{ _t('Your browser does not support frames') }} !
+          {{ $t('Your browser does not support frames') }} !
         </iframe>
       </v-card>
     </div>
     <div class="weather" :style="tabStyle('form')" v-if="mode.showTabs || mode.showForm">
-      <h2 @click="startWidget('form')">{{ _t('Download app') }}</h2>
+      <h2 @click="startWidget('form')">{{ $t('Download app') }}</h2>
       <v-card v-if="mode.showForm" class="mt-1">
         <v-form @submit.prevent="saveCustomer">
           <v-text-field 
@@ -312,7 +312,6 @@
 <script>
   import axios from "axios";
   import REQUEST_PARAMS from "./gwassets/request_params.ts";
-  import TRANSLATIONS from "./gwassets/translations.ts";
   import moment from "moment/dist/moment";
   import LineChart from "./gwassets/LineChart.vue"
 
@@ -366,7 +365,7 @@ export default {
         })
         this.updateHistory(response.data.history);
       } catch (error) {
-        console.error(this._t('Error fetching weather data:'), error);
+        console.error(this.$t('Error fetching weather data:'), error);
       }
     },
     updateHistory(payload) {
@@ -395,13 +394,6 @@ export default {
       if(this.language === 'en') {
         this.language = 'en-US'; 
       }
-    },
-    _t(txt) {
-      let current = TRANSLATIONS[this.language];
-      if (typeof current !== 'undefined') {
-        return current[txt] ?? txt;
-      }
-      return txt;
     },
     startWidget(wid) {
       switch(wid) {
@@ -493,7 +485,7 @@ export default {
     },
     temperature_unit() {
       return this.temperature_out !== null ? 
-        this._t(this.wxData?.outdoor?.temperature?.unit) : 
+        this.$t(this.wxData?.outdoor?.temperature?.unit) : 
         null;
     },
     pressure_abs() {
@@ -504,7 +496,7 @@ export default {
     },
     pressure_unit() {
       return this.pressure_abs !== null ? 
-        this._t(this.wxData?.pressure?.absolute?.unit) : 
+        this.$t(this.wxData?.pressure?.absolute?.unit) : 
         null;
     },
     humidity() {
@@ -512,7 +504,7 @@ export default {
     },
     humidity_unit() {
       return this.humidity !== null ? 
-        this._t(this.wxData?.outdoor?.humidity?.unit) : 
+        this.$t(this.wxData?.outdoor?.humidity?.unit) : 
         null;
     },
     rain_hour() {
@@ -534,7 +526,7 @@ export default {
       return this.wxData?.rainfall?.yearly?.value ?? null;
     },
     rain_unit() {
-      return this._t(this.wxData?.rainfall?.daily?.unit ?? null);
+      return this.$t(this.wxData?.rainfall?.daily?.unit ?? null);
     },
     wind_direction() {
       return this.wxData?.wind?.wind_direction?.value ?? null;
@@ -547,12 +539,12 @@ export default {
     },
     wind_direction_unit() {
       return this.wind_direction !== null ? 
-        this._t(this.wxData?.wind?.wind_direction?.unit) : 
+        this.$t(this.wxData?.wind?.wind_direction?.unit) : 
         null;
     },
     wind_speed_unit() {
       return this.wind_speed !== null ? 
-        this._t(this.wxData?.wind?.wind_speed?.unit) : 
+        this.$t(this.wxData?.wind?.wind_speed?.unit) : 
         null;
     },
     wind_arrow_style() {
@@ -566,7 +558,7 @@ export default {
     },
     solar_unit() {
       return this.solar !== null ? 
-        this._t(this.wxData?.solar_and_uvi?.solar?.unit) : 
+        this.$t(this.wxData?.solar_and_uvi?.solar?.unit) : 
         null;
     },
     uvi() {
@@ -574,7 +566,7 @@ export default {
     },
     uvi_unit() {
       return this.uvi !== null ? 
-        this._t(this.wxData?.solar_and_uvi?.uvi?.unit) : 
+        this.$t(this.wxData?.solar_and_uvi?.uvi?.unit) : 
         null;
     },
     dew_point() {
@@ -582,7 +574,7 @@ export default {
     },
     dew_point_unit() {
       return this.dew_point !== null ? 
-        this._t(this.wxData?.outdoor?.dew_point?.unit) : 
+        this.$t(this.wxData?.outdoor?.dew_point?.unit) : 
         null;
     },
     feels_like() {
@@ -590,7 +582,7 @@ export default {
     },
     feels_like_unit() {
       return this.feels_like !== null ? 
-        this._t(this.wxData?.outdoor?.feels_like?.unit) : 
+        this.$t(this.wxData?.outdoor?.feels_like?.unit) : 
         null;
     },
     solar_rounded() {
@@ -660,7 +652,7 @@ export default {
         'datasets': [
           {
             data:temperatureDataset,
-            label: this._t('Temperature') + ', ' + this._t('℃'),  
+            label: this.$t('Temperature') + ', ' + this.$t('℃'),  
             borderColor: 'rgb(141, 172, 45)', 
             backgroundColor: 'rgba(141, 172, 45, 0.3)',
             pointRadius: 3
@@ -683,7 +675,7 @@ export default {
         'datasets': [
           {
             data:humidityDataset,
-            label: this._t('Humidity')  + ', ' + this._t('%'), 
+            label: this.$t('Humidity')  + ', ' + this.$t('%'), 
             borderColor: 'rgb(141, 172, 45)', 
             backgroundColor: 'rgba(141, 172, 45, 0.3)',
             pointRadius: 3
@@ -706,7 +698,7 @@ export default {
         'datasets': [
           {
             data:pressureDataset,
-            label: this._t('Pressure') + ', ' + this._t('mmHg'), 
+            label: this.$t('Pressure') + ', ' + this.$t('mmHg'), 
             borderColor: 'rgb(141, 172, 45)', 
             backgroundColor: 'rgba(141, 172, 45, 0.3)',
             pointRadius: 3
@@ -729,7 +721,7 @@ export default {
         'datasets': [
           {
             data:windDataset,
-            label: this._t('Wind') + ', ' + this._t('m/s'), 
+            label: this.$t('Wind') + ', ' + this.$t('m/s'), 
             borderColor: 'rgb(141, 172, 45)', 
             backgroundColor: 'rgba(141, 172, 45, 0.3)',
             pointRadius: 3
@@ -752,7 +744,7 @@ export default {
         'datasets': [
           {
             data:rainfallDataset,
-            label: this._t('Rain') + ', ' + this._t('mm'),  
+            label: this.$t('Rain') + ', ' + this.$t('mm'),  
             borderColor: 'rgb(141, 172, 45)', 
             backgroundColor: 'rgba(141, 172, 45, 0.3)',
             pointRadius: 3
@@ -777,7 +769,7 @@ export default {
         'datasets': [
           {
             data:solarDataset,
-            label: this._t('Illumination') + ', ' + this._t('lx'), 
+            label: this.$t('Illumination') + ', ' + this.$t('lx'), 
             borderColor: 'rgb(141, 172, 45)', 
             backgroundColor: 'rgba(141, 172, 45, 0.3)',
             pointRadius: 3
