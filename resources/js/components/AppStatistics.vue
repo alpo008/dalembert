@@ -77,6 +77,17 @@
         </v-data-table>
       </v-expansion-panel-text>
     </v-expansion-panel>
+
+    <v-expansion-panel v-if="haveAirmaxStatistics('accessPoints')">
+      <v-expansion-panel-title>
+        {{ $t('Access points') }}
+      </v-expansion-panel-title>
+      <v-expansion-panel-text>
+        <div v-for="ap in statistics.airmax.accessPoints">
+          {{ ap.name }} : {{ ap.count }}
+        </div>
+      </v-expansion-panel-text>
+    </v-expansion-panel>
     <v-expansion-panel v-if="haveAirmaxStatistics('withLocation')">
       <v-expansion-panel-title>
         {{ $t('Map') }} ( {{ getAirmaxStatistics('withLocation').length }} )

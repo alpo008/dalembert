@@ -144,7 +144,21 @@ class AirmaxClientController extends Controller
                     'remind' => AirmaxClient::statistics(AirmaxClient::CLIENTS_TO_REMIND)->toArray(),
                     'withLocation' => AirmaxClient::statistics(
                             AirmaxClient::CLIENTS_WITH_LOCATION
-                        )->toArray()
+                        )->toArray(),
+                    'accessPoints' => [
+                            [   'name' => 'AKM071', 
+                                'count' => AirmaxClient::where('ap_mac', '00:27:22:12:DF:EE')->count()
+                            ],
+                            [   'name' => 'AKM072', 
+                                'count' => AirmaxClient::where('ap_mac', '00:27:22:12:DF:7F')->count()
+                            ],
+                            [   'name' => 'AKM073', 
+                                'count' => AirmaxClient::where('ap_mac', 'DC:9F:DB:34:13:4D')->count()
+                            ],
+                            [   'name' => __('Undefined'), 
+                                'count' => AirmaxClient::whereNull('ap_mac')->count()
+                            ]
+                        ]
                     ]
                 ]
             ], 200
