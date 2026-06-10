@@ -2,7 +2,7 @@
   <main class="main-section d-flex flex-wrap" style="margin-top:-67px;">
     <div class="weather" :style="tabStyle('meteo')" v-if="mode.showTabs || mode.showMeteo">
       <h2 @click="startWidget('meteo')">{{ $t('Our meteostation') }}</h2>
-      <div v-if="mode.showMeteo"> 
+      <div v-if="mode.showMeteo && wxData"> 
         {{ $t('Updated at') }} {{ updated_at }}
         <div class="wrapper" v-if="!this.mode.showChart">
           <div class="params_block_wrapper">
@@ -993,7 +993,6 @@ export default {
   .close-icon-right {
       position: absolute;
       right: 7px;
-/*      transform: translate(0px, -50px);*/
       cursor: pointer;
       border: 1px solid grey;
       border-radius: 50%;
@@ -1004,5 +1003,4 @@ export default {
   .link-icon-left:hover, .link-icon-right:hover, .close-icon-right:hover {
       background-color: darkslategrey;
   }
-
 </style>

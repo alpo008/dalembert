@@ -49,6 +49,7 @@
     "Map": "Map",
     "Manufacturer": "Manufacturer",
     "Medium": "Medium",
+    "Meteostation": "Meteostation",
     "mm": "mm",
     "mmHg": "mmHg",
 	"Model": "Model",
@@ -108,5 +109,7 @@
     "Yearly" : "Yearly",
     "Your browser does not support frames" : "Your browser does not support frames",
     "%": "%",
-    "℃": "℃"
+    "℃": "℃",
+    "º": "º",
+    "": ""
 }

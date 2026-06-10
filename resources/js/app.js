@@ -31,6 +31,9 @@ const i18n = createI18n({
   messages: {
     en: messagesEn,
     ru: messagesRu
+  },
+  missing: (locale, key, vm, values) => {
+    return key; 
   }
 });
 
