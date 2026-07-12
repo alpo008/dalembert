@@ -99,6 +99,12 @@
         data: null,
         mutation: 'setDevices'
       });
+      await this.$store.dispatch('httpRequest', {
+        url: '/app-registration',
+        method: 'GET',
+        data: null,
+        mutation: 'setAppRegistrations'
+      });
 		},
 		methods: {
       findOrFail(obj, path) {

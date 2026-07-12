@@ -18,6 +18,7 @@ class AppRegistrationController extends Controller
     public function __construct()
     {
         $this->middleware(CheckApiKey::class, ['only' => ['apply']]);
+        $this->middleware('auth', ['only' => ['viewAny']]);
     }
     /**
      * Display a listing of the resource.
@@ -26,7 +27,14 @@ class AppRegistrationController extends Controller
      */
     public function index()
     {
-        //
+        $this->authorize('viewAny', AppRegistration::class);
+        $allAppRegistrations = AppRegistration::with('customer')->get()->toArray();
+        return response()->json(
+            [
+                'status' => 'success',
+                'registrations' => $allAppRegistrations
+            ], 200
+        );
     }
 
     /**
