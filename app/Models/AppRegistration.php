@@ -5,8 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Customer;
 use App\Models\AppRegistration;
+use App\Models\DeviceLog;
 
 class AppRegistration extends Model
 {
@@ -24,6 +27,26 @@ class AppRegistration extends Model
     public function customer(): BelongsTo
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    /**
+     * Get logging events for registered application.
+     * 
+     * @return HasMany
+     */
+    public function deviceLogs(): HasMany
+    {
+        return $this->hasMany(DeviceLog::class, 'uuid', 'device_uuid');
+    }
+
+    /**
+     * Get latest log for registered application.
+     * 
+     * @return HasOne
+     */
+    public function latestLog(): HasOne
+    {
+        return $this->hasOne(DeviceLog::class, 'uuid', 'device_uuid')->latestOfMany();
     }
 
     /**

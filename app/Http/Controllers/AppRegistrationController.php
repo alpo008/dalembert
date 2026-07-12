@@ -28,7 +28,10 @@ class AppRegistrationController extends Controller
     public function index()
     {
         $this->authorize('viewAny', AppRegistration::class);
-        $allAppRegistrations = AppRegistration::with('customer')->get()->toArray();
+        $allAppRegistrations = AppRegistration::with('customer')
+            ->with('latestLog')
+            ->get()->toArray();
+
         return response()->json(
             [
                 'status' => 'success',
@@ -55,7 +58,7 @@ class AppRegistrationController extends Controller
      */
     public function store(Request $request)
     {
-        //$this->authorize('viewAny', AppRegistration::class);
+        $this->authorize('create', AppRegistration::class);
         $request->merge(['app_key' => AppRegistration::generateKey(
             $request->input('app_id'), $request->input('customer_id')
         )]);
