@@ -145,8 +145,12 @@ class AppRegistrationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(AppRegistration $appRegistration)
     {
-        //
+        $this->authorize('delete', $appRegistration);
+        AppRegistration::destroy($appRegistration->id);
+        return response()->json(
+            ['status' => 'success', 'deleted' => $appRegistration->id ], 200
+        );
     }
 }
