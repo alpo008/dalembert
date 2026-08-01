@@ -8,7 +8,7 @@
     cycle
     v-if="stickers.length && $store.getters.showStickers" 
     class="position-fixed" 
-    style="z-index:-1;top:98px;height:80vh;"
+    style="z-index:-1;"
     >
     <v-carousel-item
       v-for="(sticker, i) in stickers"

@@ -138,7 +138,7 @@
             value: item => moment(item.updated_at).format("DD.MM.YY HH:mm")
           },
           {
-            title: this.$t('Last login'),
+            title: this.$t('Last active'),
             align: 'center',
             key: 'latest_log.updated_at',
             value: item => item.latest_log?.updated_at ? moment(item.latest_log?.updated_at).format("DD.MM.YY HH:mm") : '- - -'
