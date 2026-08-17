@@ -14,6 +14,7 @@
       v-for="(sticker, i) in stickers"
       :key="i"
       :src="imagePath(sticker)"
+      max-height="65vh"
     >
       <v-sheet
         color="rgba(128,128,128,0.4)"
