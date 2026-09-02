@@ -23,6 +23,7 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`;
 
+//I18n
 import { createI18n } from 'vue-i18n'
 const messagesEn = require('../../lang/en.json');
 const messagesRu = require('../../lang/ru.json');
@@ -38,8 +39,8 @@ const i18n = createI18n({
   }
 });
 
-//  VueX
-//import { store } from './store';
+// VueX
+import { store } from './store';
 
 // Google Maps
 /*import VueGoogleMaps from '@fawmi/vue-google-maps';
@@ -73,7 +74,5 @@ Vue.createApp(App)
     .use(router)
     .use(VueAxios, axios)
     .use(i18n)
- /*   .use(store)
-    .use(auth)
-    .use(VueGoogleMaps, {load: mapLoaderOptions})*/
+    .use(store)
     .mount('#home-app');

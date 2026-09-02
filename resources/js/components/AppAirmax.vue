@@ -75,7 +75,7 @@
       </v-menu>
       <v-btn
         icon="mdi-account-plus-outline"
-        to="/airmax/new"
+        to="/admin/airmax/new"
         :title="$t('New client')"
         style="margin-left:5px;"
       >
