@@ -3,7 +3,6 @@ export default {
 
 	},
 	mutations : {
-
 	},
 	actions : {
 	},
@@ -14,7 +13,7 @@ export default {
         }
         let pathArr = path.split('.');
         for (let i=0; i < pathArr.length; i++ ) {
-          if (typeof obj[pathArr[i]] === 'undefined') {
+          if (_.isUndefined(obj[pathArr[i]])) {
             return null;
           } else {
             obj = obj[pathArr[i]];

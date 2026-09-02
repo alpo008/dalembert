@@ -10,7 +10,7 @@
       }
     },
     async created() {
-      let t = await axios.post('/home/globus');
+      await this.$store.dispatch('updateStickers');
     },
     methods: {
     },
