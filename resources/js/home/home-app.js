@@ -23,11 +23,11 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`;
 
-//import { createI18n } from 'vue-i18n'
-//const messagesEn = require('../lang/en.json');
-//const messagesRu = require('../lang/ru.json');
-//const currentLocale = document.querySelector('html').getAttribute('lang');
-/*const i18n = createI18n({
+import { createI18n } from 'vue-i18n'
+const messagesEn = require('../../lang/en.json');
+const messagesRu = require('../../lang/ru.json');
+const currentLocale = document.querySelector('html').getAttribute('lang');
+const i18n = createI18n({
   locale: currentLocale,
   messages: {
     en: messagesEn,
@@ -36,7 +36,7 @@ axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`;
   missing: (locale, key, vm, values) => {
     return key; 
   }
-});*/
+});
 
 //  VueX
 //import { store } from './store';
@@ -72,8 +72,8 @@ import auth from './auth.js';*/
 Vue.createApp(App)
     .use(router)
     .use(VueAxios, axios)
- /*   .use(i18n)
-    .use(store)
+    .use(i18n)
+ /*   .use(store)
     .use(auth)
     .use(VueGoogleMaps, {load: mapLoaderOptions})*/
     .mount('#home-app');
