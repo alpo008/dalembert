@@ -35,7 +35,7 @@
   </Transition>
   <v-data-table :headers="tableHeaders" :items="allCustomers" item-key="title" class="elevation-1" style="margin-top:30px;">
     <template v-slot:item.name="{ item }">
-      <v-chip variant="elevated" :to="'/customers/'+ getCustomer(item, 'id')"
+      <v-chip variant="elevated" :to="'/admin/customers/'+ getCustomer(item, 'id')"
         color="success">
         {{ getCustomer(item, 'name') }}
       </v-chip>

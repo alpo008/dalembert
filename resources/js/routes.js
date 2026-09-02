@@ -26,7 +26,7 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/login',
+            path: '/admin/login',
             name: 'login',
             component: AppLogin,
             meta: {
@@ -35,7 +35,7 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/customers/:id(\\d+)',
+            path: '/admin/customers/:id(\\d+)',
             name: 'Customer',
             component: AppCustomer,
             meta: {
@@ -49,7 +49,7 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/customers',
+            path: '/admin/customers',
             name: 'Customers',
             component: AppCustomers,
             meta: {
@@ -62,7 +62,7 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/airmax',
+            path: '/admin/airmax',
             name: 'Airmax clients',
             component: AppAirmax,
             meta: {
@@ -75,7 +75,7 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/statistics',
+            path: '/admin/statistics',
             name: 'Statistics',
             component: AppStatistics,
             meta: {
@@ -88,7 +88,7 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/airmax/:place',
+            path: '/admin/airmax/:place',
             name: 'Airmax client page',
             component: AppAirmaxClient,
             meta: {
@@ -102,7 +102,7 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/works',
+            path: '/admin/works',
             name: 'Price list',
             component: AppWorks,
             meta: {
@@ -115,7 +115,7 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/calculator',
+            path: '/admin/calculator',
             name: 'Price calculator',
             component: AppCalculator,
             meta: {
@@ -128,7 +128,7 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/globus',
+            path: '/admin//globus',
             name: 'VMPK Globus',
             component: AppGlobus,
             meta: {
@@ -139,7 +139,7 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/stickers',
+            path: '/admin//stickers',
             name: 'Stickers management',
             component: AppStickers,
             meta: {
@@ -152,7 +152,7 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/devices',
+            path: '/admin/devices',
             name: 'Devices',
             component: AppDevices,
             meta: {

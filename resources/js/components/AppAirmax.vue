@@ -114,7 +114,7 @@
         :key="client.wlan_mac"
       >
         <td>
-          <v-chip variant="elevated" :to="'/airmax/'+client.place" :color="client.active? 'success' : 'warning'">
+          <v-chip variant="elevated" :to="'/admin/airmax/'+client.place" :color="client.active? 'success' : 'warning'">
             {{ client.place }}
           </v-chip>
         </td>

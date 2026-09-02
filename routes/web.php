@@ -13,8 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::get('/', function () {
+    return view('home');
+});
+
 Route::get('/{vue_capture?}', function () {
 
  return view('welcome');
 
-})->where('vue_capture', '[\/\w\.-]*');
+})->where('vue_capture', 'admin[\/\w\.-]*');
+
+/*Route::get('/{vue_capture?}', function () {
+
+ return view('welcome');
+
+})->where('vue_capture', '[\/\w\.-]*');*/

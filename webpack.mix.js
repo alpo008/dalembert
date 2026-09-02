@@ -18,7 +18,12 @@ mix.webpackConfig({
    devtool: 'source-map' // Notice this
 }).sourceMaps(); // And this
 
-mix.js('resources/js/app.js', 'public/js').vue()
+mix
+   .js('resources/js/app.js', 'public/js').vue()
+   .js('resources/js/home/home-app.js', 'public/js/home/home-app.js').vue()
     .postCss('resources/css/app.css', 'public/css', [
+        //
+    ])
+     .postCss('resources/css/home/home-app.css', 'public/css/home/home-app.css', [
         //
     ]);

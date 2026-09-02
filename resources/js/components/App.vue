@@ -69,7 +69,7 @@
             <v-list-item @click="logout" prependIcon="account-lock" v-if="$auth.check()">
               <v-list-item-title>{{ $t('Logout') }}</v-list-item-title>
             </v-list-item>
-            <v-list-item to="/login" prependIcon="account-lock-open" v-if="!$auth.check()">
+            <v-list-item to="/admin/login" prependIcon="account-lock-open" v-if="!$auth.check()">
               <v-list-item-title>{{ $t('Log in') }}</v-list-item-title>
             </v-list-item>
           </v-list>
