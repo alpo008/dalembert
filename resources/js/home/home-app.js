@@ -19,9 +19,9 @@ import * as VueRouter from 'vue-router';
 import router from './routes.js';
 
 // Axios
-//import axios from 'axios';
-//import VueAxios from 'vue-axios';
-//axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`;
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api`;
 
 //import { createI18n } from 'vue-i18n'
 //const messagesEn = require('../lang/en.json');
@@ -71,9 +71,8 @@ import auth from './auth.js';*/
 
 Vue.createApp(App)
     .use(router)
-/*    .use(vuetify)
     .use(VueAxios, axios)
-    .use(i18n)
+ /*   .use(i18n)
     .use(store)
     .use(auth)
     .use(VueGoogleMaps, {load: mapLoaderOptions})*/

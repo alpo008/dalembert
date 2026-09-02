@@ -13,19 +13,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::prefix('admin')->group(function () {
+    Route::get('/{any?}', function () {
+        return view('welcome'); // Points to resources/views/admin.blade.php
+    })->where('any', '.*');
+});
 
-/*Route::get('/', function () {
-    return view('home');
-});*/
-
-Route::get('/{vue_capture?}', function () {
-
- return view('welcome');
-
-})->where('vue_capture', 'admin[\/\w\.-]*');
-
-Route::get('/{vue_capture?}', function () {
-
- return view('home');
-
-})->where('vue_capture', '[\/\w\.-]*');
+Route::get('/{any?}', function () {
+    return view('frontend'); // Points to resources/views/frontend.blade.php
+})->where('any', '.*');

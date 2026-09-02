@@ -6,9 +6,11 @@
   export default {
     data: function () {
       return {
+        stickers: []
       }
     },
     async created() {
+      let t = await axios.post('/home/globus');
     },
     methods: {
     },

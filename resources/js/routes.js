@@ -17,7 +17,7 @@ import AppDevices from './components/AppDevices.vue';
 export default VueRouter.createRouter({
     routes: [
         {
-            path: '/',
+            path: '/admin',
             name: 'Home',
             component: AppHome,
             meta: {
@@ -128,7 +128,7 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/admin//globus',
+            path: '/admin/globus',
             name: 'VMPK Globus',
             component: AppGlobus,
             meta: {
@@ -139,7 +139,7 @@ export default VueRouter.createRouter({
             }
         },
         {
-            path: '/admin//stickers',
+            path: '/admin/stickers',
             name: 'Stickers management',
             component: AppStickers,
             meta: {
