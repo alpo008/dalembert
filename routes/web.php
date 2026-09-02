@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('home');
-});
+});*/
 
 Route::get('/{vue_capture?}', function () {
 
@@ -24,8 +24,8 @@ Route::get('/{vue_capture?}', function () {
 
 })->where('vue_capture', 'admin[\/\w\.-]*');
 
-/*Route::get('/{vue_capture?}', function () {
+Route::get('/{vue_capture?}', function () {
 
- return view('welcome');
+ return view('home');
 
-})->where('vue_capture', '[\/\w\.-]*');*/
+})->where('vue_capture', '[\/\w\.-]*');
