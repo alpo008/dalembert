@@ -10,7 +10,12 @@
       }
     },
     async created() {
-      await this.$store.dispatch('updateStickers');
+      await this.$store.dispatch('httpRequest', {
+        url: '/home/globus',
+        method: 'POST',
+        data: null,
+        mutation: 'setStickers'
+      });
     },
     methods: {
     },

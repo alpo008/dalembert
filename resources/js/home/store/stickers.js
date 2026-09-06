@@ -8,17 +8,13 @@ export default {
 	},
 	mutations : {
     setStickers(state, payload) {
-      state.active = payload;
-      state.topPriority = _.filter(payload, ['priority', 1]);
-      state.mediumPriority = _.filter(payload, ['priority', 2]);
-      state.lowPriority = _.filter(payload, ['priority', 3]);
+      state.active = payload.active_stickers;
+      state.topPriority = _.filter(payload.active_stickers, ['priority', 1]);
+      state.mediumPriority = _.filter(payload.active_stickers, ['priority', 2]);
+      state.lowPriority = _.filter(payload.active_stickers, ['priority', 3]);
     }
 	},
 	actions : {
-    async updateStickers({ commit, getters }) {
-      let response = await axios.post('/home/globus');
-      commit('setStickers', getters.findOrFail(response, 'data.active_stickers'));
-    }
 	},
 	getters: {
     activeStickers(state) {
