@@ -1,10 +1,15 @@
 export default {
 	state : {
     httpErrors: {},
+    httpError: false,
     loading: false,
 	},
 	mutations : {
     setHttpErrors(state, payload) {
+      state.httpError = true;
+      if (_.isEmpty(payload)) {
+        state.httpError = false;
+      }
       if (typeof payload === 'object') {
         state.httpErrors = payload;
       }
@@ -53,16 +58,16 @@ export default {
                 }                   
               }).catch(error => {
                 context.commit('setHttpLoadingState', false);
-                    if (typeof error.response === 'object') {
-                if (typeof error.response.data === 'object') {
-                  if (typeof error.response.data.errors === 'object') {
-                    context.commit('setHttpErrors', error.response.data.errors);
-                  } else {
-                    if (typeof error.response.data.message === 'string') {
-                      context.commit('setHttpErrors', error.response.data.message);
-                    } 
+                if (typeof error.response === 'object') {
+                  if (typeof error.response.data === 'object') {
+                    if (typeof error.response.data.errors === 'object') {
+                      context.commit('setHttpErrors', error.response.data.errors);
+                    } else {
+                      if (typeof error.response.data.message === 'string') {
+                        context.commit('setHttpErrors', error.response.data.message);
+                      } 
+                    }
                   }
-                }
                } else {
                   if (typeof error.message !== 'undefined') {
                     context.commit('setHttpErrors', error.message);

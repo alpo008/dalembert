@@ -1,5 +1,14 @@
 <template>
-<div>App</div>
+<div class="d-flex justify-content-center loader" v-if="loadingState || httpError">
+  <div class="alert alert-secondary reload-link" role="alert" v-if="httpError" 
+    @click="reloadPage"
+   >
+    {{ $t('Network error. Click to reload.') }}
+  </div>
+  <div class="spinner-border" role="status" v-if="!httpError">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
 
 <div class="dropdown">
     <button
@@ -30,6 +39,8 @@
     },
     data: function () {
       return {
+        loadingState: false,
+        httpError: false
       }
     },
     created() {
@@ -37,8 +48,34 @@
     mounted() {
     },
     methods: {
+      reloadPage() {
+        window.location.reload();
+      }
     },
     computed: {
+    },
+    watch: {
+      '$store.state.general.loading' (val) {
+        this.loadingState = val;
+      },
+      '$store.state.general.httpError' (val) {
+        this.httpError = val;
+      }
     }
-}
+  }
 </script>
+
+<style scoped>
+  .reload-link {
+    position:fixed;
+    cursor: pointer;
+  }
+  .loader {
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+    align-items: center;
+    position: fixed;
+    backdrop-filter: blur(2px);
+  }
+</style>
