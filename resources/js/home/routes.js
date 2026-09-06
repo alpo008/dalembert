@@ -17,7 +17,7 @@ export default VueRouter.createRouter({
         },
         {
             path: '/meteo',
-            name: 'meteo',
+            name: 'Meteo',
             component: AppHomeMeteo,
             meta: {
                 searchBar: false,

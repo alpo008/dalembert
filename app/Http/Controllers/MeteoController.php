@@ -74,4 +74,14 @@ class MeteoController extends Controller
     {
         //
     }
+
+    public function description()
+    {
+        $wx = new EcowittWeather();
+        return response()->json(
+            [
+                'status' => 'success',
+                'text' => $wx->description(),        
+            ], 200);
+    }
 }

@@ -63,6 +63,7 @@ Route::group(['prefix' => 'export'], function () {
 Route::get('payments/{obj}/{id}', 'App\Http\Controllers\PaymentController@show');
 
 Route::post('home/globus', 'App\Http\Controllers\HomeController@globus');
+Route::get('meteo/description', 'App\Http\Controllers\MeteoController@description');
 
 Route::post('app-registration/key', 'App\Http\Controllers\HomeController@key');
 
