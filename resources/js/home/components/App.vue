@@ -13,7 +13,7 @@
 
   <div class="ticker-wrapper">
     <div class="ticker bg-light">
-      <p>Lorem, ipsum, dolor sit amet consectetur adipisicing elit. Eaque sunt, ...</p>
+      <p>{{ $store.getters.weatherTicker }}</p>
     </div>
   </div>
 
@@ -70,7 +70,7 @@ import { Collapse } from 'bootstrap';
         url: '/meteo/description',
         method: 'GET',
         data: null,
-        mutation: ''
+        mutation: 'setWeatherTicker'
       });
     },
     mounted() {

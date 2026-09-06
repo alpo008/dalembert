@@ -1,7 +1,6 @@
 export default {
 	state : {
     active: [],
-    ticker: null,
     topPriority: [],
     mediumPriority: [],
     lowPriority: []
