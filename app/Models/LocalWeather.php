@@ -106,7 +106,7 @@ class LocalWeather
 	{
 		$result = '';
 		$result .= date('Y.m.d H:i', $this->updatedAt) . PHP_EOL;
-		$result .= $this->temperature . ' ' . __($this->temperatureUnit) . PHP_EOL;
+		$result .= ' : t° ' . $this->temperature . ' ' . __($this->temperatureUnit) . PHP_EOL;
 		$windDirection = !empty($this->windRumb()) ? ' (' .
 			$this->windDirection . ' ' . __($this->windDirectionUnit) . '), ' : '';
 		$showWindGust = !!intval($this->windGust);
