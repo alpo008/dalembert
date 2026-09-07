@@ -11,13 +11,12 @@
     </div>
   </div>
 
-  <div class="ticker-wrapper">
-    <div class="ticker bg-light">
+  <nav class="navbar fixed-top navbar-light bg-light">
+    <span class="navbar-brand mb-0">
+          <div class="ticker bg-light">
       <p class="h1">{{ $store.getters.weatherTicker }}</p>
     </div>
-  </div>
-
-  <nav class="navbar fixed-top navbar-light bg-light top-20">
+    </span>
     <div class="container-fluid">
       <button class="navbar-toggler" 
         type="button" 
@@ -51,7 +50,7 @@
     </div>
   </nav>
 
-  <div class="container-fluid pt-60">
+  <div class="container-fluid pt-100">
     <router-view></router-view>
   </div>
 </div>
