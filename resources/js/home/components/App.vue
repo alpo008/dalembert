@@ -13,11 +13,11 @@
 
   <div class="ticker-wrapper">
     <div class="ticker bg-light">
-      <p>{{ $store.getters.weatherTicker }}</p>
+      <p class="h1">{{ $store.getters.weatherTicker }}</p>
     </div>
   </div>
 
-  <nav class="navbar sticky-top navbar-light bg-light">
+  <nav class="navbar fixed-top navbar-light bg-light top-20">
     <div class="container-fluid">
       <button class="navbar-toggler" 
         type="button" 
@@ -30,6 +30,8 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
+      <span class="navbar-brand mb-0">Lorem ipsum, dolor sit amet?</span>
+
       <div class="collapse navbar-collapse" id="navbarDropdownMenu">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
@@ -39,6 +41,9 @@
             <router-link :class="navLinkClass('Meteo')" to="/meteo">Meteo</router-link>
           </li>
           <li class="nav-item">
+            <router-link :class="navLinkClass('Webcam')" to="/webcam">Web camera</router-link>
+          </li>
+          <li class="nav-item">
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
           </li>
         </ul>
@@ -46,7 +51,9 @@
     </div>
   </nav>
 
-  <router-view></router-view>
+  <div class="container-fluid pt-60">
+    <router-view></router-view>
+  </div>
 </div>
 </template>
 
@@ -74,8 +81,13 @@ import { Collapse } from 'bootstrap';
       });
     },
     mounted() {
-      this.collapseInstance = new Collapse(document.getElementById("navbarDropdownMenu"));
-      setTimeout(() => this.collapseInstance.hide(), 1000);
+    },
+    updated() {
+      if (this.collapseInstance === null) {
+        this.collapseInstance = new Collapse(document.getElementById("navbarDropdownMenu"),
+        {toggle: false});
+      }
+      this.collapseInstance.hide();
     },
     methods: {
       reloadPage() {
@@ -94,9 +106,6 @@ import { Collapse } from 'bootstrap';
     },
     watch: {
       $route(to, from) {
-        if (to.path !== from.path) {
-          this.collapseInstance.hide();
-        }
       },
       '$store.state.general.loading' (val) {
         this.loadingState = val;
@@ -133,7 +142,8 @@ import { Collapse } from 'bootstrap';
   }
   .ticker p{
     text-align:center;
-    color: #555;
+    color: #333;
+    font-size: 20px;
     animation: text 8s infinite linear;
     padding-left: 1000px;
     white-space: nowrap;

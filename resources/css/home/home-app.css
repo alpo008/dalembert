@@ -1,17 +1,16 @@
 
+  .top-20 {
+    top: 20px!important;
+  }
 
-/*   W E A T H E R   I C O N S   */
+  .pt-30 {
+    padding-top: 30px!important;
+  }
+  .pt-60 {
+    padding-top: 60px!important;
+  }
 
-/*@import "weather-icons.css";
-
-@import "materialdesignicons.css";*/
-
-.wi {
-  font-size: 1.75rem;
-}
-
-
-/*    R U N N I N G  L I N E    */
+  /*    R U N N I N G  L I N E    */
 .ticker{
   height: auto;
   width:300px;

@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import AppHome from './components/AppHome.vue';
 import AppHomeMeteo from './components/AppHomeMeteo.vue';
+import AppHomeWebcam from './components/AppHomeWebcam.vue';
 
 export default VueRouter.createRouter({
     routes: [
@@ -19,6 +20,15 @@ export default VueRouter.createRouter({
             path: '/meteo',
             name: 'Meteo',
             component: AppHomeMeteo,
+            meta: {
+                searchBar: false,
+                menuItem: false
+            }
+        },
+        {
+            path: '/webcam',
+            name: 'Webcam',
+            component: AppHomeWebcam,
             meta: {
                 searchBar: false,
                 menuItem: false
