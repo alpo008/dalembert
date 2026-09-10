@@ -11,12 +11,11 @@
     </div>
   </div>
 
-  <nav class="navbar fixed-top navbar-light bg-light">
-    <span class="navbar-brand mb-0">
-          <div class="ticker bg-light">
-      <p class="h1">{{ $store.getters.weatherTicker }}</p>
-    </div>
-    </span>
+<!--   <div class="ticker-wrapper">
+  <div class="ticker bg-dark">
+        <p class="h1">{{ $store.getters.weatherTicker }}</p>
+  </div></div> -->
+  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-with-gradient">
     <div class="container-fluid">
       <button class="navbar-toggler" 
         type="button" 
@@ -28,8 +27,6 @@
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-
-      <span class="navbar-brand mb-0">Lorem ipsum, dolor sit amet?</span>
 
       <div class="collapse navbar-collapse" id="navbarDropdownMenu">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -47,12 +44,20 @@
           </li>
         </ul>
       </div>
+      <span class="navbar-brand mb-0">Lorem ipsum, dolor sit amet?</span>
     </div>
   </nav>
 
-  <div class="container-fluid pt-100">
+  <div class="container-fluid pt-70 mh-85 dark-water-layered">
     <router-view></router-view>
   </div>
+    <footer class="py-1 bg-with-gradient">
+      <div class="container px-1 px-lg-2">
+        <p class="m-0 text-center text-white">
+          {{ $store.getters.weatherTicker }}
+        </p>
+      </div>
+  </footer>
 </div>
 </template>
 
@@ -133,6 +138,22 @@ import { Collapse } from 'bootstrap';
     position: fixed;
     backdrop-filter: blur(2px);
   }
+
+  .bg-with-gradient {
+    background-color: #0f172a;
+    background-image: 
+      radial-gradient(at 10% 20%, rgba(56, 189, 248, 0.3) 0px, transparent 50%),
+      radial-gradient(at 90% 80%, rgba(236, 72, 153, 0.3) 0px, transparent 50%),
+      radial-gradient(at 50% 50%, rgba(99, 102, 241, 0.2) 0px, transparent 50%);
+  }
+
+  .dark-water-layered {
+    background: 
+      radial-gradient(at 20% 20%, rgba(10, 61, 98, 0.4) 0px, transparent 50%),
+      radial-gradient(at 80% 40%, rgba(0, 140, 153, 0.15) 0px, transparent 50%),
+      linear-gradient(160deg, #031424 0%, #010a12 100%);
+  }
+
   .ticker{
     height: auto;
     width:300px;
@@ -141,7 +162,7 @@ import { Collapse } from 'bootstrap';
   }
   .ticker p{
     text-align:center;
-    color: #333;
+    color: rgba(255, 255, 255, 0.55);
     font-size: 20px;
     animation: text 8s infinite linear;
     padding-left: 1000px;
@@ -152,9 +173,9 @@ import { Collapse } from 'bootstrap';
 
   .ticker-wrapper {
     --bs-bg-opacity: 1;
-    background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
     left: 0px;
-    width: 100%;
+
   }
   @keyframes text {
     0%{

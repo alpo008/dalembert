@@ -1,6 +1,6 @@
 <template>
   <iframe :src="webCamSrc" 
-    width="100%" height="600" 
+    width="100%" height="580" 
     frameBorder="0" 
     seamless="seamless" 
     allowfullscreen
