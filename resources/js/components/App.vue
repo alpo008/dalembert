@@ -120,11 +120,11 @@
 
 <script>
   const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
-  import WidgetWeather from './widgets/WidgetWeather.vue';
+  //import WidgetWeather from './widgets/WidgetWeather.vue';
 
   export default {
     components: {
-      WidgetWeather
+      // WidgetWeather
     },
     data: function () {
       return {
@@ -152,7 +152,7 @@
         }
       });
       setTimeout(() => {
-        this.showWeather = this.$route.meta.hideOpenMeteo !== true;
+        this.showWeather = !(this.$route.meta.hideOpenMeteo !== false);
       }, 3000);
     },
     methods: {
