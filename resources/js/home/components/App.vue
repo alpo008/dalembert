@@ -48,7 +48,7 @@
     </div>
   </nav>
 
-  <div class="container-fluid pt-70 mh-85 dark-water-layered">
+  <div class="container-fluid pt-70 mh-85 grey-sunny-sky">
     <router-view></router-view>
   </div>
     <footer class="py-1 bg-with-gradient">
@@ -152,6 +152,16 @@ import { Collapse } from 'bootstrap';
       radial-gradient(at 20% 20%, rgba(10, 61, 98, 0.4) 0px, transparent 50%),
       radial-gradient(at 80% 40%, rgba(0, 140, 153, 0.15) 0px, transparent 50%),
       linear-gradient(160deg, #031424 0%, #010a12 100%);
+  }
+
+  .grey-sunny-sky {
+    background: radial-gradient(
+      circle at 80% 20%,      /* Солнце смещено чуть выше центра */
+      #fffde6 0%,             /* Мягкий тепло-белый центр солнца */
+      #e2e7ec 15%,            /* Светлое свечение сквозь облака */
+      #9faab5 45%,            /* Основной серый цвет туч */
+      #5a6570 100%            /* Темные грозовые края */
+    );
   }
 
   .ticker{
