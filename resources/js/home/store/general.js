@@ -79,6 +79,16 @@ export default {
     }
 	},
 	getters: {
+    currentLocale() {
+      let lang = document.querySelector('html').getAttribute('lang');
+      if (lang === 'en') {
+        return 'en-US';
+      }
+      if (lang === 'ru') {
+        return 'ru-Ru';
+      }
+      return lang;
+    },
 		findOrFail: (state) => (obj, path) => {
       if (_.isEmpty(obj) || !path.length) {
         return null;

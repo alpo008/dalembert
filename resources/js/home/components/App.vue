@@ -11,10 +11,6 @@
     </div>
   </div>
 
-<!--   <div class="ticker-wrapper">
-  <div class="ticker bg-dark">
-        <p class="h1">{{ $store.getters.weatherTicker }}</p>
-  </div></div> -->
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-with-gradient">
     <div class="container-fluid">
       <button class="navbar-toggler" 
@@ -44,7 +40,9 @@
           </li>
         </ul>
       </div>
-      <span class="navbar-brand mb-0">Lorem ipsum, dolor sit amet?</span>
+      <span class="navbar-brand mb-0" style="max-width: 75%"><!--  28 symbols -->
+        {{ dateString }}
+      </span>
     </div>
   </nav>
 
@@ -62,10 +60,7 @@
 </template>
 
 <script>
-import { Collapse } from 'bootstrap';
-
-  const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
-  //import WidgetWeather from './widgets/WidgetWeather.vue';
+  import { Collapse } from 'bootstrap';
   export default {
     components: {
     },
@@ -73,7 +68,8 @@ import { Collapse } from 'bootstrap';
       return {
         loadingState: false,
         httpError: false,
-        collapseInstance: null
+        collapseInstance: null,
+        dateString: ''
       }
     },
     async created() {
@@ -87,6 +83,7 @@ import { Collapse } from 'bootstrap';
     mounted() {
     },
     updated() {
+      this.refreshDate();
       if (this.collapseInstance === null) {
         this.collapseInstance = new Collapse(document.getElementById("navbarDropdownMenu"),
         {toggle: false});
@@ -94,6 +91,17 @@ import { Collapse } from 'bootstrap';
       this.collapseInstance.hide();
     },
     methods: {
+      refreshDate() {
+        let date = new Date();
+        let formatter = new Intl.DateTimeFormat(this.$store.getters.currentLocale, {
+          weekday: 'long',
+          //year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        let str =  formatter.format(date);
+        this.dateString =str.charAt(0).toUpperCase() + str.slice(1);
+      },
       reloadPage() {
         window.location.reload();
       },

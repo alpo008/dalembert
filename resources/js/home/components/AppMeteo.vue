@@ -1,5 +1,5 @@
 <template>
-<p>Meteo</p>
+<p>Met-eo</p>
 </template>
 <script>
   const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
