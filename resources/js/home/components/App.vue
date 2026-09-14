@@ -50,10 +50,14 @@
     <router-view></router-view>
   </div>
     <footer class="py-1 bg-with-gradient">
-      <div class="container px-1 px-lg-2">
-        <p class="m-0 text-center text-white">
-          {{ $store.getters.weatherTicker }}
-        </p>
+      <div>
+        <div class="marquee-container">
+          <div id="dynamicMarquee" class="marquee-track">
+            <span class="marquee-item px-4 text-white">
+              {{ this.$store.getters.weatherTicker }}
+            </span>
+          </div>
+        </div>
       </div>
   </footer>
 </div>
@@ -89,6 +93,7 @@
         {toggle: false});
       }
       this.collapseInstance.hide();
+      this.setupSeamlessMarquee();
     },
     methods: {
       refreshDate() {
@@ -111,6 +116,20 @@
           result += ' active';
         }
         return result;
+      },
+      setupSeamlessMarquee() {
+        const track = document.getElementById('dynamicMarquee');
+        if (!track) return;
+        const items = Array.from(track.children);
+        items.forEach(item => {
+          const clone = item.cloneNode(true);
+          // Optional: add a class or attribute to identify clones if needed
+          clone.setAttribute('aria-hidden', 'true'); 
+          track.appendChild(clone);
+          if (items.length >= 32) {
+            track.firstElementChild.remove();
+          }
+        });
       }
     },
     computed: {
@@ -172,36 +191,27 @@
     );
   }
 
-  .ticker{
-    height: auto;
-    width:300px;
-    margin:0 auto;
-    background-color: transparent;
-  }
-  .ticker p{
-    text-align:center;
-    color: rgba(255, 255, 255, 0.55);
-    font-size: 20px;
-    animation: text 8s infinite linear;
-    padding-left: 1000px;
-    white-space: nowrap;
-    background-color: transparent;
-    margin-bottom: 0;
-  }
+.marquee-container {
+  width: 100%;
+}
 
-  .ticker-wrapper {
-    --bs-bg-opacity: 1;
-    background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
-    left: 0px;
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 20s linear infinite;
+}
 
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
   }
-  @keyframes text {
-    0%{
-      transform: translate(0, 0);
-    }
-    
-    100%{
-      transform: translate(-160%, 0);
-    }
+  100% {
+    transform: translateX(-50%);
   }
+}
+
 </style>

@@ -106,24 +106,25 @@ class LocalWeather
 	{
 		$result = '';
 		//$result .= date('Y.m.d H:i', $this->updatedAt) . PHP_EOL;
-		$result .= 't° : ' . $this->temperature . ' ' . __($this->temperatureUnit) . PHP_EOL;
+		$result .= __('Temperature') . ': ' . $this->temperature . ' ' . __($this->temperatureUnit)  . ' ';
 		$windDirection = !empty($this->windRumb()) ? ' (' .
 			$this->windDirection . ' ' . __($this->windDirectionUnit) . '), ' : '';
 		$showWindGust = !!intval($this->windGust);
-		$result .= 	__('Wind') . ': ' . $this->windRumb() . $windDirection .
-				$this->windSpeed . ' ' . __($this->windSpeedUnit) .PHP_EOL;
+		$result .= ' , ' . 	__('Wind') . ': ' . $this->windRumb() . $windDirection .
+				$this->windSpeed . ' ' . __($this->windSpeedUnit) . ' ';
 		if ($showWindGust) {
-			$result .= 	__('Wind gust') . ': ' . 
-				$this->windGust . ' ' . __($this->windGustUnit) . PHP_EOL;
+			$result .= ' , ' . 	__('Wind gust') . ': ' . 
+				$this->windGust . ' ' . __($this->windGustUnit)  . ' ';
 		}
-		$result .= __('Barometer') . ': ' .
-					$this->pressureAbsolute . ' ' . __($this->pressureAbsoluteUnit) . PHP_EOL;
-		$result .= __('Humidity') . ': ' .
-					$this->humidity . ' ' . __($this->humidityUnit) . PHP_EOL;
+		$result .= ' , ' . __('Barometer') . ': ' .
+					$this->pressureAbsolute . ' ' . __($this->pressureAbsoluteUnit)  . ' ';
+		$result .= ' , ' . __('Humidity') . ': ' .
+					$this->humidity . ' ' . __($this->humidityUnit)  . ' ';
 		if($this->rainRate != 0){
-			$result .= __('Rain') . ': ' .
-			$this->rainRate . ' ' . __($this->rainRateUnit) . PHP_EOL;
+			$result .= ' , ' . __('Rain') . ': ' .
+			$this->rainRate . ' ' . __($this->rainRateUnit)  . ' ';
 		}
+		$result .= '.';
 		return $result;
 	}
 }
