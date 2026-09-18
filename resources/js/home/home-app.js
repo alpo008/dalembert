@@ -42,33 +42,9 @@ const i18n = createI18n({
 // VueX
 import { store } from './store';
 
-// Google Maps
-/*import VueGoogleMaps from '@fawmi/vue-google-maps';
-const mapLoaderOptions = {
-    key: `${process.env.MIX_GM_API_KEY}`,
-    loading: 'async',
-    v: 'weekly'
-};*/
 
 //  App
 import App from './components/App.vue';
-
-// Vuetify
-/*import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as labsComponents from 'vuetify/labs/components'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-
-const vuetify = createVuetify({
-    components: {
-    ...components,
-    ...labsComponents,
-  },
-  directives
-});
-
-import auth from './auth.js';*/
 
 Vue.createApp(App)
     .use(router)

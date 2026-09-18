@@ -46,7 +46,7 @@
     </div>
   </nav>
 
-  <div class="container-fluid pt-70 mh-85 grey-sunny-sky">
+  <div class="pt-70 mh-85 grey-sunny-sky">
     <router-view></router-view>
   </div>
     <footer class="py-1 bg-with-gradient">
@@ -126,7 +126,7 @@
           // Optional: add a class or attribute to identify clones if needed
           clone.setAttribute('aria-hidden', 'true'); 
           track.appendChild(clone);
-          if (items.length >= 32) {
+          if (items.length >= 32) { //TODO
             track.firstElementChild.remove();
           }
         });

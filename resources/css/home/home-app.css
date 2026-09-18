@@ -2,6 +2,9 @@
   .pt-70 {
     padding-top: 70px!important;
   }
+  .mh-50 {
+    min-height: 50vh;
+  }
   .mh-85 {
     min-height: 85vh;
   }
