@@ -1,232 +1,237 @@
 <template>
+  {{ $t('Updated at') }} {{ updated_at }}
+  <div class="wrapper_meteo" v-if="!!$store.getters.currentWeather && !chartMode">
+    <div class="params_block_wrapper">
+      <div class="params_block">
+        <div class="temp-box">
+          <div class="link-icon-left chart-link" 
+            @click="showChart('temperature')" 
+            :title="$t('Show chart')"
+          >
+          </div>
+          <div class="text-small text-white-blue text-bolder">
+            {{ $t('Temperature') }}
+          </div>
+          <div class="wx_parameter">
+            {{ $store.getters.temperatureOut }} 
+            <span class="text-unit">
+              {{ $t($store.getters.temperatureUnit) }}
+            </span>
+          </div>
+          <div class="text-small">
+            {{ $t('Feels like') }}
+            <span class="text-green">
+              {{ $store.getters.feelsLike }} {{ $t($store.getters.feelsLikeUnit) }}
+            </span>
+          </div>
+        </div>
+        <div class="temp-box">
+          <div class="link-icon-right chart-link" 
+            @click="showChart('humidity')" 
+            :title="$t('Show chart')"
+          >
+          </div>
+          <div class="text-small text-white-blue text-bolder">
+            {{ $t('Humidity') }}
+          </div>
+          <div class="wx_parameter">
+            {{ $store.getters.humidity }} 
+            <span class="text-unit">
+              {{ $t($store.getters.humidityUnit) }}
+            </span>
+          </div>
+          <div class="text-small">
+            {{ $t('Dew point') }}
+            <span class="text-green">
+              {{ $store.getters.dewPoint }} {{ $t($store.getters.dewPointUnit) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="params_block_wrapper">
+      <div class="link-icon-left chart-link pt-l-4" 
+        @click="showChart('pressure')" 
+        :title="$t('Show chart')"
+      >
+    </div>
+      <div class="text-small text-white-blue text-bolder">
+        {{ $t('Pressure') }} 
+      </div>
+      <div class="params_block">
+        <div class="temp-box">
+          <div class="text-small">
+            {{ $t('Absolute') }}
+          </div>
+          <div class="wx_parameter">
+            {{ $store.getters.pressureAbs }}
+            <span class="text-unit">
+              {{ $t($store.getters.pressureUnit) }}
+            </span>
+          </div>
+        </div>
+        <div class="temp-box">
+          <div class="text-small">
+            {{ $t('Relative') }}
+          </div>
+          <div class="wx_parameter">
+            {{ $store.getters.pressureRel }}
+            <span class="text-unit">
+              {{ $t($store.getters.pressureUnit) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="params_block_wrapper">
+      <div class="link-icon-left chart-link pt-l-4" 
+        @click="showChart('solar')" 
+        :title="$t('Show chart')"
+      >
+      </div>
+      <div class="text-small text-white-blue text-bolder">
+        {{ $t('Solar and UVI') }}
+      </div>
+      <div class="params_block">
+        <div class="temp-box">
+          <div class="text-small">
+            {{ $t('Illumination') }}
+          </div>
+          <div class="wx_parameter">
+            {{ $store.getters.solarRounded.value }}
+            <span class="text-unit">
+              {{ $t($store.getters.solarRounded.unit) }}
+            </span>
+          </div>
+        </div>
+        <div class="temp-box">
+          <div class="text-small">
+            {{ $t('UVI') }}
+          </div>
+          <div class="wx_parameter">
+            {{ $store.getters.uvi }}
+            <span class="text-unit">
+              {{ $t($store.getters.uviUnit) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="params_block_wrapper">
+        <div class="link-icon-left chart-link pt-l-4" 
+          @click="showChart('wind')" 
+          :title="$t('Show chart')"
+        >
+        </div>
+      <div class="text-small text-white-blue text-bolder">
+        {{ $t('Wind') }}
+      </div>
+      <div class="params_block">
+        <div class="temp-box">
+          <div class="text-small">
+            {{ $t('Speed') }}
+          </div>
+          <div class="wx_parameter">
+            {{ $store.getters.windSpeed }}
+            <span class="text-unit">
+              {{ $t($store.getters.windSpeedUnit) }}
+            </span>
+          </div>
+        </div>
+        <div class="temp-box height130" v-if="!!$store.getters.windArrowStyle">
+          <div class="wind-arrow" :style="$store.getters.windArrowStyle"></div>
+          <div class="wx_parameter" style="position:relative;top:-100px;">
+            {{ $store.getters.windDirection }}
+            <span class="text-unit">
+              {{ $t($store.getters.windDirectionUnit) }}
+            </span>
+            <p class="wind-rumb">{{ $store.getters.windRumb }}</p>
+          </div>
+        </div>
+        <div class="temp-box">
+          <div class="text-small">
+            {{ $t('Gust') }}
+          </div>
+          <div class="wx_parameter">
+            {{ $store.getters.windGust }}
+            <span class="text-unit">
+              {{ $t($store.getters.windSpeedUnit) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="params_block_wrapper">
+      <div class="link-icon-left chart-link pt-l-4" 
+        @click="showChart('rainfall')" 
+        :title="$t('Show chart')"
+      >
+      </div>
+      <div class="text-small text-white-blue text-bolder">
+        {{ $t('Rain') }}
+      </div>
+      <div class="params_block">
+        <div class="temp-box">
+          <div class="text-small">
+            {{ $t('Per hour') }}
+          </div>
+          <div class="wx_parameter">
+            {{ $store.getters.rainHour }} 
+            <span class="text-unit">
+              {{ $t($store.getters.rainUnit) }}
+            </span>
+          </div>
+          <div class="text-small">
+            {{ $t('Per day') }}
+          </div>
+          <div class="wx_parameter">
+            {{ $store.getters.rainDay }} 
+            <span class="text-unit">
+              {{ $t($store.getters.rainUnit) }}
+            </span>
+          </div>
+        </div>
+        <div class="temp-box align-center">
+          <div class="text-small space-between" style="height:2em;">
+            {{ $t('Weekly') }} <span class="text-green">
+              {{ $store.getters.rainWeek }} {{ $t($store.getters.rainUnit) }}
+            </span>
+          </div>
+          <div class="text-small space-between" style="height:2em;">
+            {{ $t('Monthly') }} <span class="text-green">
+              {{ $store.getters.rainMonth }} {{ $t($store.getters.rainUnit) }}
+            </span>
+          </div>
+          <div class="text-small space-between" style="height:2em;">
+            {{ $t('Yearly') }} <span class="text-green">
+              {{ $store.getters.rainYear }} {{ $t($store.getters.rainUnit) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-        {{ $t('Updated at') }} {{ updated_at }}
-        <div class="wrapper_meteo" v-if="!!$store.getters.currentWeather">
-          <div class="params_block_wrapper">
-            <div class="params_block">
-              <div class="temp-box">
-                <div class="link-icon-left chart-link" 
-                  @click="showChart('temperature')" 
-                  :title="$t('Show chart')"
-                >
-                </div>
-                <div class="text-small text-white-blue text-bolder">
-                  {{ $t('Temperature') }}
-                </div>
-                <div class="wx_parameter">
-                  {{ $store.getters.temperatureOut }} 
-                  <span class="text-unit">
-                    {{ $t($store.getters.temperatureUnit) }}
-                  </span>
-                </div>
-                <div class="text-small">
-                  {{ $t('Feels like') }}
-                  <span class="text-green">
-                    {{ $store.getters.feelsLike }} {{ $t($store.getters.feelsLikeUnit) }}
-                  </span>
-                </div>
-              </div>
-              <div class="temp-box">
-                <div class="link-icon-right chart-link" 
-                  @click="showChart('humidity')" 
-                  :title="$t('Show chart')"
-                >
-                </div>
-                <div class="text-small text-white-blue text-bolder">
-                  {{ $t('Humidity') }}
-                </div>
-                <div class="wx_parameter">
-                  {{ $store.getters.humidity }} 
-                  <span class="text-unit">
-                    {{ $t($store.getters.humidityUnit) }}
-                  </span>
-                </div>
-                <div class="text-small">
-                  {{ $t('Dew point') }}
-                  <span class="text-green">
-                    {{ $store.getters.dewPoint }} {{ $t($store.getters.dewPointUnit) }}
-                  </span>
-                </div>
-              </div>
-            </div>
+     <div class="wrapper" v-if="chartMode">
+        <div class="params_block">
+          <div class="close-button-right" @click="showChart(null)" :title="$t('Close')">
+              <!-- &#65794; --> {{ $t('Close') }}
           </div>
-           <div class="params_block_wrapper">
-                <div class="link-icon-left chart-link pt-l-4" 
-                  @click="showChart('pressure')" 
-                  :title="$t('Show chart')"
-                >
-                </div>
-            <div class="text-small text-white-blue text-bolder">
-              {{ $t('Pressure') }} 
-            </div>
-            <div class="params_block">
-              <div class="temp-box">
-                <div class="text-small">
-                  {{ $t('Absolute') }}
-                </div>
-                <div class="wx_parameter">
-                  {{ $store.getters.pressureAbs }}
-                  <span class="text-unit">
-                    {{ $t($store.getters.pressureUnit) }}
-                  </span>
-                </div>
-              </div>
-              <div class="temp-box">
-                <div class="text-small">
-                  {{ $t('Relative') }}
-                </div>
-                <div class="wx_parameter">
-                  {{ $store.getters.pressureRel }}
-                  <span class="text-unit">
-                    {{ $t($store.getters.pressureUnit) }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="params_block_wrapper">
-                <div class="link-icon-left chart-link pt-l-4" 
-                  @click="showChart('solar')" 
-                  :title="$t('Show chart')"
-                >
-                </div>
-            <div class="text-small text-white-blue text-bolder">
-              {{ $t('Solar and UVI') }}
-            </div>
-            <div class="params_block">
-              <div class="temp-box">
-                <div class="text-small">
-                  {{ $t('Illumination') }}
-                </div>
-                <div class="wx_parameter">
-                  {{ $store.getters.solarRounded.value }}
-                  <span class="text-unit">
-                    {{ $t($store.getters.solarRounded.unit) }}
-                  </span>
-                </div>
-              </div>
-              <div class="temp-box">
-                <div class="text-small">
-                  {{ $t('UVI') }}
-                </div>
-                <div class="wx_parameter">
-                  {{ $store.getters.uvi }}
-                  <span class="text-unit">
-                    {{ $t($store.getters.uviUnit) }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="params_block_wrapper">
-              <div class="link-icon-left chart-link pt-l-4" 
-                @click="showChart('wind')" 
-                :title="$t('Show chart')"
-              >
-              </div>
-            <div class="text-small text-white-blue text-bolder">
-              {{ $t('Wind') }}
-            </div>
-            <div class="params_block">
-              <div class="temp-box">
-                <div class="text-small">
-                  {{ $t('Speed') }}
-                </div>
-                <div class="wx_parameter">
-                  {{ $store.getters.windSpeed }}
-                  <span class="text-unit">
-                    {{ $t($store.getters.windSpeedUnit) }}
-                  </span>
-                </div>
-              </div>
-              <div class="temp-box height130" v-if="!!$store.getters.windArrowStyle">
-                <div class="wind-arrow" :style="$store.getters.windArrowStyle"></div>
-                <div class="wx_parameter" style="position:relative;top:-100px;">
-                  {{ $store.getters.windDirection }}
-                  <span class="text-unit">
-                    {{ $t($store.getters.windDirectionUnit) }}
-                  </span>
-                  <p class="wind-rumb">{{ $store.getters.windRumb }}</p>
-                </div>
-              </div>
-              <div class="temp-box">
-                <div class="text-small">
-                  {{ $t('Gust') }}
-                </div>
-                <div class="wx_parameter">
-                  {{ $store.getters.windGust }}
-                  <span class="text-unit">
-                    {{ $t($store.getters.windSpeedUnit) }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-         <div class="params_block_wrapper">
-            <div class="link-icon-left chart-link pt-l-4" 
-              @click="showChart('rainfall')" 
-              :title="$t('Show chart')"
-            >
-            </div>
-            <div class="text-small text-white-blue text-bolder">
-              {{ $t('Rain') }}
-            </div>
-            <div class="params_block">
-              <div class="temp-box">
-                <div class="text-small">
-                  {{ $t('Per hour') }}
-                </div>
-                <div class="wx_parameter">
-                  {{ $store.getters.rainHour }} 
-                  <span class="text-unit">
-                    {{ $t($store.getters.rainUnit) }}
-                  </span>
-                </div>
-                <div class="text-small">
-                  {{ $t('Per day') }}
-                </div>
-                <div class="wx_parameter">
-                  {{ $store.getters.rainDay }} 
-                  <span class="text-unit">
-                    {{ $t($store.getters.rainUnit) }}
-                  </span>
-                </div>
-              </div>
-              <div class="temp-box align-center">
-                <div class="text-small space-between" style="height:2em;">
-                  {{ $t('Weekly') }} <span class="text-green">
-                    {{ $store.getters.rainWeek }} {{ $t($store.getters.rainUnit) }}
-                  </span>
-                </div>
-                <div class="text-small space-between" style="height:2em;">
-                  {{ $t('Monthly') }} <span class="text-green">
-                    {{ $store.getters.rainMonth }} {{ $t($store.getters.rainUnit) }}
-                  </span>
-                </div>
-                <div class="text-small space-between" style="height:2em;">
-                  {{ $t('Yearly') }} <span class="text-green">
-                    {{ $store.getters.rainYear }} {{ $t($store.getters.rainUnit) }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
- <!--        <div class="wrapper" v-if="mode.showChart">
-          <div class="params_block">
-            <div class="close-icon-right" @click="showChart(null)" :title="$t('Close')">
-                &#65794;
-            </div>
-            <LineChart :history="dataset" style="" />
-          </div>
-      </div>--> 
-              </div>
+          <LineChart :history="historyDataset" style="" />
+        </div>
+    </div>
 </template>
 <script>
   const WEATHER_UPDATES_INTERVAL = 150000;  //TODO 5 minutes
+  import LineChart from "./LineChart.vue"
   export default {
+    name: "GlobusMeteo",
+    components: { LineChart },
     data: function () {
       return {
-        timer: ''
+        timer: '',
+        chartMode: false,
+        historyDataset: null
       }
     },
     async created() {
@@ -256,6 +261,33 @@
         }
       },
       showChart(param) {
+        if (param === null) {
+          this.chartMode = false;
+        } else {
+          switch (param) {
+            case 'temperature' :
+              this.historyDataset = this.$store.getters.temperatureHistory;
+              break;
+            case "humidity":
+              this.historyDataset = this.$store.getters.humidityHistory;
+              break;
+            case "pressure":
+              this.historyDataset = this.$store.getters.pressureHistory;
+              break;
+            case "solar":
+              this.historyDataset = this.$store.getters.solarHistory;
+              break;
+            case "wind":
+              this.historyDataset = this.$store.getters.windHistory;
+              break;
+            case "rainfall":
+              this.historyDataset = this.$store.getters.rainfallHistory;
+              break;
+            default:
+              this.historyDataset = this.$store.getters.temperatureHistory;
+          }
+          this.chartMode = true;
+        }
       }
     },
     computed: {
@@ -491,9 +523,17 @@
       width: 22px;
       height: 22px;
   }
+  .close-button-right {
+      position: absolute;
+      right: 5px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-radius: 20px;
+      padding: 0 6px;
+  }
 
-  .link-icon-left:hover, .link-icon-right:hover, .close-icon-right:hover {
-      background-color: darkslategrey;
+  .link-icon-left:hover, .link-icon-right:hover, .close-icon-right:hover, .close-button-right:hover {
+      background-color: lightgrey;
   }
     .blur {
       backdrop-filter: blur(10px);

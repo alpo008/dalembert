@@ -1,4 +1,4 @@
-
+import moment from "moment/dist/moment";
 export default {
 	state : {
     current: null,
@@ -26,7 +26,7 @@ export default {
       return state.current;
     },
     weatherHistory(state) {
-      return state.current;
+      return state.history;
     },
     weatherUpdatedAt(state) {
       return state.updatedAt;
@@ -41,7 +41,6 @@ export default {
     },
     feelsLike(state, getters) {
       return getters.findOrFail(state, 'current.outdoor.feels_like.value') ?? null ;
-      return this.wxData?.outdoor?.feels_like?.value ?? null;
     },
     feelsLikeUnit(state, getters) {
       return getters.feelsLike !== null ? 
@@ -176,5 +175,145 @@ export default {
     rainUnit(state, getters) {
       return getters.findOrFail(state, 'current.rainfall.daily.unit') ?? '';
     },
+    temperatureHistory(state, getters) {
+      let temperatureHistory = getters.findOrFail(getters.weatherHistory, 'outdoor.temperature.list');
+      let labels = [];
+      let temperatureDataset = [];
+      Object.keys(temperatureHistory).forEach(key => {
+        if (!isNaN(key)) {
+          labels.push(moment.unix(key).format("DD.MM HH:mm"));
+          temperatureDataset.push(parseFloat(temperatureHistory[key]));
+        }
+      });
+      return {
+        'labels':labels,
+        'datasets': [
+          {
+            data:temperatureDataset,
+            label: getters.t('Temperature') + ', ' + getters.t('℃'),  
+            borderColor: 'rgb(141, 172, 45)', 
+            backgroundColor: 'rgba(141, 172, 45, 0.3)',
+            pointRadius: 3
+          }
+        ]
+      };
+    },
+    humidityHistory(state, getters) {
+      let humidityHistory = getters.findOrFail(getters.weatherHistory, 'outdoor.humidity.list');
+      let labels = [];
+      let humidityDataset = [];
+      Object.keys(humidityHistory).forEach(key => {
+        if (!isNaN(key)) {
+          labels.push(moment.unix(key).format("DD.MM HH:mm"));
+          humidityDataset.push(parseFloat(humidityHistory[key]));
+        }
+      });
+      return {
+        'labels':labels,
+        'datasets': [
+          {
+            data:humidityDataset,
+            label: getters.t('Humidity')  + ', ' + getters.t('%'), 
+            borderColor: 'rgb(141, 172, 45)', 
+            backgroundColor: 'rgba(141, 172, 45, 0.3)',
+            pointRadius: 3
+          }
+        ]
+      };
+    },
+    pressureHistory(state, getters) {
+      let pressureHistory = getters.findOrFail(getters.weatherHistory, 'pressure.absolute.list');
+      let labels = [];
+      let pressureDataset = [];
+      Object.keys(pressureHistory).forEach(key => {
+        if (!isNaN(key)) {
+          labels.push(moment.unix(key).format("DD.MM HH:mm"));
+          pressureDataset.push(parseFloat(pressureHistory[key]));
+        }
+      });
+      return {
+        'labels':labels,
+        'datasets': [
+          {
+            data:pressureDataset,
+            label: getters.t('Pressure') + ', ' + getters.t('mmHg'), 
+            borderColor: 'rgb(141, 172, 45)', 
+            backgroundColor: 'rgba(141, 172, 45, 0.3)',
+            pointRadius: 3
+          }
+        ]
+      };
+    },
+    windHistory(state, getters) {
+      let windHistory = getters.findOrFail(getters.weatherHistory, 'wind.wind_speed.list');
+      let labels = [];
+      let windDataset = [];
+      Object.keys(windHistory).forEach(key => {
+        if (!isNaN(key)) {
+          labels.push(moment.unix(key).format("DD.MM HH:mm"));
+          windDataset.push(parseFloat(windHistory[key]));
+        }
+      });
+      return {
+        'labels':labels,
+        'datasets': [
+          {
+            data:windDataset,
+            label: getters.t('Wind') + ', ' + getters.t('m/s'), 
+            borderColor: 'rgb(141, 172, 45)', 
+            backgroundColor: 'rgba(141, 172, 45, 0.3)',
+            pointRadius: 3
+          }
+        ]
+      };
+    },
+    rainfallHistory(state, getters) {
+      let rainfallHistory = getters.findOrFail(getters.weatherHistory, 'rainfall.event.list');
+      let labels = [];
+      let rainfallDataset = [];
+      Object.keys(rainfallHistory).forEach(key => {
+        if (!isNaN(key)) {
+          labels.push(moment.unix(key).format("DD.MM HH:mm"));
+          rainfallDataset.push(parseFloat(rainfallHistory[key]));
+        }
+      });
+      return {
+        'labels':labels,
+        'datasets': [
+          {
+            data:rainfallDataset,
+            label: getters.t('Rain') + ', ' + getters.t('mm'),  
+            borderColor: 'rgb(141, 172, 45)', 
+            backgroundColor: 'rgba(141, 172, 45, 0.3)',
+            pointRadius: 3
+          }
+        ]
+      };
+    },
+    solarHistory(state, getters) {
+      let solarHistory = getters.findOrFail(getters.weatherHistory, 'solar_and_uvi.solar.list');
+      let labels = [];
+      let solarDataset = [];
+      Object.keys(solarHistory).forEach(key => {
+        if (!isNaN(key)) {
+          if (moment.unix(key).hour() === 15) {
+            labels.push(moment.unix(key).format("DD.MM"));
+            solarDataset.push(parseFloat(solarHistory[key]));
+          }
+        }
+      });
+      return {
+        'labels':labels,
+        'datasets': [
+          {
+            data:solarDataset,
+            label: getters.t('Illumination') + ', ' + getters.t('lx'), 
+            borderColor: 'rgb(141, 172, 45)', 
+            backgroundColor: 'rgba(141, 172, 45, 0.3)',
+            pointRadius: 3
+          }
+        ]
+      };
+    }
   }
 }

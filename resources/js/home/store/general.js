@@ -1,3 +1,6 @@
+const messagesEn = require('../../../lang/en.json');
+const messagesRu = require('../../../lang/ru.json');
+
 export default {
 	state : {
     httpErrors: {},
@@ -102,6 +105,13 @@ export default {
         }
       }
       return obj;      
+    },
+    t: (state, getters) => (txt) => {
+      let messages = messagesEn;
+      if (getters.currentLocale === 'ru-Ru') {
+        messages = messagesRu;
+      }
+      return getters.findOrFail(messages, txt);
     },
     httpErrors(state) {
       return state.httpErrors;
