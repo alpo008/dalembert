@@ -30,6 +30,9 @@ export default {
     },
     stickersWithAttachment(state) {
       return state.withAttachment;
+    },
+    stickerById: (state) => (id) => {
+      return state.active.find(sticker => parseInt(sticker.id) === parseInt(id));
     }
 	}
 }

@@ -19,14 +19,16 @@
             <img
               v-if="sticker.attachments.length"
               :src="imagePath(sticker)" 
-              class="card-img-top img-fixed-height sticker-link" 
+              class="card-img-top img-fixed-height"
+              :class="!isNaN(sticker.id) ? 'sticker-link' : ''" 
               :alt="$store.getters.findOrFail(sticker, 'attachments.0.media.description')"
               @click="showSticker(sticker.id)"
-              :title="$store.getters.t('Click to see details')"
+              :title="!isNaN(sticker.id) ? $store.getters.t('Click to see details') : ''"
             >
-            <div class="card-body sticker-link" 
+            <div class="card-body"
+              :class="!isNaN(sticker.id) ? 'sticker-link' : ''" 
               @click="showSticker(sticker.id)"
-              :title="$store.getters.t('Click to see details')"
+              :title="!isNaN(sticker.id) ? $store.getters.t('Click to see details') : ''"
             >
                 <h4 class="card-title">{{ sticker.contact_name }}</h4>
                 <p class="card-text">{{ sticker.message }}</p>
@@ -76,7 +78,9 @@
           .replace('public', '/storage');
       },
       showSticker(id) {
-        this.$router.push('/stickers/' + id)
+        if (!isNaN(id)) {
+          this.$router.push('/stickers/' + id);
+        }
       },
       phoneCall(sticker) {
         window.open('tel://' + sticker.contact_phone);

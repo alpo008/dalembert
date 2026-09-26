@@ -5,10 +5,19 @@
   export default {
     data: function () {
       return {
+        sticker: null
       }
     },
     async created() {
-      console.log(this.$route.params.id)
+      if(!this.$store.getters.activeStickers.length) {
+        await this.$store.dispatch('httpRequest', {
+          url: '/home/globus',
+          method: 'POST',
+          data: null,
+          mutation: 'setStickers'
+        });
+      }
+      this.sticker = this.$store.getters.stickerById(this.$route.params.id);
     },
     methods: {
     },
