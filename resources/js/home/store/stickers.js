@@ -33,6 +33,11 @@ export default {
     },
     stickerById: (state) => (id) => {
       return state.active.find(sticker => parseInt(sticker.id) === parseInt(id));
-    }
+    },
+    stickerImagePath: (state, getters) => (id) => {
+      let sticker = getters.stickerById(id);
+      let path = getters.findOrFail(sticker, 'attachments.0.media.path');
+      return !!path ? path.replace('public', '/storage') : null;
+    },
 	}
 }

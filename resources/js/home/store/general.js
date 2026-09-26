@@ -79,6 +79,12 @@ export default {
             });
           }
       } 
+    },
+    phoneCall(context, payload) {
+      window.open('tel://' + payload);
+    },
+    sendEmail(context, payload) {
+      window.open('mailto:' + payload, '_system');
     }
 	},
 	getters: {

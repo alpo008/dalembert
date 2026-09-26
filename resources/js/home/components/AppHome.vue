@@ -18,8 +18,8 @@
           <div class="card h-100">
             <img
               v-if="sticker.attachments.length"
-              :src="imagePath(sticker)" 
-              class="card-img-top img-fixed-height"
+              :src="$store.getters.stickerImagePath(sticker.id)" 
+              class="card-img-top img-fixed-height-200"
               :class="!isNaN(sticker.id) ? 'sticker-link' : ''" 
               :alt="$store.getters.findOrFail(sticker, 'attachments.0.media.description')"
               @click="showSticker(sticker.id)"
@@ -31,7 +31,7 @@
               :title="!isNaN(sticker.id) ? $store.getters.t('Click to see details') : ''"
             >
                 <h4 class="card-title">{{ sticker.contact_name }}</h4>
-                <p class="card-text">{{ sticker.message }}</p>
+                <p class="card-text">{{ truncate(sticker.message, 100) }}</p>
             </div>
             <div class="card-footer">
               <button class="btn" type="button" @click="phoneCall(sticker)" 
@@ -73,10 +73,6 @@
       this.stickers = this.$store.getters.activeStickers;
     },
     methods: {
-      imagePath(sticker) {
-        return this.$store.getters.findOrFail(sticker, 'attachments.0.media.path')
-          .replace('public', '/storage');
-      },
       showSticker(id) {
         if (!isNaN(id)) {
           this.$router.push('/stickers/' + id);
@@ -87,6 +83,17 @@
       },
       sendEmail(sticker) {
         window.open('mailto:' + sticker.contact_email, '_system');
+      },
+      truncate(str, limit) {
+        if (str.length <= limit) {
+          return str;
+        }
+        let arr = str.split(' ').reverse();
+        let truncated = '';
+        while (truncated.length <= limit) {
+          truncated += arr.pop() + ' ';
+        }
+        return truncated + ' ...';
       }
     },
     computed: {
@@ -97,7 +104,7 @@
   .blur {
     backdrop-filter: blur(10px);
   }
-  .img-fixed-height {
+  .img-fixed-height-200 {
     width: 100%;
     height: 200px;
     object-fit: cover;
