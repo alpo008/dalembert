@@ -19,11 +19,15 @@
             <img
               v-if="sticker.attachments.length"
               :src="imagePath(sticker)" 
-              class="card-img-top img-link" 
+              class="card-img-top img-fixed-height sticker-link" 
               :alt="$store.getters.findOrFail(sticker, 'attachments.0.media.description')"
-              @click="showImage(imagePath(sticker))"
+              @click="showSticker(sticker.id)"
+              :title="$store.getters.t('Click to see details')"
             >
-            <div class="card-body">
+            <div class="card-body sticker-link" 
+              @click="showSticker(sticker.id)"
+              :title="$store.getters.t('Click to see details')"
+            >
                 <h4 class="card-title">{{ sticker.contact_name }}</h4>
                 <p class="card-text">{{ sticker.message }}</p>
             </div>
@@ -71,8 +75,8 @@
         return this.$store.getters.findOrFail(sticker, 'attachments.0.media.path')
           .replace('public', '/storage');
       },
-      showImage(path) {
-        console.log(path)
+      showSticker(id) {
+        this.$router.push('/stickers/' + id)
       },
       phoneCall(sticker) {
         window.open('tel://' + sticker.contact_phone);
@@ -89,16 +93,15 @@
   .blur {
     backdrop-filter: blur(10px);
   }
-  .img-link {
-    width: 50px;
-    position: absolute;
-    right: 0;
-    margin: 5px;
-    border: 1px solid transparent;
-    border-radius: 50%;
-    cursor: pointer;
+  .img-fixed-height {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
   }
   .contact-link {
     margin-right: 10px;
+  }
+  .sticker-link {
+    cursor: pointer;
   }
 </style>

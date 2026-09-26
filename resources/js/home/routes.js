@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import AppHome from './components/AppHome.vue';
 import AppMeteo from './components/AppMeteo.vue';
 import AppWebcam from './components/AppWebcam.vue';
+import AppSticker from './components/AppSticker.vue';
 
 export default VueRouter.createRouter({
     routes: [
@@ -12,8 +13,7 @@ export default VueRouter.createRouter({
             name: 'Home',
             component: AppHome,
             meta: {
-                searchBar: false,
-                menuItem: true
+                searchBar: false
             }
         },
         {
@@ -21,8 +21,7 @@ export default VueRouter.createRouter({
             name: 'Meteo',
             component: AppMeteo,
             meta: {
-                searchBar: false,
-                menuItem: false
+                searchBar: false
             }
         },
         {
@@ -30,8 +29,15 @@ export default VueRouter.createRouter({
             name: 'Webcam',
             component: AppWebcam,
             meta: {
-                searchBar: false,
-                menuItem: false
+                searchBar: false
+            }
+        },
+        {
+            path: '/stickers/:id(\\d+)',
+            name: 'Sticker',
+            component: AppSticker,
+            meta: {
+                searchBar: false
             }
         },
     ],
