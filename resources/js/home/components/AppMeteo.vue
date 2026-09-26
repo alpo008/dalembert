@@ -530,10 +530,13 @@
       border: 1px solid transparent;
       border-radius: 20px;
       padding: 0 6px;
+      color: yellowgreen;
+      opacity: 0.6;
+      margin: 3px;
   }
 
   .link-icon-left:hover, .link-icon-right:hover, .close-icon-right:hover, .close-button-right:hover {
-      background-color: lightgrey;
+      border: 1px solid yellowgreen;
   }
     .blur {
       backdrop-filter: blur(10px);

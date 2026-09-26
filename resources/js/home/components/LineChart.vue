@@ -43,5 +43,6 @@ export default {
 <style scoped>
   #history_chart {
     max-height: -webkit-fill-available;
+    background-image: radial-gradient(circle, #4A4A4A 0%, #414151 70%, #0D0D0D 100%);
   }
 </style>
