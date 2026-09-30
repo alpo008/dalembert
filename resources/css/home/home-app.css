@@ -12,3 +12,7 @@
   .mh-85 {
     min-height: calc(100vh - 48px);
   }
+  .mr-8 {
+    margin-right: 8px;
+    margin-bottom: 3px;
+  }

@@ -8,91 +8,116 @@
       {{ $t('Request has been sent. Wait for an e-mail.') }}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-    <form @submit.prevent="submitForm">
-      <div class="mb-3">
-        <label for="formInputName" class="form-label">
-          {{ $store.getters.t('Name')}}
-        </label>
-        <input type="text" 
-          class="form-control input-transparent"
-          :class="!!fieldError('name') ? 'is-invalid' : ''"
-          id="formInputName" 
-          v-model="regData.name"
-        >
-        <div class="invalid-feedback">
-          {{ fieldError('name') }}
-        </div>
-      </div>
-      <div class="mb-3">
-        <label for="formInputPhone" class="form-label">
-          {{ $store.getters.t('Phone') }}
-        </label>
-        <input type="tel" 
-          class="form-control input-transparent" 
-          :class="!!fieldError('phone') ? 'is-invalid' : ''"
-          id="formInputPhone" 
-          aria-describedby="phoneHelp"
-          v-model="regData.phone"
-        >
-        <div class="invalid-feedback">
-          {{ fieldError('phone') }}
-        </div>
-        <div id="phoneHelp" class="form-text text-help">
-          {{ $store.getters.t('Not required if email address is provided') }} .
-          {{ $store.getters.t('We`ll never share your phone number with anyone else') }} .
-        </div>
-      </div>
-      <div class="mb-3">
-        <label for="formInputEmail" class="form-label">Email</label>
-        <input type="email" 
-          class="form-control input-transparent" 
-          :class="!!fieldError('email') ? 'is-invalid' : ''"
-          id="formInputEmail" 
-          aria-describedby="emailHelp"
-          v-model="regData.email"
-        >
-        <div class="invalid-feedback">
-          {{ fieldError('email') }}
-        </div>
-        <div id="emailHelp" class="form-text text-help">
-          {{ $store.getters.t('Real e-mail to send application key') }} .
-          {{ $store.getters.t('We`ll never share your email with anyone else') }} .
-        </div>
-      </div>
-      <div class="mb-3">
-        <label for="formInputAddress" class="form-label">
-          {{ $store.getters.t('Address') }}
-        </label>
-        <input type="text" 
-          class="form-control input-transparent" 
-          :class="!!fieldError('address') ? 'is-invalid' : ''"
-          id="formInputAddress" 
-          aria-describedby="addressHelp"
-          v-model="regData.address"
-        >
-        <div class="invalid-feedback">
-          {{ fieldError('address') }}
-        </div>
-        <div id="addressHelp" class="form-text text-help">
-          {{ $store.getters.t('Place number or address') }}
-        </div>
-      </div>
-      <div class="mb-3 form-check">
-        <input type="checkbox" 
-          class="form-check-input input-transparent" 
-          id="personalDataAgreementCheck"
-          v-model="canSubmit"
-          ref="personalDataAgreementCheckbox"
-        >
-        <label class="form-check-label" for="personalDataAgreementCheck">
-         {{ $store.getters.t('Law 152-FZ__short') }}  «Globus-Meteo» .
-        </label>
-      </div>
-      <button type="submit" :class="canSubmit ? 'btn btn-light' : 'btn btn-light disabled'" 
-        @click="validateAgreement">
-        {{ $store.getters.t('Send') }}
+    <p>
+      <button class="btn btn-secondary mr-8" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDownloadForm" aria-expanded="false" aria-controls="collapseDownloadForm"
+      @click="closeCollapse('regForm')"
+      >
+        {{ $store.getters.t('Download app for android') }}
       </button>
-    </form>
+      <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRegForm" aria-expanded="false" aria-controls="collapseRegForm"
+      @click="closeCollapse('downloadForm')"
+      >
+        {{ $store.getters.t('Get activation code') }}
+      </button>
+    </p>
+    <div class="collapse" id="collapseDownloadForm" ref="downloadForm">
+      Download
+    </div>
+    <div class="collapse" id="collapseRegForm" ref="regForm">
+      <form @submit.prevent="submitForm">
+        <div class="row mb-3">
+          <label for="formInputName" class="col-sm-2 col-form-label col-form-label-sm">
+            {{ $store.getters.t('Name')}}
+          </label>
+          <div class="col-sm-10">
+          <input type="text" 
+            class="form-control form-control-sm input-transparent"
+            :class="!!fieldError('name') ? 'is-invalid' : ''"
+            id="formInputName" 
+            v-model="regData.name"
+          >
+          <div class="invalid-feedback invalid-feedback-sm">
+            {{ fieldError('name') }}
+          </div>
+        </div>
+        </div>
+        <div class="row mb-3">
+          <label for="formInputPhone" class="col-sm-2 col-form-label col-form-label-sm">
+            {{ $store.getters.t('Phone') }}
+          </label>
+          <div class="col-sm-10">
+            <input type="tel" 
+              class="form-control form-control-sm input-transparent" 
+              :class="!!fieldError('phone') ? 'is-invalid' : ''"
+              id="formInputPhone" 
+              aria-describedby="phoneHelp"
+              v-model="regData.phone"
+            >
+            <div class="invalid-feedback form-control-sm">
+              {{ fieldError('phone') }}
+            </div>
+            <div id="phoneHelp" class="form-text text-help form-control-sm">
+              {{ $store.getters.t('Not required if email address is provided') }} .
+              {{ $store.getters.t('We`ll never share your phone number with anyone else') }} .
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="formInputEmail" class="col-sm-2 col-form-label col-form-label-sm">Email</label>
+          <div class="col-sm-10">
+            <input type="email" 
+              class="form-control form-control-sm input-transparent" 
+              :class="!!fieldError('email') ? 'is-invalid' : ''"
+              id="formInputEmail" 
+              aria-describedby="emailHelp"
+              v-model="regData.email"
+            >
+            <div class="invalid-feedback form-control-sm">
+              {{ fieldError('email') }}
+            </div>
+            <div id="emailHelp" class="form-text text-help form-control-sm">
+              {{ $store.getters.t('Real e-mail to send application key') }} .
+              {{ $store.getters.t('We`ll never share your email with anyone else') }} .
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="formInputAddress" class="col-sm-2 col-form-label col-form-label-sm">
+            {{ $store.getters.t('Address') }}
+          </label>
+          <div class="col-sm-10">
+            <input type="text" 
+              class="form-control form-control-sm input-transparent" 
+              :class="!!fieldError('address') ? 'is-invalid' : ''"
+              id="formInputAddress" 
+              aria-describedby="addressHelp"
+              v-model="regData.address"
+            >
+            <div class="invalid-feedback form-control-sm">
+              {{ fieldError('address') }}
+            </div>
+            <div id="addressHelp" class="form-text text-help form-control-sm">
+              {{ $store.getters.t('Place number or address') }}
+            </div>
+          </div>
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" 
+            class="form-check-input input-transparent" 
+            id="personalDataAgreementCheck"
+            v-model="canSubmit"
+            ref="personalDataAgreementCheckbox"
+          >
+          <label class="form-check-label" for="personalDataAgreementCheck">
+           {{ $store.getters.t('Law 152-FZ__short') }}  «Globus-Meteo» .
+          </label>
+        </div>
+        <button type="submit" :class="canSubmit ? 'btn btn-light' : 'btn btn-light disabled'" 
+          @click="validateAgreement">
+          {{ $store.getters.t('Send') }}
+        </button>
+      </form>
+    </div>
   </div>
 </template>
 <script>
@@ -136,6 +161,11 @@
       },
       fieldError(fieldName) {
         return this.$store.getters.findOrFail(this.errors, fieldName + '.0')
+      },
+      closeCollapse(collapseElRef) {
+        this.$refs[collapseElRef].classList.remove('show')
+      },
+      download() {
       }
     },
     computed: {
