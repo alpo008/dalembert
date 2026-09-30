@@ -1,15 +1,24 @@
 <template>
   <div class="container">
-    <form>
+    <form @submit.prevent="submitForm">
       <div class="mb-3">
         <label for="formInputName" class="form-label">
           {{ $store.getters.t('Name')}}
         </label>
-        <input type="text" class="form-control input-transparent" id="formInputName">
+        <input type="text" 
+          class="form-control input-transparent" 
+          id="formInputName" 
+          v-model="regData.name"
+        >
       </div>
       <div class="mb-3">
         <label for="formInputEmail" class="form-label">Email</label>
-        <input type="email" class="form-control input-transparent" id="formInputEmail" aria-describedby="emailHelp">
+        <input type="email" 
+          class="form-control input-transparent" 
+          id="formInputEmail" 
+          aria-describedby="emailHelp"
+          v-model="regData.email"
+        >
         <div id="emailHelp" class="form-text text-help">
           {{ $store.getters.t('Real e-mail to send application key') }} .
           {{ $store.getters.t('We`ll never share your email with anyone else') }} .
@@ -19,7 +28,12 @@
         <label for="formInputPhone" class="form-label">
           {{ $store.getters.t('Phone') }}
         </label>
-        <input type="tel" class="form-control input-transparent" id="formInputPhone" aria-describedby="phoneHelp">
+        <input type="tel" 
+          class="form-control input-transparent" 
+          id="formInputPhone" 
+          aria-describedby="phoneHelp"
+          v-model="regData.phone"
+        >
         <div id="phoneHelp" class="form-text text-help">
           {{ $store.getters.t('Not required if email address is provided') }} .
           {{ $store.getters.t('We`ll never share your phone number with anyone else') }} .
@@ -29,18 +43,28 @@
         <label for="formInputAddress" class="form-label">
           {{ $store.getters.t('Address') }}
         </label>
-        <input type="text" class="form-control input-transparent" id="formInputAddress" aria-describedby="addressHelp">
+        <input type="text" 
+          class="form-control input-transparent" 
+          id="formInputAddress" 
+          aria-describedby="addressHelp"
+          v-model="regData.address"
+        >
         <div id="addressHelp" class="form-text text-help">
           {{ $store.getters.t('Place number or address') }}
         </div>
       </div>
       <div class="mb-3 form-check">
-        <input type="checkbox" class="form-check-input input-transparent" id="personalDataAgreementCheck">
+        <input type="checkbox" 
+          class="form-check-input input-transparent" 
+          id="personalDataAgreementCheck"
+          v-model="canSubmit"
+        >
         <label class="form-check-label" for="personalDataAgreementCheck">
          {{ $store.getters.t('Law 152-FZ__short') }}  «Globus-Meteo» .
         </label>
       </div>
-      <button type="submit" class="btn btn-light">
+      <button type="submit" :class="canSubmit ? 'btn btn-light' : 'btn btn-light disabled'" 
+        @click="validateAgreement">
         {{ $store.getters.t('Send') }}
       </button>
     </form>
@@ -50,12 +74,20 @@
   export default {
     data: function () {
       return {
-        
+        regData: {
+          name: '',
+          phone: '',
+          email: '',
+          address: ''
+        },
+        canSubmit: false
       }
     },
     async created() {
     },
     methods: {
+      submitForm() {
+      },
     },
     computed: {
     }
