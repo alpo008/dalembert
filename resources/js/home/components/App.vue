@@ -27,16 +27,24 @@
       <div class="collapse navbar-collapse" id="navbarDropdownMenu">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <router-link :class="navLinkClass('Home')" aria-current="page" to="/">Home</router-link>
+            <router-link :class="navLinkClass('Home')" aria-current="page" to="/">
+              {{ $store.getters.t('Home') }}
+            </router-link>
           </li>
           <li class="nav-item">
-            <router-link :class="navLinkClass('Meteo')" to="/meteo">Meteo</router-link>
+            <router-link :class="navLinkClass('Meteo')" to="/meteo">
+              {{ $store.getters.t('Meteostation') }}
+            </router-link>
           </li>
           <li class="nav-item">
-            <router-link :class="navLinkClass('Webcam')" to="/webcam">Web camera</router-link>
+            <router-link :class="navLinkClass('Webcam')" to="/webcam">
+              {{ $store.getters.t('Web camera') }}
+            </router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            <router-link :class="navLinkClass('Download')" to="/download">
+              {{ $store.getters.t('Downloads') }}
+            </router-link>
           </li>
         </ul>
       </div>

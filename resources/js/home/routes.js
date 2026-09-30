@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import AppHome from './components/AppHome.vue';
 import AppMeteo from './components/AppMeteo.vue';
 import AppWebcam from './components/AppWebcam.vue';
+import AppDownload from './components/AppDownload.vue';
 import AppSticker from './components/AppSticker.vue';
 
 export default VueRouter.createRouter({
@@ -28,6 +29,14 @@ export default VueRouter.createRouter({
             path: '/webcam',
             name: 'Webcam',
             component: AppWebcam,
+            meta: {
+                searchBar: false
+            }
+        },
+        {
+            path: '/download',
+            name: 'Download',
+            component: AppDownload,
             meta: {
                 searchBar: false
             }

@@ -1,5 +1,8 @@
   body {
   }
+  #home-app {
+    position: relative;
+  }
   .pt-70 {
     padding-top: 70px!important;
   }

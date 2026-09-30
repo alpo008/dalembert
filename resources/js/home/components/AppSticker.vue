@@ -65,16 +65,16 @@
     }
     .img-fixed-height-350 {
     width: 100%;
-    height: 350px;
+    height: 450px;
     object-fit: cover;
   }
   .back-link {
     position: absolute;
     margin-left: 15px;
     cursor: pointer;
-    color: dimgray;
+    color: #484848;
   }
   .back-link:hover {
-    color: darkslategray;
+    color: #323232;
   }
 </style>

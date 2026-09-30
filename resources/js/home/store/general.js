@@ -117,7 +117,7 @@ export default {
       if (getters.currentLocale === 'ru-Ru') {
         messages = messagesRu;
       }
-      return getters.findOrFail(messages, txt);
+      return getters.findOrFail(messages, txt) ?? txt;
     },
     httpErrors(state) {
       return state.httpErrors;
