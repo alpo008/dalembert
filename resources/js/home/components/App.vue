@@ -1,12 +1,12 @@
 <template>
   <div class="container-fluid wrapper">
-  <div class="d-flex justify-content-center loader" v-if="loadingState || httpError">
-    <div class="alert alert-secondary reload-link" role="alert" v-if="httpError" 
+  <div class="d-flex justify-content-center loader" v-if="loadingState || networkError">
+    <div class="alert alert-secondary reload-link" role="alert" v-if="networkError" 
       @click="reloadPage"
      >
       {{ $t('Network error. Click to reload.') }}
     </div>
-    <div class="spinner-border" role="status" v-if="!httpError">
+    <div class="spinner-border" role="status" v-if="!networkError">
       <span class="visually-hidden">Loading...</span>
     </div>
   </div>
@@ -79,7 +79,7 @@
     data: function () {
       return {
         loadingState: false,
-        httpError: false,
+        networkError: false,
         collapseInstance: null,
         dateString: ''
       }
@@ -149,8 +149,8 @@
       '$store.state.general.loading' (val) {
         this.loadingState = val;
       },
-      '$store.state.general.httpError' (val) {
-        this.httpError = val;
+      '$store.state.general.networkError' (val) {
+        this.networkError = val;
       }
     }
   }

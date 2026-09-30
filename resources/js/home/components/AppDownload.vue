@@ -58,6 +58,7 @@
           class="form-check-input input-transparent" 
           id="personalDataAgreementCheck"
           v-model="canSubmit"
+          ref="personalDataAgreementCheckbox"
         >
         <label class="form-check-label" for="personalDataAgreementCheck">
          {{ $store.getters.t('Law 152-FZ__short') }}  «Globus-Meteo» .
@@ -74,19 +75,37 @@
   export default {
     data: function () {
       return {
+        apiKey: `${process.env.MIX_GLOBUS_API_KEY}`,
         regData: {
           name: '',
           phone: '',
           email: '',
           address: ''
         },
-        canSubmit: false
+        canSubmit: false,
+        errors: {}
       }
     },
     async created() {
     },
     methods: {
-      submitForm() {
+      async submitForm() {
+        if(!this.canSubmit) {
+          this.$refs.personalDataAgreementCheckbox.classList.add('is-invalid');
+        } else {
+          this.$refs.personalDataAgreementCheckbox.classList.add('is-valid');
+        }
+        let data = Object.assign(this.regData, {api_key: this.apiKey});
+        await this.$store.dispatch('httpRequest', {
+          url: '/app-registration/apply',
+          method: 'POST',
+          data: data,
+          mutation: ''
+        });
+        this.errors = this.$store.getters.httpErrors;
+        if(!_.isEmpty(this.errors)) {
+          this.$store.commit('setHttpLoadingState', false);
+        }
       },
     },
     computed: {

@@ -4,14 +4,17 @@ const messagesRu = require('../../../lang/ru.json');
 export default {
 	state : {
     httpErrors: {},
-    httpError: false,
+    networkError: false,
     loading: false,
 	},
 	mutations : {
     setHttpErrors(state, payload) {
-      state.httpError = true;
+      if (typeof payload === 'string' && payload.includes('Could not resolve host')) {
+        state.networkError = true;
+      }
+      
       if (_.isEmpty(payload)) {
-        state.httpError = false;
+        state.networkError = false;
       }
       if (typeof payload === 'object') {
         state.httpErrors = payload;
@@ -26,6 +29,9 @@ export default {
     setHttpLoadingState(state,payload) {
       state.loading = !!payload;
     },
+    resetNetworkError(state,payload) {
+      state.networkError = false;
+    }
 	},
 	actions : {
     httpRequest(context, payload) {
