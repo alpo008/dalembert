@@ -1,27 +1,26 @@
 <template>
   <div class="container">
+    <div 
+      class="alert alert-secondary alert-dismissible fade show" 
+      role="alert" 
+      v-if="showSuccessMessage"
+    >
+      {{ $t('Request has been sent. Wait for an e-mail.') }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
     <form @submit.prevent="submitForm">
       <div class="mb-3">
         <label for="formInputName" class="form-label">
           {{ $store.getters.t('Name')}}
         </label>
         <input type="text" 
-          class="form-control input-transparent" 
+          class="form-control input-transparent"
+          :class="!!fieldError('name') ? 'is-invalid' : ''"
           id="formInputName" 
           v-model="regData.name"
         >
-      </div>
-      <div class="mb-3">
-        <label for="formInputEmail" class="form-label">Email</label>
-        <input type="email" 
-          class="form-control input-transparent" 
-          id="formInputEmail" 
-          aria-describedby="emailHelp"
-          v-model="regData.email"
-        >
-        <div id="emailHelp" class="form-text text-help">
-          {{ $store.getters.t('Real e-mail to send application key') }} .
-          {{ $store.getters.t('We`ll never share your email with anyone else') }} .
+        <div class="invalid-feedback">
+          {{ fieldError('name') }}
         </div>
       </div>
       <div class="mb-3">
@@ -30,13 +29,34 @@
         </label>
         <input type="tel" 
           class="form-control input-transparent" 
+          :class="!!fieldError('phone') ? 'is-invalid' : ''"
           id="formInputPhone" 
           aria-describedby="phoneHelp"
           v-model="regData.phone"
         >
+        <div class="invalid-feedback">
+          {{ fieldError('phone') }}
+        </div>
         <div id="phoneHelp" class="form-text text-help">
           {{ $store.getters.t('Not required if email address is provided') }} .
           {{ $store.getters.t('We`ll never share your phone number with anyone else') }} .
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="formInputEmail" class="form-label">Email</label>
+        <input type="email" 
+          class="form-control input-transparent" 
+          :class="!!fieldError('email') ? 'is-invalid' : ''"
+          id="formInputEmail" 
+          aria-describedby="emailHelp"
+          v-model="regData.email"
+        >
+        <div class="invalid-feedback">
+          {{ fieldError('email') }}
+        </div>
+        <div id="emailHelp" class="form-text text-help">
+          {{ $store.getters.t('Real e-mail to send application key') }} .
+          {{ $store.getters.t('We`ll never share your email with anyone else') }} .
         </div>
       </div>
       <div class="mb-3">
@@ -45,10 +65,14 @@
         </label>
         <input type="text" 
           class="form-control input-transparent" 
+          :class="!!fieldError('address') ? 'is-invalid' : ''"
           id="formInputAddress" 
           aria-describedby="addressHelp"
           v-model="regData.address"
         >
+        <div class="invalid-feedback">
+          {{ fieldError('address') }}
+        </div>
         <div id="addressHelp" class="form-text text-help">
           {{ $store.getters.t('Place number or address') }}
         </div>
@@ -83,7 +107,8 @@
           address: ''
         },
         canSubmit: false,
-        errors: {}
+        errors: {},
+        showSuccessMessage: false
       }
     },
     async created() {
@@ -105,8 +130,13 @@
         this.errors = this.$store.getters.httpErrors;
         if(!_.isEmpty(this.errors)) {
           this.$store.commit('setHttpLoadingState', false);
+        } else {
+          this.showSuccessMessage = true;
         }
       },
+      fieldError(fieldName) {
+        return this.$store.getters.findOrFail(this.errors, fieldName + '.0')
+      }
     },
     computed: {
     }

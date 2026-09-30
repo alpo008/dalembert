@@ -26,7 +26,7 @@ class CustomerRequest extends FormRequest
         return [
             'name' => 'required|max:255|unique:customers,name,' . ($this->id ?? 0), 
             'email' => 'email:rfc,dns|nullable|unique:customers,email,' . ($this->id ?? 0),
-            'phone' => 'nullable|regex:/^\+?\d{11,12}?$/|unique:customers,phone,' . ($this->id ?? 0),
+            'phone' => 'required_without:email|nullable|regex:/^\+?\d{11,12}?$/|unique:customers,phone,' . ($this->id ?? 0),
             'location' => 'nullable',
             'location.lat' => 'decimal:2,18',
             'location.lng' => 'decimal:2,18',
