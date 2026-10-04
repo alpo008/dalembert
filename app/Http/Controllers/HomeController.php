@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use App\Http\Middleware\CheckApiKey;
 use Illuminate\Support\Arr;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -179,12 +180,9 @@ class HomeController extends Controller
      */
     public function download($id)
     {
-        return response()->json(
-            [
-                'status' => 'success',
-                'result' => $id
-            ], 200
-        );
+        if (Storage::disk('local')->exists('android/globus-meteo_stable.zip')) {
+            return Storage::download('android/globus-meteo_stable.zip');
+        }
     }
 
     /**

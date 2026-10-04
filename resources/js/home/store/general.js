@@ -1,5 +1,6 @@
 const messagesEn = require('../../../lang/en.json');
 const messagesRu = require('../../../lang/ru.json');
+const FileSaver = require('file-saver');
 
 export default {
 	state : {
@@ -31,7 +32,7 @@ export default {
     },
     resetNetworkError(state,payload) {
       state.networkError = false;
-    }
+    },
 	},
 	actions : {
     httpRequest(context, payload) {
@@ -54,7 +55,7 @@ export default {
                     error.response = response;
                     throw error
                 }
-              }).then(response => {                                         
+              }).then(response => { 
                   if (response.headers['content-type'] !== 'application/json') {
                       let error = new Error('Некорректный ответ от сервера');
                       error.response = response;
@@ -82,6 +83,42 @@ export default {
                     context.commit('setHttpErrors', error.message);
                   }
                 }                                             
+            });
+          }
+      } 
+    },
+    download(context, payload) {
+      if (typeof payload === 'object') {
+        let url = payload.url;
+        let method = payload.method;
+        let data = payload.data;
+        let output = payload.output;
+        if (typeof url === 'string' && url.length && 
+            typeof method === 'string' && method.length) {
+          context.commit('setHttpErrors', {});  
+          context.commit('setHttpLoadingState', true);  
+          return axios({method, url, data, responseType: 'blob'})
+            .then(response => {
+              context.commit('setHttpLoadingState', false);
+              if (response.status >= 200 && response.status < 300) {                                            
+                  return response;
+                } else {
+                    let error = new Error(response.statusText);
+                    error.response = response;
+                    throw error
+                }
+              }).then(response => { 
+                  if (!response.headers['content-disposition'].includes('attachment')) {
+                      let error = new Error('Некорректный ответ от сервера');
+                      error.response = response;
+                      throw error
+                  }
+                  return response.data;
+              }).then(blob => {
+                FileSaver.saveAs(blob, output);
+              }).catch(error => {
+                context.commit('setHttpErrors', error.message ?? context.getters.t('Download error'));
+                context.commit('setHttpLoadingState', false);
             });
           }
       } 

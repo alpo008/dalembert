@@ -26,7 +26,12 @@
           <label class="form-check-label" for="personalDataAgreementCheck">
            {{ $store.getters.t('Select an application') }}.
           </label>
-          <select class="form-select" aria-label="Default select example" v-model="appToDownload">
+          <select 
+            class="form-select" 
+            aria-label="Default select example" 
+            v-model="appToDownload"
+            id="application Select"
+          >
             <option value="1">Globus-meteo</option>
             <option value="2" disabled>Globus-info</option>
           </select>
@@ -192,12 +197,13 @@
       },
       async downloadApp() {
         let data = {api_key: this.apiKey};
-        await this.$store.dispatch('httpRequest', {
-          url: '/home/download/' + this.appToDownload,
+        await this.$store.dispatch('download', {
+          url: '/home/down--load/' + this.appToDownload,
           method: 'POST',
           data: data,
-          mutation: ''
+          output: 'globus-meteo.zip'
         });
+        this.errors = this.$store.getters.httpErrors;
       }
     },
     computed: {
