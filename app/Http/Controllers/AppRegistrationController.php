@@ -13,7 +13,7 @@ use App\Mail\DownloadApplication;
 class AppRegistrationController extends Controller
 {
     /**
-     * AppRegistrationController сщтыекгсещк
+     * AppRegistrationController constructor
      */
     public function __construct()
     {

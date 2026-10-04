@@ -14,14 +14,38 @@
       >
         {{ $store.getters.t('Download app for android') }}
       </button>
-      <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRegForm" aria-expanded="false" aria-controls="collapseRegForm"
+      <button class="btn btn-secondary mr-8" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRegForm" aria-expanded="false" aria-controls="collapseRegForm"
       @click="closeCollapse('downloadForm')"
       >
         {{ $store.getters.t('Get activation code') }}
       </button>
     </p>
     <div class="collapse" id="collapseDownloadForm" ref="downloadForm">
-      Download
+      <form @submit.prevent="downloadApp">
+        <div class="mb-3">
+          <label class="form-check-label" for="personalDataAgreementCheck">
+           {{ $store.getters.t('Select an application') }}.
+          </label>
+          <select class="form-select" aria-label="Default select example" v-model="appToDownload">
+            <option value="1">Globus-meteo</option>
+            <option value="2" disabled>Globus-info</option>
+          </select>
+        </div>
+        <div class="mb-3 form-check">
+          <input type="checkbox" 
+            class="form-check-input input-transparent" 
+            id="disclaimerCheck"
+            v-model="canDownload"
+            ref="disclaimerCheckbox"
+          >
+          <label class="form-check-label" for="personalDataAgreementCheck">
+           {{ $store.getters.t('Disclaimer__short') }}.
+          </label>
+        </div>
+        <button type="submit" :class="canDownload ? 'btn btn-light' : 'btn btn-light disabled'">
+          {{ $store.getters.t('Download') }}
+        </button>
+      </form>
     </div>
     <div class="collapse" id="collapseRegForm" ref="regForm">
       <form @submit.prevent="submitForm">
@@ -112,8 +136,7 @@
            {{ $store.getters.t('Law 152-FZ__short') }}  «Globus-Meteo» .
           </label>
         </div>
-        <button type="submit" :class="canSubmit ? 'btn btn-light' : 'btn btn-light disabled'" 
-          @click="validateAgreement">
+        <button type="submit" :class="canSubmit ? 'btn btn-light' : 'btn btn-light disabled'">
           {{ $store.getters.t('Send') }}
         </button>
       </form>
@@ -132,6 +155,8 @@
           address: ''
         },
         canSubmit: false,
+        canDownload: false,
+        appToDownload: 1,
         errors: {},
         showSuccessMessage: false
       }
@@ -163,9 +188,16 @@
         return this.$store.getters.findOrFail(this.errors, fieldName + '.0')
       },
       closeCollapse(collapseElRef) {
-        this.$refs[collapseElRef].classList.remove('show')
+        this.$refs[collapseElRef].classList.remove('show');
       },
-      download() {
+      async downloadApp() {
+        let data = {api_key: this.apiKey};
+        await this.$store.dispatch('httpRequest', {
+          url: '/home/download/' + this.appToDownload,
+          method: 'POST',
+          data: data,
+          mutation: ''
+        });
       }
     },
     computed: {

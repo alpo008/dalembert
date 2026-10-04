@@ -6,6 +6,7 @@ use App\Models\OpenMeteoWeather;
 use App\Models\Sticker;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Http\Middleware\CheckApiKey;
 use Illuminate\Support\Arr;
 use Carbon\Carbon;
 
@@ -14,7 +15,13 @@ class HomeController extends Controller
     const EARTH_RADIUS = 6378;  //km
     const MIN_PLACE_SIZE = 1;   //km
 
-
+    /**
+     * HomeController constructor
+     */
+    public function __construct()
+    {
+        $this->middleware(CheckApiKey::class, ['only' => ['download']]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -160,6 +167,22 @@ class HomeController extends Controller
             [
                 'status' => 'success',
                 'active_stickers' => Sticker::getActive()
+            ], 200
+        );
+    }
+
+    /**
+     * This method serves the downoads page of web-site
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function download($id)
+    {
+        return response()->json(
+            [
+                'status' => 'success',
+                'result' => $id
             ], 200
         );
     }
