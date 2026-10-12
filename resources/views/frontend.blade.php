@@ -4,7 +4,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ config('app.name') }}</title>
+        <title>{{ config('custom.frontend.seo.title') }}</title>
+        <meta name="description" content="{{ config('custom.frontend.seo.description') }}">
         <link rel="icon" type="image/x-icon" href="/favicon.svg">
 
         <!-- Fonts -->

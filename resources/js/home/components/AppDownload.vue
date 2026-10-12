@@ -27,7 +27,7 @@
            {{ $store.getters.t('Select an application') }}.
           </label>
           <select 
-            class="form-select" 
+            class="form-select input-transparent" 
             aria-label="Default select example" 
             v-model="appToDownload"
             id="application Select"

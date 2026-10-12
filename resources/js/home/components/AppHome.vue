@@ -1,24 +1,21 @@
 <template>
   <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 align-items-center my-5">
-        <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="https://dummyimage.com/900x400/dee2e6/6c757d.jpg" alt="..." /></div>
+        <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="/storage/stickers/home.png" alt="..." /></div>
         <div class="col-lg-5">
-            <h1 class="font-weight-light">Business Name or Tagline</h1>
-            <p>This is a template that is great for small businesses. It doesn't have too much fancy flare to it, but it makes a great use of the standard Bootstrap core components. Feel free to use this template for any project you want!</p>
-            <a class="btn btn-primary" href="#!">Call to Action!</a>
+            <h1 class="font-weight-light"> {{ site.h1 }}</h1>
+            <p>{{ site.text }}</p>
+<!--             <a class="btn btn-primary" href="#!">Call to Action!</a> -->
         </div>
     </div>
 
     <div class="card text-white bg-secondary my-5 py-4 text-center">
-        <div class="card-body"><p class="text-white m-0">This call to action card is a great place to showcase some important information or display a clever tagline!</p></div>
+        <div class="card-body"><p class="text-white m-0">{{ site. card_text }}</p></div>
     </div>
       <!-- Content Row-->
       <div class="row gx-4 gx-lg-5">
         <div class="col-md-4 mb-5" v-for="sticker in stickers">
           <div class="card h-100 p-1">
-<!--             <div class="card-header bg-light-gray">
-              <h5 class="card-title text-center">{{ sticker.contact_name }}</h5>
-            </div> -->
             <img
               v-if="sticker.attachments.length"
               :src="$store.getters.stickerImagePath(sticker.id)" 
@@ -33,7 +30,7 @@
               @click="showSticker(sticker.id)"
               :title="!isNaN(sticker.id) ? $store.getters.t('Click to see details') : ''"
             >
-                <h5 class="card-title text-center">{{ sticker.contact_name }}</h5>
+              <h5 class="card-title text-center">{{ sticker.contact_name }}</h5>
 <!--                 <p class="card-text text-truncate">{{ sticker.message, 50 }}</p> -->
             </div>
             <div class="card-footer">
@@ -59,14 +56,17 @@
 </template>
 
 <script>
-  const isEmpty = obj => [Object, Array].includes((obj || {}).constructor) && !Object.entries((obj || {})).length;
+  let lang = document.querySelector('html').getAttribute('lang');
+  const CONFIG = require('../../../data/frontend.' + lang + '.json');
   export default {
     data: function () {
       return {
+        site: {},
         stickers: [],
       }
     },
     async created() {
+      this.site = this.$store.getters.findOrFail(CONFIG, 'page');
       await this.$store.dispatch('httpRequest', {
         url: '/home/globus',
         method: 'POST',

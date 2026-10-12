@@ -1,6 +1,15 @@
 <?php
 
+$locale = app()->getLocale();
+//TODO  Move homepage config to database
+$fname = resource_path() . '/data/frontend.' . $locale . '.json';
+$fpath = fopen($fname, 'r');
+$json = fread($fpath, filesize($fname));
+$frontend = json_decode($json, true);
+
 return [
+
+    'frontend' => $frontend,
 
     /*
     |--------------------------------------------------------------------------
