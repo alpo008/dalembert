@@ -180,6 +180,7 @@
     "Registered at": "Зарегистрировано",
     "Reminders": "Напоминания",
 	"Request failed with status code 403": "Запрос отклонен. Ошибка 403",  
+	"Request failed with status code 405": "Запрос отклонен. Ошибка 405",  
 	"Request has been sent. Wait for an e-mail.": "Запрос отправлен. Ссылка придет на указанный Вами e-mail или номер телефона.",  
 	"Rime fog": "Ледяной туман",  
 	"Router admin": "Администратор роутера",  

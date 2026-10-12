@@ -1,14 +1,23 @@
 <template>
-  <div class="container-fluid wrapper">
+  <div class="container-fluid wrapper grey-sunny-sky">
+
   <div class="d-flex justify-content-center loader" v-if="loadingState || networkError">
     <div class="alert alert-secondary reload-link" role="alert" v-if="networkError" 
       @click="reloadPage"
      >
       {{ $t('Network error. Click to reload.') }}
     </div>
-    <div class="spinner-border" role="status" v-if="!networkError">
+    <div class="spinner-border" role="status" v-if="!networkError && !genericError">
       <span class="visually-hidden">Loading...</span>
     </div>
+  </div>
+  <div 
+    class="alert alert-warning alert-dismissible generic-error fade show" 
+    role="alert" 
+    v-if="genericError"
+  >
+      {{ $store.getters.t(genericError[0]) }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 
   <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-with-gradient">
@@ -54,7 +63,7 @@
     </div>
   </nav>
 
-  <div class="pt-70 mh-85 grey-sunny-sky">
+  <div class="pt-70 mh-85">
     <router-view></router-view>
   </div>
     <footer class="py-1 bg-with-gradient">
@@ -79,6 +88,7 @@
     data: function () {
       return {
         loadingState: false,
+        genericError: false,
         networkError: false,
         collapseInstance: null,
         dateString: ''
@@ -151,6 +161,9 @@
       },
       '$store.state.general.networkError' (val) {
         this.networkError = val;
+      },
+      '$store.state.general.httpErrors.generic' (val) {
+        this.genericError = val;
       }
     }
   }
@@ -164,6 +177,15 @@
   .reload-link {
     position:fixed;
     cursor: pointer;
+  }
+  .generic-error {
+    position: fixed;
+    top: 40%;
+    justify-self: center;
+  }
+  .full-screen {
+    width: 100vw;
+    height: 100vh;
   }
   .loader {
     width: 100vw;

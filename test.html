@@ -1,0 +1,350 @@
+<!doctype html>
+	<html lang="ru" color-theme="" class="opacity-0">
+	<head>
+        <noscript>
+            <meta http-equiv="refresh" content="0; url=https://allrivers.info/nojs.html" />
+        </noscript>
+	    <meta charset="utf-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+
+	    <title>Карта гидропостов - Уровень воды онлайн</title>
+		    <link rel="canonical" href="https://allrivers.info/map">
+    <meta name="description" content="Карта гидропостов сервиса allrivers.info. Гидропосты, споты, текущий уровень воды в реках, графики, аналитика.">
+		<meta name="csrf_token" content="HXNiXYCVKcqL5r2id2V6D2ksjCfBjCMhWfa03TpB" />
+
+		<meta property="og:image" content="/images/logo_large.jpg"/>
+		<meta property="og:title" content="Карта гидропостов | AllRivers - Уровень воды онлайн"/>
+		
+		<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+
+		<link rel="preload" as="style" href="https://allrivers.info/build/assets/app-B8mtfcB_.css" /><link rel="stylesheet" href="https://allrivers.info/build/assets/app-B8mtfcB_.css" data-navigate-track="reload" />			</head>
+	<body id="map-page">
+        <div id="app">
+            <nav class="navbar navbar-expand-lg fixed-top header">
+                <div class="container-xl position-relative">
+                    <div class="navbar-brand me-2 me-lg-1">
+                        <div class="logo d-flex">
+                            <a class="d-block" href="/">
+                                <img class="logo-img img img-fluid" src="/images/logo.svg" title="allrivers.info" alt="allrivers.info">
+                            </a>
+                            <div>
+                                <a class="d-block" href="/">
+                                    <div class="d-none d-sm-block logo-text">AllRivers</div>
+                                </a>
+                                <span class="logo-slogan d-none d-sm-block">
+                                    Уровень воды онлайн
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-inline-block d-lg-none">
+    <a class="position-relative" href="/rates">
+        <i class="fa-2x fa-fw fa-solid fa-crown"></i>
+        <span class="pro-icon">PRO</span>
+    </a>
+</div>
+
+<div class="offcanvas-lg offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">МЕНЮ</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#offcanvasNavbar" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body py-1">
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item mb-2">
+                <a href="/rates" class="nav-link pro-menu">
+                    <i class="d-inline d-lg-none fa-solid fa-crown me-1"></i>Pro функции
+                </a>
+            </li>
+                            <li class="nav-item d-block d-lg-none mb-2">
+                    <div class="d-flex justify-content-between p-1">
+                        <a data-bs-toggle="modal" data-bs-target="#loginformModal" role="button" class="nav-link">
+                            <i class="fa-solid fa-user"></i> Войти / Зарегистрироваться
+                        </a>
+                    </div>
+                </li>
+            
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle p-1" id="navbarRegionMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Гидропосты
+                </a>
+                <div class="dropdown-menu bg-dark" aria-labelledby="navbarRegionMenuLink">
+                                                                        <a class="dropdown-item ps-2 text-uppercase" href="/region/belarus">Беларусь</a>
+                                                                                                <a class="dropdown-item ps-2 text-uppercase" href="/region/georgia">Грузия</a>
+                                                                                                <a class="dropdown-item ps-2 text-uppercase" href="/region/kazakhstan">Казахстан</a>
+                                                                                                <a class="dropdown-item ps-2 text-uppercase" href="/region/moldova">Молдова</a>
+                                                                                                <div class="dropdown dropright">
+                                <a class="ps-2 dropdown-item dropdown-toggle text-uppercase" id="navbarRegionMenuLink10" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Россия
+                                </a>
+                                <div class="dropdown-menu bg-dark" aria-labelledby="navbarRegionMenuLink10">
+                                                                            <a class="dropdown-item ps-3" href="/region/russia/dvfo-sever">ДВФО - Север</a>
+                                                                            <a class="dropdown-item ps-3" href="/region/russia/vostok">ДВФО - Юг</a>
+                                                                            <a class="dropdown-item ps-3" href="/region/russia/kavkaz">Кавказ</a>
+                                                                            <a class="dropdown-item ps-3" href="/region/russia/crimea">Крым</a>
+                                                                            <a class="dropdown-item ps-3" href="/region/russia/privolga">Приволжский ФО</a>
+                                                                            <a class="dropdown-item ps-3" href="/region/russia/severo-zapad">Северо-Западный ФО</a>
+                                                                            <a class="dropdown-item ps-3" href="/region/russia/siberia">Сибирь Восточная</a>
+                                                                            <a class="dropdown-item ps-3" href="/region/russia/siberia-z">Сибирь Западная</a>
+                                                                            <a class="dropdown-item ps-3" href="/region/russia/ural">Уральский ФО</a>
+                                                                            <a class="dropdown-item ps-3" href="/region/russia/center">Центральный ФО</a>
+                                                                            <a class="dropdown-item ps-3" href="/region/russia/yug">Южный ФО</a>
+                                                                    </div>
+                            </div>
+                                                                                                <a class="dropdown-item ps-2 text-uppercase" href="/region/ukraine">Украина</a>
+                                                                                                <a class="dropdown-item ps-2 text-uppercase" href="/region/finland">Финляндия</a>
+                                                            </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link p-1" href="/spots">Споты</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link p-1" href="/about">О проекте</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link p-1" href="/faq">FAQ</a>
+            </li>
+        </ul>
+    </div>
+    <div class="offcanvas-footer d-block d-lg-none">
+            </div>
+</div>
+
+<profile-menu></profile-menu>
+
+    <a data-bs-toggle="modal" data-bs-target="#loginformModal" class="cursor-pointer d-none d-md-inline-block px-1">
+        <i class="fa-solid fa-lg fa-sign-in-alt"></i>
+    </a>
+
+<a id="btn__moon" onclick="switchTheme(this, 'light')" class="px-1 cursor-pointer" title="Переключить на светлую тему">
+    <i class="fa-solid fa-fw fa-lg fa-moon"></i>
+</a>
+<a id="btn__sun" onclick="switchTheme(this, 'system')" class="px-1 cursor-pointer" title="Переключить на системную тему">
+    <i class="fa-solid fa-fw fa-lg fa-sun"></i>
+</a>
+<a id="btn__system" onclick="switchTheme(this, 'dark')" class=" px-1 cursor-pointer" title="Переключить на темную тему">
+    <i class="fa-solid fa-fw fa-lg fa-star-half-alt"></i>
+</a>
+                </div>
+            </nav>
+
+            <div class="content-wrapper">
+
+                
+                
+                    <div id="app" role="main" class="fluid-container-lg">
+                        <div class="row">
+                            <div class="col-12">
+                                    <div class="map-wrapper overflow-hidden">
+        <world-map
+            :phrase="'bd814c794fc19e222ede323551f7c95f'"
+            :is_admin='0'
+            :user="{}"
+            :spot_types="[{&quot;id&quot;:1,&quot;active&quot;:1,&quot;system&quot;:1,&quot;sort_order&quot;:100,&quot;name&quot;:&quot;\u041f\u043b\u0435\u0439\u0441\u043f\u043e\u0442&quot;,&quot;class&quot;:&quot;playspot&quot;,&quot;icon&quot;:null,&quot;color&quot;:&quot;#74bf9a&quot;,&quot;img&quot;:&quot;&quot;,&quot;description&quot;:&quot;\u041f\u043b\u0435\u0439\u0441\u043f\u043e\u0442 \u0434\u043b\u044f \u0432\u043e\u0434\u043d\u043e\u0433\u043e \u0442\u0443\u0440\u0438\u0437\u043c\u0430, \u043a\u0430\u044f\u043a\u0438\u043d\u0433\u0430&quot;,&quot;created_at&quot;:&quot;2020-03-05T06:15:55.000000Z&quot;,&quot;updated_at&quot;:&quot;2020-03-05T06:16:08.000000Z&quot;},{&quot;id&quot;:2,&quot;active&quot;:1,&quot;system&quot;:0,&quot;sort_order&quot;:100,&quot;name&quot;:&quot;\u041a\u0435\u043c\u043f\u0438\u043d\u0433&quot;,&quot;class&quot;:&quot;camp&quot;,&quot;icon&quot;:null,&quot;color&quot;:&quot;#990cc7&quot;,&quot;img&quot;:null,&quot;description&quot;:&quot;\u041c\u0435\u0441\u0442\u0430 \u0434\u043b\u044f \u043e\u0442\u0434\u044b\u0445\u0430 \u0438 \u043a\u0435\u043c\u043f\u0438\u043d\u0433\u0430&quot;,&quot;created_at&quot;:&quot;2021-07-27T12:15:47.000000Z&quot;,&quot;updated_at&quot;:&quot;2023-04-03T16:01:33.000000Z&quot;},{&quot;id&quot;:5,&quot;active&quot;:1,&quot;system&quot;:0,&quot;sort_order&quot;:100,&quot;name&quot;:&quot;\u0420\u044b\u0431\u0430\u043b\u043a\u0430&quot;,&quot;class&quot;:&quot;fishing&quot;,&quot;icon&quot;:null,&quot;color&quot;:&quot;#db5757&quot;,&quot;img&quot;:null,&quot;description&quot;:&quot;\u041c\u0435\u0441\u0442\u043e \u0434\u043b\u044f \u0440\u044b\u0431\u0430\u043b\u043a\u0438&quot;,&quot;created_at&quot;:&quot;2023-04-03T15:44:52.000000Z&quot;,&quot;updated_at&quot;:&quot;2023-04-03T18:00:36.000000Z&quot;}]"
+        ></world-map>
+    </div>
+                            </div>
+                        </div>
+                    </div>
+
+                            </div>
+
+                                        <div class="d-flex justify-content-center map-ads">
+            <div class="map-footer-ads">
+            </div>
+        </div>
+                
+            <footer id="footer" class="bg-footer footer-wrapper">
+                <div class="container py-3">
+                    <div class="row mb-3">
+                        <div class="col-md-4 d-none d-md-block">
+                            <div class="logo">
+                                <a class="d-block" href="/">
+                                    <img class="logo-img img img-responsive float-left" src="/images/logo.svg" title="allrivers.info" alt="allrivers.info">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <div class="footer-block">
+                                <h4 class="mb-1">Полезное</h4>
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="/about">О проекте</a></li>
+                                    <li><a href="/faq">FAQ</a></li>
+                                    <li><a href="/blog">Блог</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-4 position-relative">
+                            <a class="footer-btn" id="footer-btn" onclick="toggleFooter()">
+                                <i class="fa-solid fa-chevron-up"></i>
+                            </a>
+                            <div class="footer-block">
+                                <h4 class="mb-1">Связаться с нами</h4>
+                                <div class="mb-2">
+                                    <a href="mailto:support@allrivers.info">
+                                        <i class="fa-solid fa-fw fa-envelope me-2"></i><span class="d-none d-md-inline">support@allrivers.info</span>
+                                    </a>
+                                </div>
+                                <div class="mb-2">
+                                    <ul class="list-inline m-0">
+	
+	<li class="list-inline-item">
+		<a href="//vk.com/allriversinfo" rel="nofollow noopener" target="_blank" title="Сообщество в VK" data-toggle="tooltip" data-placement="top">
+			<i class="fab fa-vk fa-lg"></i>
+		</a>
+	</li>
+	<li class="list-inline-item">
+		<a href="//play.google.com/store/apps/details?id=info.allriversinfo" rel="nofollow noopener" target="_blank" title="Приложение на Android" data-toggle="tooltip" data-placement="top">
+			<i class="fab fa-android fa-lg"></i>
+		</a>
+	</li>
+</ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-8 small">
+                            <p class="m-0">
+                                Информация носит ознакомительный характер.
+                            </p>
+                            <p class="m-0">&copy; AllRivers.info 2015 - 2026. При использовании гиперссылка обязательна.
+                            </p>
+                        </div>
+                        
+                    </div>
+                </div>
+            </footer>
+
+            <message-modal
+                :user="{}"
+            >
+            </message-modal>
+            <cookies></cookies>
+            <notifications width="400px" position="top right" classes="vue-notification my-notification"/>
+        </div>
+
+	    <a href="#0" id="cd-top" class="cd-top">Top</a>
+
+		
+							<div class="modal" id="loginformModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="loginformModallabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="login-form" method="POST" action="https://allrivers.info/login">
+                <div class="modal-header p-2">
+                    <span class="font-weight-bold text-uppercase modal-title" id="loginformModallabel">Вход</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" name="_token" value="HXNiXYCVKcqL5r2id2V6D2ksjCfBjCMhWfa03TpB" autocomplete="off">
+                                        <div style="display: none;" id="form-errors"></div>
+                    <div class="form-group mb-1">
+                        <span class="font-weight-bold mb-2">Вход через социальные сети:</span>
+                        <div class="d-grid gap-2 d-md-block social-buttons">
+
+                            <a id="vk-login" class="mb-1 btn btn-gray px-4" href="/social_login/vkontakte">
+                                <i class="fab fa-vk me-2"></i> Vk.com
+                            </a>
+
+                            <a id="yandex-login" class="mb-1 btn btn-gray px-4" href="/social_login/yandex">
+                                <i class="fab fa-yandex me-2"></i> Yandex
+                            </a>
+
+                        </div>
+                    </div>
+                    <div class="mb-1">
+                        <label for="email">E-mail:</label>
+                        <input type="text" name="email" class="form-control form-control-sm" id="email">
+                    </div>
+                    <div class="mb-1">
+                        <label for="password">Пароль:</label>
+                        <input type="password" name="password" class="form-control form-control-sm" id="password">
+                    </div>
+                    <div class="d-flex justify-content-between mb-1">
+                        <div>
+                            <a href="/register" class="text-center">Зарегистрироваться</a>
+                        </div>
+                        <div>
+                            <a href="/password/reset">Забыли пароль?</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-gray" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-times"></i> Закрыть                    </button>
+                    <button type="submit" class="btn text-white btn-primary">
+                        <i class="fa-solid fa-plug"></i> Вход                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+					
+
+		<link rel="preload" as="style" href="https://allrivers.info/build/assets/app-CyZYIfNS.css" /><link rel="modulepreload" as="script" href="https://allrivers.info/build/assets/app-DzRJnLf7.js" /><link rel="modulepreload" as="script" href="https://allrivers.info/build/assets/index.es-vGA5yUby.js" /><link rel="stylesheet" href="https://allrivers.info/build/assets/app-CyZYIfNS.css" data-navigate-track="reload" /><script type="module" src="https://allrivers.info/build/assets/app-DzRJnLf7.js" data-navigate-track="reload"></script>		
+		<script type="module">
+/*
+			const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+			const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+
+			const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+			const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+*/
+			let dropdowns = document.querySelectorAll('.dropdown-toggle')
+			dropdowns.forEach((dd)=>{
+	    		dd.addEventListener('click', function (e) {
+	        		var el = this.nextElementSibling
+	        		el.style.display = el.style.display==='block'?'none':'block'
+	    		})
+			})
+		</script>
+		            )
+                <!-- yandex ads scripts -->
+                <script>window.yaContextCb=window.yaContextCb||[]</script>
+                <script src="https://yandex.ru/ads/system/context.js"></script>
+            
+			<!-- Global site tag (gtag.js) - Google Analytics -->
+			<script async src="https://www.googletagmanager.com/gtag/js?id=G-FGHX8G88XB"></script>
+			<script>
+				window.dataLayer = window.dataLayer || [];
+				function gtag(){dataLayer.push(arguments);}
+				gtag('js', new Date());
+
+				gtag('config', 'G-FGHX8G88XB');
+			</script>
+
+			<!-- Yandex.Metrika counter --> <script> (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)}; m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)}) (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym"); ym(44115369, "init", { clickmap:true, trackLinks:true, accurateTrackBounce:true }); </script> <noscript><div><img src="https://mc.yandex.ru/watch/44115369" style="position:absolute; left:-9999px;" alt="" /></div></noscript> <!-- /Yandex.Metrika counter -->
+				<!--LiveInternet counter--><script>
+				new Image().src = "//counter.yadro.ru/hit?r"+
+				escape(document.referrer)+((typeof(screen)=="undefined")?"":
+				";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+				screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+				";h"+escape(document.title.substring(0,150))+
+				";"+Math.random();</script><!--/LiveInternet-->
+		        <script type="module">
+    Fancybox.bind('[data-fancybox="gallery"]', {
+        baseClass: 'myFancyBox',
+        loop: true,
+        thumbs : {
+            autoStart : true,
+        },
+        protect: true,
+        helpers : {
+            title: {
+                type: 'inside'
+            }
+        }
+    });
+    window.toggleFooter = function() {
+        var el = document.getElementById("footer");
+        el.classList.toggle("is-active");
+    }
+</script>
+        
+        	</body>
+</html>

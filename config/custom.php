@@ -60,6 +60,18 @@ return [
     |
     */
 
+    'hydrometric' => [
+        'kim_levels_api_url' => env('KIM_WATER_LEVELS_API_URL'),
+        'allrivers_ivankovo_verh_url' => env('ALLRIVERS_IVANKOVO_VERH_URL')
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Logger api settings
+    |--------------------------------------------------------------------------
+    |
+    */
+
     'logger' => [
         'api_url' => env('LOGGER_API_URL'),
         'api_key' => env('GLOBUS_API_KEY')

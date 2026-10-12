@@ -15,11 +15,14 @@
       <!-- Content Row-->
       <div class="row gx-4 gx-lg-5">
         <div class="col-md-4 mb-5" v-for="sticker in stickers">
-          <div class="card h-100">
+          <div class="card h-100 p-1">
+<!--             <div class="card-header bg-light-gray">
+              <h5 class="card-title text-center">{{ sticker.contact_name }}</h5>
+            </div> -->
             <img
               v-if="sticker.attachments.length"
               :src="$store.getters.stickerImagePath(sticker.id)" 
-              class="card-img-top img-fixed-height-200"
+              class="card-img-top img-fixed-height-100"
               :class="!isNaN(sticker.id) ? 'sticker-link' : ''" 
               :alt="$store.getters.findOrFail(sticker, 'attachments.0.media.description')"
               @click="showSticker(sticker.id)"
@@ -30,8 +33,8 @@
               @click="showSticker(sticker.id)"
               :title="!isNaN(sticker.id) ? $store.getters.t('Click to see details') : ''"
             >
-                <h4 class="card-title">{{ sticker.contact_name }}</h4>
-                <p class="card-text">{{ truncate(sticker.message, 100) }}</p>
+                <h5 class="card-title text-center">{{ sticker.contact_name }}</h5>
+<!--                 <p class="card-text text-truncate">{{ sticker.message, 50 }}</p> -->
             </div>
             <div class="card-footer">
               <button class="btn" type="button" @click="phoneCall(sticker)" 
@@ -104,9 +107,9 @@
   .blur {
     backdrop-filter: blur(10px);
   }
-  .img-fixed-height-200 {
+  .img-fixed-height-100 {
     width: 100%;
-    height: 200px;
+    height: 100px;
     object-fit: cover;
   }
   .contact-link {
@@ -114,5 +117,8 @@
   }
   .sticker-link {
     cursor: pointer;
+  }
+  .bg-light-gray {
+    background-color: #ececec;
   }
 </style>

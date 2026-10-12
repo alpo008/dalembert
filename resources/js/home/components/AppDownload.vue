@@ -198,7 +198,7 @@
       async downloadApp() {
         let data = {api_key: this.apiKey};
         await this.$store.dispatch('download', {
-          url: '/home/down--load/' + this.appToDownload,
+          url: '/home/download/' + this.appToDownload,
           method: 'POST',
           data: data,
           output: 'globus-meteo.zip'

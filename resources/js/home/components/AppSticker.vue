@@ -1,13 +1,15 @@
 <template>
   <div @click="$router.go(-1)" class="back-link" :title="$store.getters.t('Back')"> 
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-skip-backward" viewBox="0 0 16 16">
-      <path d="M.5 3.5A.5.5 0 0 1 1 4v3.248l6.267-3.636c.52-.302 1.233.043 1.233.696v2.94l6.267-3.636c.52-.302 1.233.043 1.233.696v7.384c0 .653-.713.998-1.233.696L8.5 8.752v2.94c0 .653-.713.998-1.233.696L1 8.752V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m7 1.133L1.696 8 7.5 11.367zm7.5 0L9.196 8 15 11.367z"/>
+    <svg width="30px" height="30px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <g id="icomoon-ignore"></g>
+      <path d="M14.389 7.956v4.374l1.056 0.010c7.335 0.071 11.466 3.333 12.543 9.944-4.029-4.661-8.675-4.663-12.532-4.664h-1.067v4.337l-9.884-7.001 9.884-7zM15.456 5.893l-12.795 9.063 12.795 9.063v-5.332c5.121 0.002 9.869 0.26 13.884 7.42 0-4.547-0.751-14.706-13.884-14.833v-5.381z" fill="#000000">
+      </path>
     </svg>
   </div>
   <div class="container px-4 px-lg-5" v-if="!!sticker">
     <div class="row gx-4 gx-lg-5 align-items-center my-5">
         <div class="col-lg-7" v-if="!!$store.getters.stickerImagePath(sticker.id)">
-          <img class="img-fluid rounded mb-4 mb-lg-0 img-fixed-height-350"
+          <img class="img-fluid rounded mb-4 mb-lg-0 img-width-100"
             v-if="!!$store.getters.stickerImagePath(sticker.id)"
             :src="$store.getters.stickerImagePath(sticker.id)" 
           />
@@ -63,13 +65,13 @@
     .blur {
       backdrop-filter: blur(10px);
     }
-    .img-fixed-height-350 {
+    .img-width-100 {
     width: 100%;
-    height: 450px;
+    height: auto;
     object-fit: cover;
   }
   .back-link {
-    position: absolute;
+    position: fixed;
     margin-left: 15px;
     cursor: pointer;
     color: #484848;

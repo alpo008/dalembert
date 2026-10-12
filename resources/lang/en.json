@@ -81,6 +81,8 @@
 	"Real e-mail to send application key": "Real e-mail to send download link", 
     "Registered at": "Registered at",
     "Relative" : "Relative", 
+	"Request failed with status code 403": "Request failed with status code 403",  
+	"Request failed with status code 405": "Request failed with status code 405", 
 	"Request has been sent. Wait for an e-mail.": "Request has been sent. Wait for an e-mail.",  
 	"Rime fog": "Rime fog",  
 	"Save": "Save",

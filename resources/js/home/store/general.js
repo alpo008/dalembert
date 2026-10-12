@@ -117,8 +117,8 @@ export default {
               }).then(blob => {
                 FileSaver.saveAs(blob, output);
               }).catch(error => {
-                context.commit('setHttpErrors', error.message ?? context.getters.t('Download error'));
                 context.commit('setHttpLoadingState', false);
+                context.commit('setHttpErrors', error.message ?? context.getters.t('Download error'));
             });
           }
       } 
