@@ -6,7 +6,7 @@
       </path>
     </svg>
   </div>
-  <div class="container px-4 px-lg-5">
+  <div class="container px-4 px-lg-5 mt-5">
     <div 
       class="alert alert-secondary alert-dismissible fade show" 
       role="alert" 
@@ -18,6 +18,187 @@
     <p>
       {{ $store.getters.findOrFail(this.$store.getters.config, 'page.form_text') }}
     </p>
+    <form @submit.prevent="submitForm">
+      <div class="row mb-3">
+        <label for="formInputSenderName" class="col-sm-2 col-form-label col-form-label-sm">
+          {{ $store.getters.t('What is your name') }} ?
+        </label>
+        <div class="col-sm-10">
+          <input type="text" 
+            class="form-control form-control-sm input-transparent" 
+            :class="!!fieldError('sender_name') ? 'is-invalid' : ''"
+            id="formInputSenderName" 
+            v-model="formData.sender_name"
+            :placeholder="$store.getters.t('Your Name and Surname')" 
+          >
+          <div class="invalid-feedback form-control-sm">
+            {{ fieldError('sender_name') }}
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="formInputSenderEmail" class="col-sm-2 col-form-label col-form-label-sm">
+          {{ $store.getters.t('Feedback email') }}
+        </label>
+        <div class="col-sm-10">
+          <input type="email" 
+            class="form-control form-control-sm input-transparent" 
+            :class="!!fieldError('sender_email') ? 'is-invalid' : ''"
+            id="formInputSenderEmail" 
+            v-model="formData.sender_email"
+            :placeholder="$store.getters.t('Won`t be published')" 
+          >
+          <div class="invalid-feedback form-control-sm">
+            {{ fieldError('sender_email') }}
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="formInputSenderAdditional" class="col-sm-2 col-form-label col-form-label-sm">
+          {{ $store.getters.t('Additional information') }}
+        </label>
+        <div class="col-sm-10">
+          <input type="text" 
+            class="form-control form-control-sm input-transparent" 
+            :class="!!fieldError('sender_additional_info') ? 'is-invalid' : ''"
+            id="formInputSenderAdditional" 
+            v-model="formData.sender_additional_info"
+          >
+          <div class="invalid-feedback form-control-sm">
+            {{ fieldError('sender_additional_info') }}
+          </div>
+        </div>
+      </div>
+      <div class="mb-3 form-check">
+        <input type="checkbox" 
+          class="form-check-input input-transparent" 
+          id="personalDataAgreementCheck"
+          v-model="canSubmit"
+          ref="personalDataCheckbox"
+        >
+        <label class="form-check-label" for="personalDataAgreementCheck">
+         {{ $store.getters.t('I consent to the processing of my personal data (without transfer to third parties)') }}.
+        </label>
+      </div>
+      <div class="w-100"><hr /></div>
+      <div class="row mb-3">
+        <label for="formInputVenue" class="col-sm-2 col-form-label col-form-label-sm">
+          {{ $store.getters.t('Venue') }}
+        </label>
+        <div class="col-sm-10">
+          <input type="text" 
+            class="form-control form-control-sm input-transparent" 
+            :class="!!fieldError('venue') ? 'is-invalid' : ''"
+            id="formInputVenue" 
+            v-model="formData.venue"
+          >
+          <div class="invalid-feedback form-control-sm">
+            {{ fieldError('venue') }}
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="formInputDoi" class="col-sm-2 col-form-label col-form-label-sm">
+          {{ $store.getters.t('Date of beginning')}}
+        </label>
+        <div class="col-sm-10">
+          <input type="date" 
+            class="form-control form-control-sm input-transparent"
+            :class="!!fieldError('doi') ? 'is-invalid' : ''"
+            id="formInputDoi" 
+            v-model="formData.doi"
+          >
+          <div class="invalid-feedback invalid-feedback-sm">
+            {{ fieldError('doi') }}
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="formInputValidUntil" class="col-sm-2 col-form-label col-form-label-sm">
+          {{ $store.getters.t('Date of end')}}
+        </label>
+        <div class="col-sm-10">
+          <input type="date" 
+            class="form-control form-control-sm input-transparent"
+            :class="!!fieldError('valid_until') ? 'is-invalid' : ''"
+            id="formInputValidUntil" 
+            v-model="formData.valid_until"
+          >
+          <div class="invalid-feedback invalid-feedback-sm">
+            {{ fieldError('valid_until') }}
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="formInputSponsorEmail" class="col-sm-2 col-form-label col-form-label-sm">
+          {{ $store.getters.t('Sponsor email') }}
+        </label>
+        <div class="col-sm-10">
+          <input type="email" 
+            class="form-control form-control-sm input-transparent" 
+            :class="!!fieldError('sponsor_email') ? 'is-invalid' : ''"
+            id="formInputSponsorEmail" 
+            v-model="formData.sponsor_email"
+            :placeholder="$store.getters.t('Will be published on the website')"
+          >
+          <div class="invalid-feedback form-control-sm">
+            {{ fieldError('sponsor_email') }}
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="formInputSponsorPhone" class="col-sm-2 col-form-label col-form-label-sm">
+          {{ $store.getters.t('Sponsor phone') }}
+        </label>
+        <div class="col-sm-10">
+          <input type="tel" 
+            class="form-control form-control-sm input-transparent" 
+            :class="!!fieldError('sponsor_phone') ? 'is-invalid' : ''"
+            id="formInputSponsorPhone" 
+            v-model="formData.sponsor_phone"
+            :placeholder="$store.getters.t('Will be published on the website')"
+          >
+          <div class="invalid-feedback form-control-sm">
+            {{ fieldError('sponsor_phone') }}
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="formInputLinkAddress" class="col-sm-2 col-form-label col-form-label-sm">
+          {{ $store.getters.t('Reference to the source') }}
+        </label>
+        <div class="col-sm-10">
+          <input type="tel" 
+            class="form-control form-control-sm input-transparent" 
+            :class="!!fieldError('link_address') ? 'is-invalid' : ''"
+            id="formInputLinkAddress" 
+            v-model="formData.link_address"
+            :placeholder="$store.getters.t('Will be published on the website')"
+          >
+          <div class="invalid-feedback form-control-sm">
+            {{ fieldError('link_address') }}
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label for="formInputImage" class="form-label">
+          {{ $store.getters.t('Image')}}
+        </label>
+        <div class="col-sm-10">
+          <input class="form-control form-control-sm input-transparent" type="file" id="formInputImage" ref="imageFile">
+        </div>
+        <div class="invalid-feedback form-control-sm">
+          {{ fieldError('file') }}
+        </div>
+      </div>
+      <button 
+        type="submit" 
+        :class="canSubmit ? 'btn btn-light' : 'btn btn-light disabled'" 
+        class="mb-5"
+      >
+        {{ $store.getters.t('Send') }}
+      </button>
+    </form>
   </div>
 </template>
 <script>
@@ -25,10 +206,11 @@
     data: function () {
       return {
         apiKey: `${process.env.MIX_GLOBUS_API_KEY}`,
+        formData: {},
         canSubmit: false,
-        canDownload: false,
         errors: {},
-        showSuccessMessage: false
+        showSuccessMessage: false,
+        imageFile: null
       }
     },
     async created() {
