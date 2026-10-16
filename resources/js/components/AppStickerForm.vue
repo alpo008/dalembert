@@ -38,6 +38,22 @@
     :error-messages="errors.contact_email"
   >
   </v-text-field>
+  <v-text-field 
+    type="text"
+    :label="$t('Reference to the source')"
+    ref="link_address"
+    v-model="stickerData.link_address"
+    :error-messages="errors.link_address"
+  >
+  </v-text-field>
+  <v-text-field 
+    type="text"
+    :label="$t('Reference text')"
+    ref="link_text"
+    v-model="stickerData.link_text"
+    :error-messages="errors.link_text"
+  >
+  </v-text-field>
   <v-select
     :label="$t('Priority')"
     v-model="stickerData.priority"
@@ -117,6 +133,16 @@ export default {
           formData.append('contact_email', this.stickerData.contact_email);
       } else {
           formData.append('contact_email', '');
+      }
+      if (this.stickerData.link_address !== null && this.stickerData.link_address !== undefined) {
+          formData.append('link_address', this.stickerData.link_address);
+      } else {
+          formData.append('link_address', '');
+      }
+      if (this.stickerData.link_text !== null && this.stickerData.link_text !== undefined) {
+          formData.append('link_text', this.stickerData.link_text);
+      } else {
+          formData.append('link_text', '');
       }
       formData.append('priority', this.stickerData.priority);
 

@@ -92,7 +92,9 @@
 	      dark
 	      prominent
 	    >
-	      <v-toolbar-title>{{ $t('New sticker') }}</v-toolbar-title>
+	      <v-toolbar-title>
+	      	{{ currentSticker.id ? $t('Sticker of') + ' ' + currentSticker.doi : $t('New sticker') }}
+	      </v-toolbar-title>
 
 	      <v-spacer></v-spacer>
 

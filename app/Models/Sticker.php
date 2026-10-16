@@ -40,7 +40,7 @@ class Sticker extends Model
      */
     protected $fillable = [
         'doi', 'valid_until', 'priority', 'message', 'contact_email', 'contact_phone', 'contact_name', 
-        'created_by'
+        'created_by', 'link_text', 'link_address'
     ];
 
     /**

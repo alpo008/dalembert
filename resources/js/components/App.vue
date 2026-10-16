@@ -81,7 +81,6 @@
         style="margin-top:1px;height:32px;" 
         v-if="showWeather"
       >
-        <widget-weather/>
       </v-system-bar>
       <v-system-bar color="#263238" style="top:0;height:32px;" v-if="!showNavs">
         <v-toolbar-title class="ticker">
