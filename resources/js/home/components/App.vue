@@ -95,6 +95,7 @@
       }
     },
     async created() {
+      this.$store.commit('updateConfig', null);
       await this.$store.dispatch('httpRequest', {
         url: '/meteo/description',
         method: 'GET',

@@ -76,15 +76,4 @@
     height: auto;
     object-fit: cover;
   }
-  .back-link {
-    position: fixed;
-    margin-left: 15px;
-    cursor: pointer;
-  }
-  .link-grey {
-    color: #484848;
-  }
-  .link-grey:hover {
-    color: #323232;
-  }
 </style>

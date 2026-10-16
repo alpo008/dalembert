@@ -6,6 +6,7 @@ import AppMeteo from './components/AppMeteo.vue';
 import AppWebcam from './components/AppWebcam.vue';
 import AppDownload from './components/AppDownload.vue';
 import AppSticker from './components/AppSticker.vue';
+import AppAddSticker from './components/AppAddSticker.vue';
 
 export default VueRouter.createRouter({
     routes: [
@@ -45,6 +46,14 @@ export default VueRouter.createRouter({
             path: '/stickers/:id(\\d+)',
             name: 'Sticker',
             component: AppSticker,
+            meta: {
+                searchBar: false
+            }
+        },
+        {
+            path: '/add',
+            name: 'Add',
+            component: AppAddSticker,
             meta: {
                 searchBar: false
             }

@@ -5,12 +5,11 @@
         <div class="col-lg-5">
             <h1 class="font-weight-light"> {{ site.h1 }}</h1>
             <p>{{ site.text }}</p>
-<!--             <a class="btn btn-primary" href="#!">Call to Action!</a> -->
         </div>
     </div>
 
     <div class="card text-white bg-secondary my-5 py-4 text-center">
-        <div class="card-body"><p class="text-white m-0">{{ site. card_text }}</p></div>
+    <div class="card-body"><p class="text-white m-0">{{ site. card_text }}</p></div>
     </div>
       <!-- Content Row-->
       <div class="row gx-4 gx-lg-5">
@@ -51,13 +50,12 @@
             </div>
           </div>
       </div>
+      <router-link class="btn btn-outline-dark mb-4" to="/add">{{ $t('Add sticker') }}</router-link>
     </div>
   </div>
 </template>
 
 <script>
-  let lang = document.querySelector('html').getAttribute('lang');
-  const CONFIG = require('../../../data/frontend.' + lang + '.json');
   export default {
     data: function () {
       return {
@@ -66,7 +64,7 @@
       }
     },
     async created() {
-      this.site = this.$store.getters.findOrFail(CONFIG, 'page');
+      this.site = this.$store.getters.findOrFail(this.$store.getters.config, 'page');
       await this.$store.dispatch('httpRequest', {
         url: '/home/globus',
         method: 'POST',

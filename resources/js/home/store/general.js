@@ -7,8 +7,13 @@ export default {
     httpErrors: {},
     networkError: false,
     loading: false,
+    config: null
 	},
 	mutations : {
+    updateConfig(state, payload) {
+      let lang = document.querySelector('html').getAttribute('lang');
+      state.config = require('../../../data/frontend.' + lang + '.json');
+    },
     setHttpErrors(state, payload) {
       if (typeof payload === 'string' && payload.includes('Could not resolve host')) {
         state.networkError = true;
@@ -131,7 +136,10 @@ export default {
     }
 	},
 	getters: {
-    currentLocale() {
+    config(state) {
+      return state.config;
+    },
+    currentLocale(state) {
       let lang = document.querySelector('html').getAttribute('lang');
       if (lang === 'en') {
         return 'en-US';
