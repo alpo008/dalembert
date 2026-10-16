@@ -75,6 +75,7 @@
           id="personalDataAgreementCheck"
           v-model="canSubmit"
           ref="personalDataCheckbox"
+          @change="checkAgreement"
         >
         <label class="form-check-label" for="personalDataAgreementCheck">
          {{ $store.getters.t('I consent to the processing of my personal data (without transfer to third parties)') }}.
@@ -181,7 +182,7 @@
         </div>
       </div>
       <div class="row mb-3">
-        <label for="formInputImage" class="form-label">
+        <label for="formInputImage" class="col-sm-2 col-form-label col-form-label-sm">
           {{ $store.getters.t('Image')}}
         </label>
         <div class="col-sm-10">
@@ -191,13 +192,16 @@
           {{ fieldError('file') }}
         </div>
       </div>
+      <div @click="checkAgreement">
       <button 
         type="submit" 
         :class="canSubmit ? 'btn btn-light' : 'btn btn-light disabled'" 
         class="mb-5"
+        @click="checkAgreement"
       >
         {{ $store.getters.t('Send') }}
       </button>
+      </div>
     </form>
   </div>
 </template>
@@ -217,24 +221,61 @@
     },
     methods: {
       async submitForm() {
-/*        if(!this.canSubmit) {
-          this.$refs.personalDataAgreementCheckbox.classList.add('is-invalid');
-        } else {
-          this.$refs.personalDataAgreementCheckbox.classList.add('is-valid');
+        const FD = new FormData();
+        if(!!this.file) {
+          FD.append('file', imageFile.file);
         }
-        let data = Object.assign(this.regData, {api_key: this.apiKey});
-        await this.$store.dispatch('httpRequest', {
-          url: '/app-registration/apply',
-          method: 'POST',
-          data: data,
-          mutation: ''
-        });
-        this.errors = this.$store.getters.httpErrors;
-        if(!_.isEmpty(this.errors)) {
-          this.$store.commit('setHttpLoadingState', false);
+        FD.append('api_key', this.apiKey);
+        if (this.formData.sender_name !== null && this.formData.sender_name !== undefined) {
+            FD.append('sender_name', this.formData.sender_name);
         } else {
-          this.showSuccessMessage = true;
-        }*/
+            FD.append('sender_name', '');
+        }
+        if (this.formData.sender_email !== null && this.formData.sender_email !== undefined) {
+            FD.append('sender_email', this.formData.sender_email);
+        } else {
+            FD.append('sender_email', '');
+        }
+        if (this.formData.sender_additional_info !== null && this.formData.sender_additional_info !== undefined) {
+            FD.append('sender_additional_info', this.formData.sender_additional_info);
+        } else {
+            FD.append('sender_additional_info', '');
+        }
+        if (this.formData.venue !== null && this.formData.venue !== undefined) {
+            FD.append('venue', this.formData.venue);
+        } else {
+            FD.append('venue', '');
+        }
+        FD.append('doi', this.formData.doi);
+        FD.append('valid_until', this.formData.valid_until);
+        if (this.formData.sponsor_email !== null && this.formData.sponsor_email !== undefined) {
+            FD.append('sponsor_email', this.formData.sponsor_email);
+        } else {
+            FD.append('sponsor_email', '');
+        }
+        if (this.formData.sponsor_phone !== null && this.formData.sponsor_phone !== undefined) {
+            FD.append('sponsor_phone', this.formData.sponsor_phone);
+        } else {
+            FD.append('sponsor_phone', '');
+        }
+        if (this.formData.link_address !== null && this.formData.link_address !== undefined) {
+            FD.append('link_address', this.formData.link_address);
+        } else {
+            FD.append('link_address', '');
+        }
+        //TODO
+      },
+      uploadFile() {
+        this.imageFile = this.$refs.imageFile.files[0];
+      },
+      checkAgreement(e) {
+        let inputEl = this.$refs.personalDataCheckbox;
+        if(!this.canSubmit) {
+          inputEl.classList.add('is-invalid');
+          inputEl.scrollIntoView();
+        } else {
+          inputEl.classList.remove('is-invalid');
+        }
       },
       fieldError(fieldName) {
         return this.$store.getters.findOrFail(this.errors, fieldName + '.0')
