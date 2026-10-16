@@ -21,7 +21,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(CheckApiKey::class, ['only' => ['download']]);
+        $this->middleware(CheckApiKey::class, ['only' => ['download', 'sticker']]);
     }
     /**
      * Display a listing of the resource.
@@ -158,7 +158,6 @@ class HomeController extends Controller
     /**
      * Get data for globus homepage
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function globus()
@@ -183,6 +182,17 @@ class HomeController extends Controller
         if (Storage::disk('local')->exists('android/globus-meteo_stable.zip')) {
             return Storage::download('android/globus-meteo_stable.zip');
         }
+    }
+
+    /**
+     * This method serves the sticker addition request
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function sticker(Request $request)
+    {
+        //TODO
     }
 
     /**

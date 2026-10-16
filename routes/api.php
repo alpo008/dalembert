@@ -64,6 +64,8 @@ Route::get('payments/{obj}/{id}', 'App\Http\Controllers\PaymentController@show')
 
 Route::post('home/globus', 'App\Http\Controllers\HomeController@globus');
 Route::post('home/download/{id}', 'App\Http\Controllers\HomeController@download');
+Route::post('home/sticker', 'App\Http\Controllers\HomeController@sticker');
+
 Route::get('meteo/description', 'App\Http\Controllers\MeteoController@description');
 
 Route::post('app-registration/key', 'App\Http\Controllers\HomeController@key');

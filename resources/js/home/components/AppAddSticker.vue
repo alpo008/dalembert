@@ -263,7 +263,13 @@
         } else {
             FD.append('link_address', '');
         }
-        //TODO
+        await this.$store.dispatch('httpRequest', {
+          url: '/home/sticker',
+          method: 'POST',
+          data: FD,
+          mutation: null
+        });
+        this.errors = this.$store.getters.httpErrors;
       },
       uploadFile() {
         this.imageFile = this.$refs.imageFile.files[0];
