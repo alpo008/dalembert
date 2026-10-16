@@ -1,5 +1,5 @@
 <template>
-  <div @click="$router.go(-1)" class="back-link" :title="$store.getters.t('Back')"> 
+  <div @click="$router.go(-1)" class="back-link link-grey" :title="$store.getters.t('Back')"> 
     <svg width="30px" height="30px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <g id="icomoon-ignore"></g>
       <path d="M14.389 7.956v4.374l1.056 0.010c7.335 0.071 11.466 3.333 12.543 9.944-4.029-4.661-8.675-4.663-12.532-4.664h-1.067v4.337l-9.884-7.001 9.884-7zM15.456 5.893l-12.795 9.063 12.795 9.063v-5.332c5.121 0.002 9.869 0.26 13.884 7.42 0-4.547-0.751-14.706-13.884-14.833v-5.381z" fill="#000000">
@@ -35,6 +35,12 @@
           </button>
         </div>
     </div>
+              <div v-if="sticker.link_address">
+            {{ $store.getters.t('Reference') }} : &nbsp;
+          <a :href="sticker.link_address" target="_blank" class="link-grey">
+            {{ sticker.link_text ?? sticker_link_address }}
+          </a>
+          </div>
   </div>
 </template>
 <script>
@@ -74,9 +80,11 @@
     position: fixed;
     margin-left: 15px;
     cursor: pointer;
+  }
+  .link-grey {
     color: #484848;
   }
-  .back-link:hover {
+  .link-grey:hover {
     color: #323232;
   }
 </style>
