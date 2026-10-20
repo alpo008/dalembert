@@ -10,6 +10,9 @@ use App\Http\Middleware\CheckApiKey;
 use Illuminate\Support\Arr;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AddSticker;
+use Illuminate\Validation\Rules\File;
 
 class HomeController extends Controller
 {
@@ -187,12 +190,34 @@ class HomeController extends Controller
     /**
      * This method serves the sticker addition request
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param App\Http\Requests\AddStickerRequest;  $request
      * @return \Illuminate\Http\Response
      */
     public function sticker(Request $request)
     {
-        //TODO
+        $request->validate([
+            'sender_name' => 'required|string|max:100', 
+            'sender_email' => 'required|string|max:100|email:rfc,dns', 
+            'sender_additional_info' => 'nullable|string|max:255', 
+            'venue' => 'nullable|string',
+            'doi' => 'date',
+            'valid_until' => 'date',
+            'sponsor_email' => 'nullable|string|max:100|email',
+            'sponsor_phone' => 
+                'required_without:sponsor_email|nullable|max:30|string|regex:/^\+?\d{11,12}?$/',
+            'link_address' => 'required_without:venue|nullable|max:255',
+            'image' => ['sometimes', File::types(['jpg', 'png' , 'jpeg', 'tiff'])->max(2048)]
+        ]);
+        $to = config('custom.site.admin_email');
+        $cc = config('custom.site.dev_email');
+        $stickerData = $request->all();
+        $ta = new AddSticker($stickerData);
+        Mail::to($to)->cc($cc)->send(new AddSticker($stickerData));
+        return response()->json(
+            [
+                'status' => 'success',
+            ]
+        );
     }
 
     /**

@@ -8,20 +8,23 @@
   </div>
   <div class="container px-4 px-lg-5 mt-5">
     <div 
-      class="alert alert-secondary alert-dismissible fade show" 
+      class="alert alert-success alert-dismissible fade show" 
       role="alert" 
       v-if="showSuccessMessage"
+      ref="alertSuccess"
     >
-      {{ $t('Request has been sent. Wait for an e-mail.') }}
+      {{ $store.getters.t('Request has been sent. Wait for an e-mail.') }}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     <p>
       {{ $store.getters.findOrFail(this.$store.getters.config, 'page.form_text') }}
     </p>
+    <div class="w-100"><hr /></div>
     <form @submit.prevent="submitForm">
+      <h5 class="mb-3">{{ $store.getters.t('About you') }} :</h5>
       <div class="row mb-3">
         <label for="formInputSenderName" class="col-sm-2 col-form-label col-form-label-sm">
-          {{ $store.getters.t('What is your name') }} ?
+          {{ $store.getters.t('What is your name') }}
         </label>
         <div class="col-sm-10">
           <input type="text" 
@@ -63,6 +66,7 @@
             :class="!!fieldError('sender_additional_info') ? 'is-invalid' : ''"
             id="formInputSenderAdditional" 
             v-model="formData.sender_additional_info"
+            :placeholder="$store.getters.t('What do you think is necessary')"
           >
           <div class="invalid-feedback form-control-sm">
             {{ fieldError('sender_additional_info') }}
@@ -82,17 +86,19 @@
         </label>
       </div>
       <div class="w-100"><hr /></div>
+      <h5 class="mb-3">{{ $store.getters.t('About event') }} :</h5>
       <div class="row mb-3">
         <label for="formInputVenue" class="col-sm-2 col-form-label col-form-label-sm">
           {{ $store.getters.t('Venue') }}
         </label>
         <div class="col-sm-10">
-          <input type="text" 
+          <textarea type="text" 
             class="form-control form-control-sm input-transparent" 
             :class="!!fieldError('venue') ? 'is-invalid' : ''"
             id="formInputVenue" 
             v-model="formData.venue"
           >
+          </textarea>
           <div class="invalid-feedback form-control-sm">
             {{ fieldError('venue') }}
           </div>
@@ -186,10 +192,16 @@
           {{ $store.getters.t('Image')}}
         </label>
         <div class="col-sm-10">
-          <input class="form-control form-control-sm input-transparent" type="file" id="formInputImage" ref="imageFile">
-        </div>
-        <div class="invalid-feedback form-control-sm">
-          {{ fieldError('file') }}
+          <input 
+            class="form-control form-control-sm input-transparent" 
+            :class="!!fieldError('image') ? 'is-invalid' : ''"
+            type="file" id="formInputImage" 
+            ref="imageFile" 
+            @change="uploadFile"
+          >
+          <div class="invalid-feedback form-control-sm">
+            {{ fieldError('image') }}
+          </div>
         </div>
       </div>
       <div @click="checkAgreement">
@@ -222,8 +234,8 @@
     methods: {
       async submitForm() {
         const FD = new FormData();
-        if(!!this.file) {
-          FD.append('file', imageFile.file);
+        if(!!this.imageFile) {
+          FD.append('image', this.imageFile);
         }
         FD.append('api_key', this.apiKey);
         if (this.formData.sender_name !== null && this.formData.sender_name !== undefined) {
@@ -254,7 +266,7 @@
             FD.append('sponsor_email', '');
         }
         if (this.formData.sponsor_phone !== null && this.formData.sponsor_phone !== undefined) {
-            FD.append('sponsor_phone', this.formData.sponsor_phone);
+            FD.append('sponsor_phone', this.formData.sponsor_phone.replace(/[\s()\-]/g, ''));
         } else {
             FD.append('sponsor_phone', '');
         }
@@ -270,6 +282,7 @@
           mutation: null
         });
         this.errors = this.$store.getters.httpErrors;
+        this.showSuccessMessage = _.isEmpty(this.errors);
       },
       uploadFile() {
         this.imageFile = this.$refs.imageFile.files[0];
