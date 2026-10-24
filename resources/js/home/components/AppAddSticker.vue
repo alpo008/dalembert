@@ -76,7 +76,9 @@
           @change="checkAgreement"
         >
         <label class="form-check-label" for="personalDataAgreementCheck">
-         {{ $store.getters.t('I consent to the processing of my personal data (without transfer to third parties)') }}.
+         {{ $store.getters.t('Law 152-FZ__short_2') }}.
+         {{ $store.getters.t('I agree with') }} 
+         <router-link to="/policy">{{ $store.getters.t('the personal data processing policy') }}</router-link> .
         </label>
       </div>
       <div class="w-100"><hr /></div>

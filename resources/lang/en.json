@@ -48,6 +48,7 @@
 	"Image": "Image",
 	"Information": "Information",
 	"Incorrect command": "Incorrect command",
+	"I agree with": "I agree with",
 	"I consent to the processing of my personal data (without transfer to third parties)": "I consent to the processing of my personal data (without transfer to third parties)",
 	"Key": "Key",
 	"Last active": "Last active",
@@ -112,6 +113,7 @@
 	"Sticker": "Sticker",
 	"Sticker addition request": "Sticker addition request",
 	"Sticker of": "Sticker of",
+	"the personal data processing policy": "the personal data processing policy",
 	"Stickers management": "Stickers",
 	"Temperature": "Temperature",
 	"Text": "Text",
@@ -141,5 +143,6 @@
     "º": "º",
     "": "",
     "Disclaimer__short" : "This application is provided «as is». The developer is not liable for any direct or indirect damages arising from the use or inability to use this application. We do not guarantee that the application will function uninterrupted or error-free",
-    "Law 152-FZ__short" : "In accordance with Federal Law № 152-FZ of 27.07.2006 «On Personal Data» I voluntarily of my own free will and in my own interests consent to the processing of my personal data for the purpose of registering mobile application"
+    "Law 152-FZ__short" : "In accordance with Federal Law № 152-FZ of 27.07.2006 «On Personal Data» I voluntarily of my own free will and in my own interests consent to the processing of my personal data for the purpose of registering mobile application",
+    "Law 152-FZ__short" : "In accordance with Federal Law № 152-FZ of 27.07.2006 «On Personal Data» I voluntarily of my own free will and in my own interests consent to the processing of my personal data for communication purposes"
 }
