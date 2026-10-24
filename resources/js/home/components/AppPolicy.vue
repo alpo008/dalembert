@@ -1,10 +1,13 @@
 <template>
-  <div class="alert">
+  <GoBack />
+  <div class="alert mt-4">
     <div class="row mb-3" ref="rootDiv"></div>
   </div>
 </template>
 <script>
+  import GoBack from "./GoBack.vue"
   export default {
+    components: { GoBack },
     data: function () {
       return {
       }
