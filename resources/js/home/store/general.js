@@ -13,6 +13,7 @@ export default {
     updateConfig(state, payload) {
       let lang = document.querySelector('html').getAttribute('lang');
       state.config = require('../../../data/frontend.' + lang + '.json');
+      state.config.policy = require('../../../data/policy.' + lang + '.html');
     },
     setHttpErrors(state, payload) {
       if (typeof payload === 'string' && payload.includes('Could not resolve host')) {

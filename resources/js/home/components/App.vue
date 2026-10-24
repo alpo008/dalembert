@@ -55,6 +55,11 @@
               {{ $store.getters.t('Downloads') }}
             </router-link>
           </li>
+          <li class="nav-item">
+            <router-link :class="navLinkClass('Add')" to="/add">
+              {{ $store.getters.t('Add sticker') }}
+            </router-link>
+          </li>
         </ul>
       </div>
       <span class="navbar-brand mb-0" style="max-width: 75%"><!--  28 symbols -->

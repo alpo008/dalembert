@@ -7,6 +7,7 @@ import AppWebcam from './components/AppWebcam.vue';
 import AppDownload from './components/AppDownload.vue';
 import AppSticker from './components/AppSticker.vue';
 import AppAddSticker from './components/AppAddSticker.vue';
+import AppPolicy from './components/AppPolicy.vue';
 
 export default VueRouter.createRouter({
     routes: [
@@ -54,6 +55,14 @@ export default VueRouter.createRouter({
             path: '/add',
             name: 'Add',
             component: AppAddSticker,
+            meta: {
+                searchBar: false
+            }
+        },
+        {
+            path: '/policy',
+            name: 'Policy',
+            component: AppPolicy,
             meta: {
                 searchBar: false
             }

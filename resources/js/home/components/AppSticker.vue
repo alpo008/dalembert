@@ -7,7 +7,7 @@
     </svg>
   </div>
   <div class="container px-4 px-lg-5" v-if="!!sticker">
-    <div class="row gx-4 gx-lg-5 align-items-center my-5">
+    <div class="row gx-4 gx-lg-5 align-items-center my-3">
         <div class="col-lg-7" v-if="!!$store.getters.stickerImagePath(sticker.id)">
           <img class="img-fluid rounded mb-4 mb-lg-0 img-width-100"
             v-if="!!$store.getters.stickerImagePath(sticker.id)"
@@ -35,12 +35,12 @@
           </button>
         </div>
     </div>
-              <div v-if="sticker.link_address">
-            {{ $store.getters.t('Reference') }} : &nbsp;
-          <a :href="sticker.link_address" target="_blank" class="link-grey">
-            {{ sticker.link_text ?? sticker_link_address }}
-          </a>
-          </div>
+    <div class="mb-4" v-if="sticker.link_address">
+        {{ $store.getters.t('Reference') }} : &nbsp;
+      <a :href="sticker.link_address" target="_blank" class="link-grey">
+        {{ sticker.link_text ?? sticker_link_address }}
+      </a>
+    </div>
   </div>
 </template>
 <script>
