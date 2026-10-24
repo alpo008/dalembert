@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('stickers', function (Blueprint $table) {
             $table->string('link_text', 127)->nullable();
             $table->string('link_address', 255)->nullable();
+            $table->longText('message')->nullable()->change();
         });
     }
 
@@ -29,6 +30,7 @@ return new class extends Migration
         Schema::table('stickers', function (Blueprint $table) {
             $table->dropColumn('link_text');
             $table->dropColumn('link_address');
+            $table->string('message')->nullable(false)->change();
         });
     }
 };
