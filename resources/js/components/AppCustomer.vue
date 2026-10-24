@@ -154,7 +154,7 @@
         this.errors = this.$store.getters.httpErrors;
         if(method === 'POST' && isEmpty(this.errors)) {
           this.customerData = this.$store.getters.currentCustomer;
-          this.$router.push('/customers/' + this.customerData.id);
+          this.$router.push('/admin/customers/' + this.customerData.id);
         }
       },
       deleteCustomer() {
@@ -167,7 +167,7 @@
               data: this.customerData,
               mutation: 'afterDeleteCustomer'
             });
-            this.$router.push('/customers')
+            this.$router.push('/admin/customers')
           }
         });
     },

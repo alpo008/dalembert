@@ -406,7 +406,7 @@
             this.$store.dispatch('updateAirmaxClients');
             this.place = this.clientData.place;
             this.isNew = false;
-            this.$router.push('/airmax/' + this.clientData.place);
+            this.$router.push('/admin/airmax/' + this.clientData.place);
           }
         });
       },
@@ -423,7 +423,7 @@
               }).then(() => {
                 this.errors = this.$store.getters.httpErrors;
                 this.$store.dispatch('updateAirmaxClients');
-                this.$router.push('/airmax')
+                this.$router.push('/admin/airmax')
               });
             }
           });
