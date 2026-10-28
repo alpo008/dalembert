@@ -14,13 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('site_settings', function (Blueprint $table) {
+            $table->id();
             $table->string('key');
             $table->string('locale', 5);
             $table->longText('value');
             $table->string('comment');
             $table->timestamps();
 
-            $table->primary(['key', 'locale']);
+            $table->unique(['key', 'locale']);
         });
     }
 

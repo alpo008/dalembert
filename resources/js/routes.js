@@ -13,6 +13,7 @@ import AppWorks from './components/AppWorks.vue';
 import AppGlobus from './components/AppGlobus.vue';
 import AppStickers from './components/AppStickers.vue';
 import AppDevices from './components/AppDevices.vue';
+import AppSiteSettings from './components/AppSiteSettings.vue';
 
 export default VueRouter.createRouter({
     routes: [
@@ -164,6 +165,19 @@ export default VueRouter.createRouter({
                 menuItem: true
             }
         },
+        {
+            path: '/admin/settings',
+            name: 'Site settings',
+            component: AppSiteSettings,
+            meta: {
+                auth: {
+                    roles: ['super', 'admin'],
+                    redirect: '/'
+                },
+                searchBar: true,
+                menuItem: true
+            }
+        }
     ],
     scrollBehavior(to, from, savedPosition) {
         return { top: 0 };

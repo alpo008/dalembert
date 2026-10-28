@@ -15,11 +15,11 @@ class SiteSettingController extends Controller
     public function index()
     {
         $this->authorize('viewAny', SiteSetting::class);
-        $allSettings = Setting::all()->toArray();
+        $allSiteSettings = SiteSetting::all()->toArray();
         return response()->json(
             [
                 'status' => 'success',
-                'settings' => $allSettings
+                'settings' => $allSiteSettings
             ], 200
         );
     }
@@ -111,8 +111,8 @@ class SiteSettingController extends Controller
         $status = 'error';
         $code = 422;
         $deleted = false;
-        if (!empty($siteSetting->id)) {
-            $deleted = SiteSetting::find($siteSetting->id)->delete();
+        if (!empty($siteSetting->id) && SiteSetting::find($siteSetting->id)->delete()) {
+            $deleted = $siteSetting->id;
             $status = 'success';
             $code = 200;
         }

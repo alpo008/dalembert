@@ -48,7 +48,7 @@ Route::apiResource('tg-bot', TgBotController::class)->only(['index', 'store']);
 Route::apiResource('stickers', StickerController::class);
 Route::apiResource('device-log', DeviceLogController::class)->only(['index', 'store']);
 Route::apiResource('app-registration', AppRegistrationController::class);
-Route::apiResource('site-setting', SiteSettingController::class);
+Route::apiResource('site-settings', SiteSettingController::class);
 
 Route::get('attachments/{obj}/{id}', 'App\Http\Controllers\AttachmentController@show');
 Route::post('attachments/download', 'App\Http\Controllers\AttachmentController@download');
