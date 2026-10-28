@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\SiteSetting;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\SiteSettingRequest;
 
 class SiteSettingController extends Controller
 {
@@ -37,10 +38,10 @@ class SiteSettingController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  SiteSettingRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SiteSettingRequest $request)
     {
         $this->authorize('create', SiteSetting::class);
         $current = SiteSetting::create($request->all());
@@ -83,11 +84,11 @@ class SiteSettingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  SiteSettingRequest  $request
      * @param  SiteSetting $siteSetting
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SiteSetting $siteSetting)
+    public function update(SiteSettingRequest $request, SiteSetting $siteSetting)
     {
         $this->authorize('update', $siteSetting);
         $result = SiteSetting::whereId($request->id)->update($request->all());

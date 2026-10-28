@@ -80,7 +80,7 @@
         </v-btn>
       </v-toolbar>
       <v-card-text>
-<!--         <app-works-form :work="currentWork"/> -->
+        <app-site-settings-form :setting="currentSiteSetting"/>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -89,11 +89,11 @@
 </template>
 
 <script>
-  // import AppSiteSettingsForm from './AppSiteSettingsForm';
+  import AppSiteSettingsForm from './AppSiteSettingsForm';
   import WidgetConfirm from './widgets/WidgetConfirm.vue';
   export default {
     components: {
-      //AppSiteSettingsForm,
+      AppSiteSettingsForm,
       WidgetConfirm
     },
     data: function () {
