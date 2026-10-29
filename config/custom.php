@@ -1,15 +1,6 @@
 <?php
 
-$locale = app()->getLocale();
-//TODO  Move homepage config to database
-$fname = resource_path() . '/data/frontend.' . $locale . '.json';
-$fpath = fopen($fname, 'r');
-$json = fread($fpath, filesize($fname));
-$frontend = json_decode($json, true);
-
 return [
-
-    'frontend' => $frontend,
 
     /*
     |--------------------------------------------------------------------------
@@ -98,6 +89,7 @@ return [
         'dev_email' => env('SITE_DEV_EMAIL')
     ],
 
-    'default_timezone' => env('DEFAULT_TIMEZONE')
+    'default_timezone' => env('DEFAULT_TIMEZONE'),
+    'default_description' => 'Current weather station data for the Ivankovo Reservoir'
 
 ];

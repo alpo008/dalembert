@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Models\SiteSetting;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,10 +16,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('admin')->group(function () {
     Route::get('/{any?}', function () {
-        return view('welcome'); // Points to resources/views/admin.blade.php
+        return view('welcome');     // Points to resources/views/admin.blade.php
     })->where('any', '.*');
 });
 
-Route::get('/{any?}', function () {
-    return view('frontend'); // Points to resources/views/frontend.blade.php
+$site_settings = SiteSetting::where('locale', '=', config('app.locale'))->get();
+Route::get('/{any?}', function () use($site_settings) {
+    return view('frontend', [       // Points to resources/views/frontend.blade.php
+        'title' => $site_settings->firstWhere('key', 'meta:title'),
+        'description' => $site_settings->firstWhere('key', 'meta:description')
+    ]); 
 })->where('any', '.*');
