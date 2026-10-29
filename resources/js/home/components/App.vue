@@ -100,15 +100,14 @@
       }
     },
     async created() {
-      this.$store.commit('updateConfig', null);
+    },
+    async mounted() {
       await this.$store.dispatch('httpRequest', {
         url: '/meteo/description',
         method: 'GET',
         data: null,
         mutation: 'setWeatherTicker'
       });
-    },
-    mounted() {
     },
     updated() {
       this.refreshDate();

@@ -1,15 +1,19 @@
 <template>
-  <div class="container px-4 px-lg-5">
+  <div class="container px-4 px-lg-5" v-if="!!$store.getters.getContentByKey('page:h1')">
     <div class="row gx-4 gx-lg-5 align-items-center my-5">
         <div class="col-lg-7"><img class="img-fluid rounded mb-4 mb-lg-0" src="/storage/stickers/home.png" alt="..." /></div>
         <div class="col-lg-5">
-            <h1 class="font-weight-light"> {{ site.h1 }}</h1>
-            <p>{{ site.text }}</p>
+            <h1 class="font-weight-light"> {{ $store.getters.getContentByKey('page:h1') }}</h1>
+            <p>{{ $store.getters.getContentByKey('page:text') }}</p>
         </div>
     </div>
 
     <div class="card text-white bg-secondary my-5 py-4 text-center">
-      <div class="card-body"><p class="text-white m-0">{{ site. card_text }}</p></div>
+      <div class="card-body">
+        <p class="text-white m-0">
+          {{ $store.getters.getContentByKey('page:card_text') }}
+        </p>
+      </div>
     </div>
     <!-- Content Row-->
     <div class="row gx-4 gx-lg-5">
@@ -57,12 +61,19 @@
   export default {
     data: function () {
       return {
-        site: {},
         stickers: [],
       }
     },
     async created() {
-      this.site = this.$store.getters.findOrFail(this.$store.getters.config, 'page');
+      if(!this.$store.getters.getContentByKey('page:h1')) {
+        await this.$store.dispatch('httpRequest', {
+          url: '/home/settings',
+          method: 'POST',
+          data: null,
+          mutation: 'updateConfig'
+        });
+      }
+
       await this.$store.dispatch('httpRequest', {
         url: '/home/globus',
         method: 'POST',

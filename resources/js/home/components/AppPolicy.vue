@@ -10,11 +10,22 @@
     components: { GoBack },
     data: function () {
       return {
+        html: null
       }
     },
-    mounted() {
+    async mounted() {
+      this.html = this.$store.getters.getContentByKey('policy:html');
+      if(!this.html) {
+        await this.$store.dispatch('httpRequest', {
+          url: '/home/settings',
+          method: 'POST',
+          data: null,
+          mutation: 'updateConfig'
+        });
+        this.html = this.$store.getters.getContentByKey('policy:html');
+      }
       this.$refs.rootDiv.insertAdjacentHTML('beforeend', 
-        this.$store.getters.findOrFail(this.$store.getters.config, 'policy')
+        this.html
       );
     },
     methods: {

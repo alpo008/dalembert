@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\OpenMeteoWeather;
 use App\Models\Sticker;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Http\Middleware\CheckApiKey;
@@ -165,11 +166,26 @@ class HomeController extends Controller
      */
     public function globus()
     {
-        //TODO
         return response()->json(
             [
                 'status' => 'success',
-                'active_stickers' => Sticker::getActive()
+                'active_stickers' => Sticker::getActive(),
+            ], 200
+        );
+    }
+
+    /**
+     * Get data for globus homepage
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function settings()
+    {
+        $locale = config('app.locale');
+        return response()->json(
+            [
+                'status' => 'success',
+                'site_settings' => SiteSetting::where('locale', '=', $locale)->get()
             ], 200
         );
     }

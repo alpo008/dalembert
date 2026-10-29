@@ -7,13 +7,12 @@ export default {
     httpErrors: {},
     networkError: false,
     loading: false,
-    config: null
+    config: null,
+    policy: null
 	},
 	mutations : {
     updateConfig(state, payload) {
-      let lang = document.querySelector('html').getAttribute('lang');
-      state.config = require('../../../data/frontend.' + lang + '.json');
-      state.config.policy = require('../../../data/policy.' + lang + '.html');
+      state.config = payload.site_settings;
     },
     setHttpErrors(state, payload) {
       if (typeof payload === 'string' && payload.includes('Could not resolve host')) {
@@ -174,5 +173,14 @@ export default {
     httpErrors(state) {
       return state.httpErrors;
     },
+    getContentByKey: (state, getters) => (key) => {
+      let result = null;
+      if(!!state.config && state.config.length) {
+        result = state.config.find((obj) => {
+          return typeof obj === 'object' && obj.key === key;
+        });
+      }
+      return getters.findOrFail(result, 'value');
+    }
 	}
 }
