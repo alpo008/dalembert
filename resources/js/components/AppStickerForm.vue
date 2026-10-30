@@ -139,7 +139,7 @@ export default {
           formData.append('contact_name', '');
       }
       if (this.stickerData.contact_phone !== null && this.stickerData.contact_phone !== undefined) {
-          formData.append('contact_phone', this.stickerData.contact_phone);
+          formData.append('contact_phone', this.stickerData.contact_phone.replace(/[\s()\-]/g, ''));
       } else {
           formData.append('contact_phone', '');
       }

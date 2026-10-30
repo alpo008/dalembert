@@ -194,15 +194,25 @@
       	}
       },
       async viewMedia(sticker) {
-      	if (!isEmpty(sticker.attachments) && !!sticker.attachments[0]?.id) {
+      	let previewAttId = 1;
+      	if (!isEmpty(sticker.attachments)) {
+	      	this.mediaPreview = sticker.attachments[0]?.media;
+      		let prevAtt = sticker.attachments.find((att) => {
+      			return att.media?.description === 'Preview';
+      		});
+      		if(!isNaN(prevAtt.id)) {
+      			previewAttId = prevAtt.id;
+      			this.mediaPreview = prevAtt.media;
+      		}
+      	}
+      	if (!isEmpty(sticker.attachments) && !!previewAttId) {
 		      await this.$store.dispatch('httpRequest', {
 		        url: '/attachments/download',
 		        method: 'POST',
-		        data: {id: sticker.attachments[0].id},
+		        data: {id: previewAttId},
 		        mutation: 'setMediaContents'
 		      });
   	      this.mediaContents = this.$store.getters.fileContents;
-		      this.mediaPreview = sticker.attachments[0].media;
 	      	this.preview = true;
       	}
       },
