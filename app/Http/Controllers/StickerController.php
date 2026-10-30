@@ -48,13 +48,18 @@ class StickerController extends Controller
      */
     public function store(StickerRequest $request)
     {
+
         $this->authorize('create', Sticker::class);
         $request->merge(['created_by' => Auth::id()]);
         $current = Sticker::create($request->all());
-        $media = $this->sticker($request);
-        if(!!$media && $media->save()) {
-            $this->attach($current::class, $current->id, $media);
+        $mediaArray = $this->sticker($request);
+
+        foreach($mediaArray as $media) {
+            if(!!$media && $media->save()) {
+                $this->attach($current::class, $current->id, $media);
+            }
         }
+
         return response()->json(
             [
                 'status' => 'success',

@@ -72,7 +72,14 @@
     @change="uploadFile"
     show-size
     ref="file"
-    :error-messages="errors.file"
+    :error-messages="errors.files[1]"
+  ></v-file-input>
+  <v-file-input 
+    :label="$t('Preview')" 
+    @change="uploadPreview"
+    show-size
+    ref="preview"
+    :error-messages="errors.files[0]"
   ></v-file-input>
   <v-btn @click="save">{{ $t('Save') }}</v-btn>
 </template>
@@ -86,6 +93,7 @@ export default {
   data: function () {
     return {
       file: null,
+      preview: null,
       stickerData: {},
       priorities: [
         {title: this.$t('Low'), value: 3},
@@ -103,11 +111,17 @@ export default {
     uploadFile() {
       this.file = this.$refs.file.files[0];
     },
+    uploadPreview() {
+      this.preview = this.$refs.preview.files[0];
+    },
     async save() {
       let url = !!this.stickerData.id ? '/stickers/' + this.stickerData.id : '/stickers';
       const formData = new FormData();
       if(!!this.file) {
-        formData.append('file', this.file);
+        formData.append('files[1]', this.file);
+      }
+      if(!!this.preview) {
+        formData.append('files[0]', this.preview);
       }
       if(!!this.stickerData.id) {
         formData.append('_method', 'put');

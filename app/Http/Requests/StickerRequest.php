@@ -35,7 +35,8 @@ class StickerRequest extends FormRequest
             'valid_until' => 'date',
             'link_text' => 'nullable|max:127',
             'link_address' => 'required_with:link_text|nullable|max:255',
-            'file' => ['sometimes', File::types(['jpg', 'png' , 'jpeg', 'tiff'])->max(2048)]
+            'files' => 'sometimes',
+            'files.*' => File::types(['jpg', 'png' , 'jpeg', 'tiff'])->max(2048)
         ];
     }
 }

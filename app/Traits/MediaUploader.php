@@ -74,30 +74,36 @@ trait MediaUploader
     /** 
      * Create Media object for Sticker
      * @param  [type] $request [description]
-     * @return null|Media
+     * @return null|array
      */
-    public function sticker($request): ?Media
+    public function sticker($request): ?array
     {     
-        $file = $request->file('file');
-        if(!($file instanceof UploadedFile)) {
-            return null;
+        $files = $request->file('files');
+        if(empty($files)) {
+            return [];
         }
 
-        $this->media = new Media ([
-            'name' => __('Sticker'),
-            'file_name' => $file->getClientOriginalName(),
-            'mime_type' => $file->getClientMimeType(),
-            'path' => 'stickers',                
-            'disk' => 'public',
-            'file' => $request->file('file'),
-            'collection' => 'Stickers',
-            'size' => $file->getSize(),
-            'uploaded_by' => Auth::id(),
-            'description' => 'Uploaded sticker attachment',
-            'doi' => $request->get('doi')
-        ]);
-        $this->media->setFile($file);
-        return $this->media;
+        $mediaArray = [];
+        foreach($files as $k => $file) {
+            if($file instanceof UploadedFile) {
+                $media = new Media ([
+                    'name' => __('Sticker'),
+                    'file_name' => $file->getClientOriginalName(),
+                    'mime_type' => $file->getClientMimeType(),
+                    'path' => 'stickers',                
+                    'disk' => 'public',
+                    'file' => $request->file('file'),
+                    'collection' => 'Stickers',
+                    'size' => $file->getSize(),
+                    'uploaded_by' => Auth::id(),
+                    'description' => $k == 0 ? 'Preview' : 'Sticker image',
+                    'doi' => $request->get('doi')
+                ]);
+                $media->setFile($file);
+                $mediaArray[$k] = $media;
+            }
+        }
+        return $mediaArray;
     }
 
     /** 
