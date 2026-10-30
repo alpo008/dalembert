@@ -72,14 +72,14 @@
     @change="uploadFile"
     show-size
     ref="file"
-    :error-messages="errors.files[1]"
+    :error-messages="filesErrors('1')"
   ></v-file-input>
   <v-file-input 
     :label="$t('Preview')" 
     @change="uploadPreview"
     show-size
     ref="preview"
-    :error-messages="errors.files[0]"
+    :error-messages="filesErrors('0')"
   ></v-file-input>
   <v-btn @click="save">{{ $t('Save') }}</v-btn>
 </template>
@@ -167,6 +167,10 @@ export default {
         mutation: 'setCurrentSticker'
       });
       this.errors = this.$store.getters.httpErrors;
+    },
+    filesErrors(index) {
+      let key = 'files.' + index;
+      return this.errors[key];
     }
   }
 }

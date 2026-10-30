@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Sticker;
+use App\Models\Media;
 use App\Models\Attachment;
 use App\Http\Requests\StickerRequest;
 use Illuminate\Support\Facades\Auth;
@@ -101,14 +102,21 @@ class StickerController extends Controller
     {
         $this->authorize('update', $sticker);
         $result = Sticker::whereId($sticker->id)->update($request->except([
-            'attachments', '_method', 'file'
+            'attachments', '_method', 'files'
         ]));
-        $media = $this->sticker($request);
-        if(!!$result && !!$media && $media->save()) {
-            $sticker->attachments()->each(function($attachment) {
-                $attachment->delete(); 
-            });
-            $this->attach($sticker::class, $sticker->id, $media);
+        $mediaArray = $this->sticker($request);
+
+        foreach($mediaArray as $media) {
+            if(!!$result && !!$media && $media->save()) {
+                $sticker->attachments()->with('media')->each(function($attachment) use($media) {
+                    $existedMedia = $attachment->media;
+                    if($existedMedia instanceof Media && 
+                        $existedMedia->description === $media->description) {
+                        $attachment->delete();
+                    }
+                });
+                $this->attach($sticker::class, $sticker->id, $media);
+            }
         }
         return response()->json(
             [
