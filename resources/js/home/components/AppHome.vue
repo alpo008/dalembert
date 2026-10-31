@@ -21,10 +21,9 @@
         <div class="card h-100 p-1">
           <img
             v-if="sticker.attachments.length"
-            :src="$store.getters.stickerImagePath(sticker.id)" 
+            :src="previewPath(sticker.id)" 
             class="card-img-top img-fixed-height-100"
             :class="!isNaN(sticker.id) ? 'sticker-link' : ''" 
-            :alt="$store.getters.findOrFail(sticker, 'attachments.0.media.description')"
             @click="showSticker(sticker.id)"
             :title="!isNaN(sticker.id) ? $store.getters.t('Click to see details') : ''"
           >
@@ -104,6 +103,10 @@
           truncated += arr.pop() + ' ';
         }
         return truncated + ' ...';
+      },
+      previewPath(id) {
+        let path = this.$store.getters.stickerImagePath(id, 'Preview');
+        return !!path ? path : this.$store.getters.stickerFirstImagePath(id);
       }
     },
     computed: {

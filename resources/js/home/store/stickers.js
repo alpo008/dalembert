@@ -34,10 +34,24 @@ export default {
     stickerById: (state) => (id) => {
       return state.active.find(sticker => parseInt(sticker.id) === parseInt(id));
     },
-    stickerImagePath: (state, getters) => (id) => {
+    stickerImagePath: (state, getters) => (id, description) => {
       let sticker = getters.stickerById(id);
-      let path = getters.findOrFail(sticker, 'attachments.0.media.path');
-      return !!path ? path.replace('public', '/storage') : null;
+      if(sticker.attachments.length) {
+        let attachment = sticker.attachments.find((att) => {
+          return !!att.media && att.media.description === description;
+        });
+        let path = getters.findOrFail(attachment, 'media.path');
+        return !!path ? path.replace('public', '/storage') : null;
+      }
+      return null;
+    },
+    stickerFirstImagePath: (state, getters) => (id) => {
+      let sticker = getters.stickerById(id);
+      if(sticker.attachments.length) {
+        let path = getters.findOrFail(sticker, 'attachments.0.media.path');
+        return !!path ? path.replace('public', '/storage') : null;
+      }
+      return null;
     },
 	}
 }

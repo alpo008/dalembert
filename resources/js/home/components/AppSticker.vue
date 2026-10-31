@@ -2,13 +2,13 @@
   <GoBack />
   <div class="container px-4 px-lg-5 mt-4" v-if="!!sticker">
     <div class="row gx-4 gx-lg-5 align-items-center my-3">
-        <div class="col-lg-7" v-if="!!$store.getters.stickerImagePath(sticker.id)">
+        <div class="col-lg-7" v-if="imagePath">
           <img class="img-fluid rounded mb-4 mb-lg-0 img-width-100"
-            v-if="!!$store.getters.stickerImagePath(sticker.id)"
-            :src="$store.getters.stickerImagePath(sticker.id)" 
+            v-if="imagePath"
+            :src="imagePath" 
           />
           </div>
-        <div :class="!!$store.getters.stickerImagePath(sticker.id) ? 'col-lg-5' : 'col-lg-12'">
+        <div :class="imagePath ? 'col-lg-5' : 'col-lg-12'">
           <h1 class="font-weight-light">
             {{ sticker.contact_name }}
           </h1>
@@ -60,6 +60,9 @@
     methods: {
     },
     computed: {
+      imagePath () {
+        return this.$store.getters.stickerImagePath(this.sticker.id, 'Sticker image');
+      }
     }
   }
 </script>
