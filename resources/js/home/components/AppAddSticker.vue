@@ -1,15 +1,6 @@
 <template>
   <GoBack />
   <div class="container px-4 px-lg-5 mt-4">
-    <div 
-      class="alert alert-success alert-dismissible fade show" 
-      role="alert" 
-      v-if="showSuccessMessage"
-      ref="alertSuccess"
-    >
-      {{ $store.getters.t('Request has been sent. Wait for an e-mail.') }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
     <p class="alert">
       {{ $store.getters.findOrFail(this.$store.getters.config, 'page.form_text') }}
     </p>
@@ -194,6 +185,7 @@
             type="file" id="formInputImage" 
             ref="imageFile" 
             @change="uploadFile"
+            multiple
           >
           <div class="invalid-feedback form-control-sm">
             {{ fieldError('image') }}
@@ -223,7 +215,6 @@
         formData: {},
         canSubmit: false,
         errors: {},
-        showSuccessMessage: false,
         imageFile: null
       }
     },
@@ -233,7 +224,12 @@
       async submitForm() {
         const FD = new FormData();
         if(!!this.imageFile) {
-          FD.append('image', this.imageFile);
+          let imgArray = [];
+          for (let i = 0; i < this.imageFile.length; i++) {
+            let key = 'image[' + i + ']';
+            FD.append(key, this.imageFile[i]);
+          }
+          
         }
         FD.append('api_key', this.apiKey);
         if (this.formData.sender_name !== null && this.formData.sender_name !== undefined) {
@@ -280,10 +276,12 @@
           mutation: null
         });
         this.errors = this.$store.getters.httpErrors;
-        this.showSuccessMessage = _.isEmpty(this.errors);
+        if (_.isEmpty(this.errors)) {
+          this.$store.commit('showModal');
+        }
       },
       uploadFile() {
-        this.imageFile = this.$refs.imageFile.files[0];
+        this.imageFile = this.$refs.imageFile.files;
       },
       checkAgreement(e) {
         let inputEl = this.$refs.personalDataCheckbox;

@@ -1,13 +1,5 @@
 <template>
   <div class="container">
-    <div 
-      class="alert alert-secondary alert-dismissible fade show" 
-      role="alert" 
-      v-if="showSuccessMessage"
-    >
-      {{ $t('Request has been sent. Wait for an e-mail.') }}
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
     <p>
       <button class="btn btn-secondary mr-8" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDownloadForm" aria-expanded="false" aria-controls="collapseDownloadForm"
       @click="closeCollapse('regForm')"
@@ -33,7 +25,7 @@
             id="application Select"
           >
             <option value="1">Globus-meteo</option>
-            <option value="2" disabled>Globus-info</option>
+            <option value="2" disabled>Water-info</option>
           </select>
         </div>
         <div class="mb-3 form-check">
@@ -166,8 +158,7 @@
         canSubmit: false,
         canDownload: false,
         appToDownload: 1,
-        errors: {},
-        showSuccessMessage: false
+        errors: {}
       }
     },
     async created() {
@@ -190,7 +181,7 @@
         if(!_.isEmpty(this.errors)) {
           this.$store.commit('setHttpLoadingState', false);
         } else {
-          this.showSuccessMessage = true;
+          this.$store.commit('showModal', 2000);
         }
       },
       fieldError(fieldName) {

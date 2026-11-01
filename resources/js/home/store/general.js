@@ -8,7 +8,8 @@ export default {
     networkError: false,
     loading: false,
     config: null,
-    policy: null
+    policy: null,
+    modal: false,
 	},
 	mutations : {
     updateConfig(state, payload) {
@@ -38,6 +39,14 @@ export default {
     resetNetworkError(state,payload) {
       state.networkError = false;
     },
+    showModal(state, payload) {
+      state.modal = true;
+      let delay = 2000;
+      if(!isNaN(payload) && payload > 0) {
+        delay = payload;
+      }
+      setTimeout(() => {state.modal = false;}, delay);
+    }
 	},
 	actions : {
     httpRequest(context, payload) {

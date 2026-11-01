@@ -68,6 +68,8 @@
     </div>
   </nav>
 
+  <Modal />
+
   <div class="pt-70 mh-85">
     <router-view></router-view>
   </div>
@@ -86,10 +88,10 @@
 </template>
 
 <script>
+  import Modal from "./Modal.vue";
   import { Collapse } from 'bootstrap';
   export default {
-    components: {
-    },
+    components: { Modal },
     data: function () {
       return {
         loadingState: false,

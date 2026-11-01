@@ -222,7 +222,8 @@ class HomeController extends Controller
             'sponsor_phone' => 
                 'required_without:sponsor_email|nullable|max:30|string|regex:/^\+?\d{11,12}?$/',
             'link_address' => 'required_without:venue|nullable|max:255',
-            'image' => ['sometimes', File::types(['jpg', 'png' , 'jpeg', 'tiff'])->max(2048)]
+            'image' => 'sometimes',
+            'image.*' => File::types(['jpg', 'png' , 'jpeg', 'tiff'])->max(2048)
         ]);
         $to = config('custom.site.admin_email');
         $cc = config('custom.site.dev_email');

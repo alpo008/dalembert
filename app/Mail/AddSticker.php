@@ -57,15 +57,19 @@ class AddSticker extends Mailable
      */
     public function attachments()
     {
+        $result = [];
         $uploaded = Arr::get($this->stickerData, 'image');
-        if($uploaded instanceof UploadedFile) {
-            return [
-                Attachment::fromPath($uploaded->getPathName())
-                ->as($uploaded->getClientOriginalName())
-                ->withMime($uploaded->getClientMimeType())
-            ];
-        } else {
-            return [];
-        }      
+        if(is_array($uploaded) && count($uploaded)) {
+            foreach($uploaded as $image) {
+                if($image instanceof UploadedFile) {
+                    array_push($result,
+                        Attachment::fromPath($image->getPathName())
+                        ->as($image->getClientOriginalName())
+                        ->withMime($image->getClientMimeType())
+                    );
+                }
+            }
+        }
+        return $result;     
     }
 }
