@@ -67,6 +67,10 @@ export default VueRouter.createRouter({
                 searchBar: false
             }
         },
+        {
+            path: '/globus',
+            redirect: '/',
+        }
     ],
     scrollBehavior(to, from, savedPosition) {
         return { top: 0 };

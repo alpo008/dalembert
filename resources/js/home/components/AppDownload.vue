@@ -25,7 +25,7 @@
             id="application Select"
           >
             <option value="1">Globus-meteo</option>
-            <option value="2" disabled>Water-info</option>
+            <option value="2" disabled>Aqua-info</option>
           </select>
         </div>
         <div class="mb-3 form-check">

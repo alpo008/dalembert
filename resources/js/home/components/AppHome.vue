@@ -64,15 +64,6 @@
       }
     },
     async created() {
-      if(!this.$store.getters.getContentByKey('page:h1')) {
-        await this.$store.dispatch('httpRequest', {
-          url: '/home/settings',
-          method: 'POST',
-          data: null,
-          mutation: 'updateConfig'
-        });
-      }
-
       await this.$store.dispatch('httpRequest', {
         url: '/home/globus',
         method: 'POST',

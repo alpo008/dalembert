@@ -1,8 +1,8 @@
 <template>
   <GoBack />
-  <div class="container px-4 px-lg-5 mt-4">
-    <p class="alert">
-      {{ $store.getters.findOrFail(this.$store.getters.config, 'page.form_text') }}
+  <div class="container px-4 px-lg-5 mt-5">
+    <p class="alert alert-secondary">
+      {{ $store.getters.getContentByKey('sticker_rules') }}
     </p>
     <div class="w-100"><hr /></div>
     <form @submit.prevent="submitForm">

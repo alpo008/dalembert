@@ -34,8 +34,6 @@ class AirmaxActivity extends Model
             if($lastActivity instanceof self) {
                 $changedAt = Carbon::parse($lastActivity->changed_at);
                 $now = Carbon::now();
-                var_dump($lastActivity->changed_at);
-                var_dump($changedAt->diffInHours($now));
             }
             if(is_null($lastActivity)) {
                 $activityData['changed_at'] = Carbon::now('Europe/Moscow')

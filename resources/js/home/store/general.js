@@ -190,6 +190,9 @@ export default {
         });
       }
       return getters.findOrFail(result, 'value');
+    },
+    configIsReady(state) {
+      return !_.isEmpty(state.config);
     }
 	}
 }

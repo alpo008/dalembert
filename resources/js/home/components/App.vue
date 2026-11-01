@@ -70,7 +70,7 @@
 
   <Modal />
 
-  <div class="pt-70 mh-85">
+  <div class="pt-70 mh-85" v-if="$store.getters.configIsReady">
     <router-view></router-view>
   </div>
     <footer class="py-1 bg-with-gradient">
@@ -102,6 +102,14 @@
       }
     },
     async created() {
+      if(!this.$store.getters.configIsReady) {
+        await this.$store.dispatch('httpRequest', {
+          url: '/home/settings',
+          method: 'POST',
+          data: null,
+          mutation: 'updateConfig'
+        });
+      }
     },
     async mounted() {
       await this.$store.dispatch('httpRequest', {
