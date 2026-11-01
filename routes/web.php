@@ -20,7 +20,7 @@ Route::prefix('admin')->group(function () {
     })->where('any', '.*');
 });
 
-$site_settings = SiteSetting::where('locale', '=', config('app.locale'))->get();
+$site_settings = [];//SiteSetting::where('locale', '=', config('app.locale'))->get();
 Route::get('/{any?}', function () use($site_settings) {
     return view('frontend', [       // Points to resources/views/frontend.blade.php
         'title' => $site_settings->firstWhere('key', 'meta:title'),
