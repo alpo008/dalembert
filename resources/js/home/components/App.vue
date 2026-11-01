@@ -20,7 +20,7 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 
-  <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-with-gradient">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-with-gradient navbar-pos-absolute">
     <div class="container-fluid">
       <button class="navbar-toggler" 
         type="button" 
@@ -209,6 +209,11 @@
     align-items: center;
     position: fixed;
     backdrop-filter: blur(2px);
+  }
+
+  .navbar-pos-absolute {
+    position: absolute;
+    width: 100vw;
   }
 
   .bg-with-gradient {

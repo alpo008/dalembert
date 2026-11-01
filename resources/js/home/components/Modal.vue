@@ -40,7 +40,7 @@ export default {
         if (typeof this.modalInstance.hide === 'function') {
           this.modalInstance.hide();
           if (this.$route.path !== '/') {
-            this.$router.go(-1);
+            this.$router.push('/');
           }
         }
       }
