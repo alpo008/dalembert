@@ -21,7 +21,8 @@ class AuthServiceProvider extends ServiceProvider
         'App\Models\Calculation' => 'App\Policies\CalculationPolicy',
         'App\Models\Sticker' => 'App\Policies\StickerPolicy',
         'App\Models\AppRegistration' => 'App\Policies\AppRegistrationPolicy',
-        'App\Models\SiteSetting' => 'App\Policies\SiteSettingPolicy'
+        'App\Models\SiteSetting' => 'App\Policies\SiteSettingPolicy',
+        'App\Models\Hydrometry' => 'App\Policies\HydrometryPolicy'
     ];
 
     /**
