@@ -214,6 +214,7 @@
   .navbar-pos-absolute {
     position: absolute;
     width: 100vw;
+    z-index: 1;
   }
 
   .bg-with-gradient {
