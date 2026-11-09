@@ -16,6 +16,7 @@ use App\Http\Controllers\StickerController;
 use App\Http\Controllers\DeviceLogController;
 use App\Http\Controllers\AppRegistrationController;
 use App\Http\Controllers\SiteSettingController;
+use App\Http\Controllers\HydrometryController;
 
 
 /*
@@ -49,6 +50,7 @@ Route::apiResource('stickers', StickerController::class);
 Route::apiResource('device-log', DeviceLogController::class)->only(['index', 'store']);
 Route::apiResource('app-registration', AppRegistrationController::class);
 Route::apiResource('site-settings', SiteSettingController::class);
+Route::apiResource('hydrometry', HydrometryController::class);
 
 Route::get('attachments/{obj}/{id}', 'App\Http\Controllers\AttachmentController@show');
 Route::post('attachments/download', 'App\Http\Controllers\AttachmentController@download');

@@ -14,6 +14,7 @@ import AppGlobus from './components/AppGlobus.vue';
 import AppStickers from './components/AppStickers.vue';
 import AppDevices from './components/AppDevices.vue';
 import AppSiteSettings from './components/AppSiteSettings.vue';
+import AppHydrometry from './components/AppHydrometry.vue';
 
 export default VueRouter.createRouter({
     routes: [
@@ -175,6 +176,19 @@ export default VueRouter.createRouter({
                     redirect: '/'
                 },
                 searchBar: true,
+                menuItem: true
+            }
+        },
+        {
+            path: '/admin/hydrometry',
+            name: 'Hydrometry',
+            component: AppHydrometry,
+            meta: {
+                auth: {
+                    roles: ['super', 'admin'],
+                    redirect: '/'
+                },
+                searchBar: false,
                 menuItem: true
             }
         }

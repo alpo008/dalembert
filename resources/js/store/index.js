@@ -13,6 +13,7 @@ import globus from './globus';
 import device from './device';
 import app_registration from './app_registration';
 import site_setting from './site_setting';
+import hydrometry from './hydrometry';
 
 export const store = createStore({
 	modules: {
@@ -28,6 +29,7 @@ export const store = createStore({
         globus,
         device,
         app_registration,
-        site_setting
+        site_setting,
+        hydrometry
 	}
 })
