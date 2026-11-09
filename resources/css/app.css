@@ -10,6 +10,10 @@
   font-size: 1.75rem;
 }
 
+.has-new-item tbody tr:first-child td{
+  background-color: rgba(22, 22, 22, 0.1)!important;
+}
+
 
 /*    R U N N I N G  L I N E    */
 .ticker{

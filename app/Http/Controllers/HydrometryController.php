@@ -44,7 +44,18 @@ class HydrometryController extends Controller
     public function store(HydrometryRequest $request)
     {
         $this->authorize('create', Hydrometry::class);
-        $current = Hydrometry::create($request->all());
+        $createdAt = $request->input('created_at');
+        $existing = Hydrometry::where('created_at', 'like', $createdAt . '%')->first();
+
+        if($existing instanceof Hydrometry) {
+            $data  = array_filter($request->except('created_at', 'updated_at'), function($val) {
+                return !empty($val);
+            });
+            $existing->update($data);
+            $current = Hydrometry::find($existing->id);
+        } else {
+            $current = Hydrometry::create($request->except('created_at'));
+        }
         return response()->json(
             [
                 'status' => 'success',
@@ -82,10 +93,11 @@ class HydrometryController extends Controller
      * @param  Hydrometry  $hydrometry
      * @return \Illuminate\Http\Response
      */
-    public function update(HydrometryRequest $request, $hydrometry)
-    {
+    public function update(HydrometryRequest $request, Hydrometry $hydrometry)
+    {       
         $this->authorize('update', $hydrometry);
-        $result = Hydrometry::whereId($request->id)->update($request->all());
+        $result = Hydrometry::whereId($request->id)
+            ->update($request->except('created_at', 'updated_at'));
         return response()->json(
             [
                 'status' => 'success',

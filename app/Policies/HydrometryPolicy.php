@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\User;
 use App\Models\Hydrometry;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class HydrometryPolicy
 {
@@ -36,7 +37,7 @@ class HydrometryPolicy
      * @param  \App\Models\Hydrometry  $hydrometry
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user/*, Hydrometry $hydrometry*/)
+    public function view(User $user, Hydrometry $hydrometry)
     {
         return $user->isAdministrator() ? Response::allow() : Response::denyWithStatus(403);
     }
@@ -59,7 +60,7 @@ class HydrometryPolicy
      * @param  \App\Models\Hydrometry  $hydrometry
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user/*, Hydrometry $hydrometry*/)
+    public function update(User $user, Hydrometry $hydrometry)
     {
         return $user->isSuperdministrator() ? Response::allow() : Response::deny();
     }
@@ -71,7 +72,7 @@ class HydrometryPolicy
      * @param  \App\Models\Hydrometry  $hydrometry
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user/*, Hydrometry $hydrometry*/)
+    public function delete(User $user, Hydrometry $hydrometry)
     {
         return $user->isSuperdministrator() ? Response::allow() : Response::deny();
     }
