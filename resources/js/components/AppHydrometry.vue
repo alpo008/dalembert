@@ -66,7 +66,7 @@
         @click="deleteHydro(item)"
         style="margin: 0 1%;"
         :title="$t('Delete')"
-        v-if="$auth.check('super') && item.raw.id === tableItemEditable"
+        v-if="$auth.check('super') && item.raw.id === tableItemEditable && item.raw.id !== ''"
       >
       </v-btn>
     </template>
@@ -157,7 +157,7 @@
           url: url,
           method: method,
           data: tableItem.raw,
-          mutation: 'setCurrentHydrometry'
+          mutation: 'setHydrometry'
         });
         this.errors = this.$store.getters.httpErrors;
       },
@@ -180,9 +180,9 @@
     computed: {
       allHydrometry() {
         let all = this.$store.getters.allHydrometry;
-        let current = this.$store.getters.currentHydrometry;
-        if(current?.id === '') {
-          all.push(current);
+        this.currentHydrometry = this.$store.getters.currentHydrometry;
+        if(this.currentHydrometry?.id === '') {
+          all.push(this.currentHydrometry);
         }
         return all;
       }

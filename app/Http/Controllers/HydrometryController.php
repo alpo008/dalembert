@@ -16,11 +16,10 @@ class HydrometryController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Hydrometry::class);
-        $hydrometries = Hydrometry::all()->toArray();
         return response()->json(
             [
                 'status' => 'success',
-                'hydrometries' => $hydrometries
+                'hydrometries' => Hydrometry::all()->toArray()
             ], 200
         );
     }
@@ -59,7 +58,7 @@ class HydrometryController extends Controller
         return response()->json(
             [
                 'status' => 'success',
-                'current' => $current
+                'hydrometries' => Hydrometry::all()->toArray()
             ], 200
         );
     }
@@ -101,7 +100,7 @@ class HydrometryController extends Controller
         return response()->json(
             [
                 'status' => 'success',
-                'current' => Hydrometry::find($request->id)
+                'hydrometries' => Hydrometry::all()->toArray()
             ], 200
         );
     }
