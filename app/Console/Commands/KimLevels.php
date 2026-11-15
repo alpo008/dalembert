@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use App\Models\Hydrometry;
+use App\Models\TuyaThermometer;
 use Carbon\Carbon;
 
 class KimLevels extends Command
@@ -33,6 +34,7 @@ class KimLevels extends Command
         $url = config('custom.hydrometric.kim_levels_api_url');
         $levels = Http::get(config('custom.hydrometric.kim_levels_api_url'));
         $levelsArray = $levels->json();
+        $thermometer = TuyaThermometer::make('2.0', config('custom.tuya.devices.thermometer.id'));
         if(is_array($levelsArray)) {
             $hydrometry = array_find($levelsArray, function( $entry) {
                 return $entry['object_id'] === Hydrometry::IV_OBJECT_ID;
@@ -44,6 +46,13 @@ class KimLevels extends Command
             $newHydrometry->level_headwater_iv = $level_headwater_iv * 100;
             $newHydrometry->updated_at = $updated_at;
             $newHydrometry->created_at = $updated_at;
+            $newHydrometry->save();
+        }
+        if($thermometer instanceof TuyaThermometer && !empty($thermometer->temp_current_external)) {
+            if(empty($newHydrometry)) {
+                $newHydrometry = new Hydrometry();
+            }
+            $newHydrometry->temp_local = $thermometer->temp_current_external / 10;
             $newHydrometry->save();
         }
         return Command::SUCCESS;

@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Storage;
-
 /**
  * This is the model class for Generic Meteostation api
  *
