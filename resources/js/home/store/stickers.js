@@ -8,11 +8,11 @@ export default {
 	},
 	mutations : {
     setStickers(state, payload) {
-      state.active = payload.active_stickers;
-      state.topPriority = _.filter(payload.active_stickers, ['priority', 1]);
-      state.mediumPriority = _.filter(payload.active_stickers, ['priority', 2]);
-      state.lowPriority = _.filter(payload.active_stickers, ['priority', 3]);
-      state.withAttachment = _.filter(payload.active_stickers, (st) => {return !!st.attachments.length});
+      state.active = payload.all_stickers;
+      state.topPriority = _.filter(payload.all_stickers, ['priority', 1]);
+      state.mediumPriority = _.filter(payload.all_stickers, ['priority', 2]);
+      state.lowPriority = _.filter(payload.all_stickers, ['priority', 3]);
+      state.withAttachment = _.filter(payload.all_stickers, (st) => {return !!st.attachments.length});
     }
 	},
 	actions : {

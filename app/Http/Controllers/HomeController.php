@@ -169,7 +169,8 @@ class HomeController extends Controller
         return response()->json(
             [
                 'status' => 'success',
-                'active_stickers' => Sticker::getActive(),
+                'active_stickers' => Sticker::getActive(Sticker::PRIORITY_HIGH),  //TODO
+                'all_stickers' => Sticker::getActive()
             ], 200
         );
     }

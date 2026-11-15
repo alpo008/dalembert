@@ -61,13 +61,22 @@ class Sticker extends Model
         return $this->morphMany(Attachment::class, 'morphable')->with('media');
     }
 
-    public static function getActive()
+    /**
+     * Get all of the active stickers.
+     *
+     * @param $priority integer 
+     * @return array|null
+     */
+    public static function getActive($priority = 0)
     {
         $today = date('Y-m-d', time());
-        return self::with('attachments')
+        $query = self::with('attachments')
             ->where('valid_until', '>=', $today)
             ->orderBy('doi', 'desc')
-            ->orderBy('priority', 'asc')
-            ->get();
+            ->orderBy('priority', 'asc');
+            if(in_array($priority, [self::PRIORITY_HIGH, self::PRIORITY_MEDIUM, self::PRIORITY_LOW])) {
+                $query->where('priority', $priority);
+            }
+            return $query->get();
     }
 }
