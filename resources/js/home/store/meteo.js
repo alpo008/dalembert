@@ -15,6 +15,9 @@ export default {
       state.current = this.getters.findOrFail(payload, 'all.data');
       state.history = this.getters.findOrFail(payload, 'history.data');
       state.updatedAt = Date.now();
+      if (typeof payload.hydrometry !== 'undefined') {
+        this.commit('setHydrometry', payload.hydrometry);
+      }
     }
 	},
 	actions : {

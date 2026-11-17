@@ -1,49 +1,49 @@
 <template>
-  {{ $t('Updated at') }} {{ updated_at }}
+  {{ $store.getters.t('Updated at') }} {{ updated_at }}
   <div class="wrapper_meteo" v-if="!!$store.getters.currentWeather && !chartMode">
     <div class="params_block_wrapper">
       <div class="params_block">
         <div class="temp-box">
           <div class="link-icon-left chart-link" 
             @click="showChart('temperature')" 
-            :title="$t('Show chart')"
+            :title="$store.getters.t('Show chart')"
           >
           </div>
           <div class="text-small text-white-blue text-bolder">
-            {{ $t('Temperature') }}
+            {{ $store.getters.t('Temperature') }}
           </div>
           <div class="wx_parameter">
             {{ $store.getters.temperatureOut }} 
             <span class="text-unit">
-              {{ $t($store.getters.temperatureUnit) }}
+              {{ $store.getters.t($store.getters.temperatureUnit) }}
             </span>
           </div>
           <div class="text-small">
-            {{ $t('Feels like') }}
+            {{ $store.getters.t('Feels like') }}
             <span class="text-green">
-              {{ $store.getters.feelsLike }} {{ $t($store.getters.feelsLikeUnit) }}
+              {{ $store.getters.feelsLike }} {{ $store.getters.t($store.getters.feelsLikeUnit) }}
             </span>
           </div>
         </div>
         <div class="temp-box">
           <div class="link-icon-right chart-link" 
             @click="showChart('humidity')" 
-            :title="$t('Show chart')"
+            :title="$store.getters.t('Show chart')"
           >
           </div>
           <div class="text-small text-white-blue text-bolder">
-            {{ $t('Humidity') }}
+            {{ $store.getters.t('Humidity') }}
           </div>
           <div class="wx_parameter">
             {{ $store.getters.humidity }} 
             <span class="text-unit">
-              {{ $t($store.getters.humidityUnit) }}
+              {{ $store.getters.t($store.getters.humidityUnit) }}
             </span>
           </div>
           <div class="text-small">
-            {{ $t('Dew point') }}
+            {{ $store.getters.t('Dew point') }}
             <span class="text-green">
-              {{ $store.getters.dewPoint }} {{ $t($store.getters.dewPointUnit) }}
+              {{ $store.getters.dewPoint }} {{ $store.getters.t($store.getters.dewPointUnit) }}
             </span>
           </div>
         </div>
@@ -52,32 +52,32 @@
     <div class="params_block_wrapper">
       <div class="link-icon-left chart-link pt-l-4" 
         @click="showChart('pressure')" 
-        :title="$t('Show chart')"
+        :title="$store.getters.t('Show chart')"
       >
     </div>
       <div class="text-small text-white-blue text-bolder">
-        {{ $t('Pressure') }} 
+        {{ $store.getters.t('Pressure') }} 
       </div>
       <div class="params_block">
         <div class="temp-box">
           <div class="text-small">
-            {{ $t('Absolute') }}
+            {{ $store.getters.t('Absolute') }}
           </div>
           <div class="wx_parameter">
             {{ $store.getters.pressureAbs }}
             <span class="text-unit">
-              {{ $t($store.getters.pressureUnit) }}
+              {{ $store.getters.t($store.getters.pressureUnit) }}
             </span>
           </div>
         </div>
         <div class="temp-box">
           <div class="text-small">
-            {{ $t('Relative') }}
+            {{ $store.getters.t('Relative') }}
           </div>
           <div class="wx_parameter">
             {{ $store.getters.pressureRel }}
             <span class="text-unit">
-              {{ $t($store.getters.pressureUnit) }}
+              {{ $store.getters.t($store.getters.pressureUnit) }}
             </span>
           </div>
         </div>
@@ -86,32 +86,32 @@
     <div class="params_block_wrapper">
       <div class="link-icon-left chart-link pt-l-4" 
         @click="showChart('solar')" 
-        :title="$t('Show chart')"
+        :title="$store.getters.t('Show chart')"
       >
       </div>
       <div class="text-small text-white-blue text-bolder">
-        {{ $t('Solar and UVI') }}
+        {{ $store.getters.t('Solar and UVI') }}
       </div>
       <div class="params_block">
         <div class="temp-box">
           <div class="text-small">
-            {{ $t('Illumination') }}
+            {{ $store.getters.t('Illumination') }}
           </div>
           <div class="wx_parameter">
             {{ $store.getters.solarRounded.value }}
             <span class="text-unit">
-              {{ $t($store.getters.solarRounded.unit) }}
+              {{ $store.getters.t($store.getters.solarRounded.unit) }}
             </span>
           </div>
         </div>
         <div class="temp-box">
           <div class="text-small">
-            {{ $t('UVI') }}
+            {{ $store.getters.t('UVI') }}
           </div>
           <div class="wx_parameter">
             {{ $store.getters.uvi }}
             <span class="text-unit">
-              {{ $t($store.getters.uviUnit) }}
+              {{ $store.getters.t($store.getters.uviUnit) }}
             </span>
           </div>
         </div>
@@ -120,21 +120,21 @@
     <div class="params_block_wrapper">
         <div class="link-icon-left chart-link pt-l-4" 
           @click="showChart('wind')" 
-          :title="$t('Show chart')"
+          :title="$store.getters.t('Show chart')"
         >
         </div>
       <div class="text-small text-white-blue text-bolder">
-        {{ $t('Wind') }}
+        {{ $store.getters.t('Wind') }}
       </div>
       <div class="params_block">
         <div class="temp-box">
           <div class="text-small">
-            {{ $t('Speed') }}
+            {{ $store.getters.t('Speed') }}
           </div>
           <div class="wx_parameter">
             {{ $store.getters.windSpeed }}
             <span class="text-unit">
-              {{ $t($store.getters.windSpeedUnit) }}
+              {{ $store.getters.t($store.getters.windSpeedUnit) }}
             </span>
           </div>
         </div>
@@ -143,19 +143,19 @@
           <div class="wx_parameter" style="position:relative;top:-100px;">
             {{ $store.getters.windDirection }}
             <span class="text-unit">
-              {{ $t($store.getters.windDirectionUnit) }}
+              {{ $store.getters.t($store.getters.windDirectionUnit) }}
             </span>
             <p class="wind-rumb">{{ $store.getters.windRumb }}</p>
           </div>
         </div>
         <div class="temp-box">
           <div class="text-small">
-            {{ $t('Gust') }}
+            {{ $store.getters.t('Gust') }}
           </div>
           <div class="wx_parameter">
             {{ $store.getters.windGust }}
             <span class="text-unit">
-              {{ $t($store.getters.windSpeedUnit) }}
+              {{ $store.getters.t($store.getters.windSpeedUnit) }}
             </span>
           </div>
         </div>
@@ -164,47 +164,156 @@
     <div class="params_block_wrapper">
       <div class="link-icon-left chart-link pt-l-4" 
         @click="showChart('rainfall')" 
-        :title="$t('Show chart')"
+        :title="$store.getters.t('Show chart')"
       >
       </div>
       <div class="text-small text-white-blue text-bolder">
-        {{ $t('Rain') }}
+        {{ $store.getters.t('Rain') }}
       </div>
       <div class="params_block">
         <div class="temp-box">
           <div class="text-small">
-            {{ $t('Per hour') }}
+            {{ $store.getters.t('Per hour') }}
           </div>
           <div class="wx_parameter">
             {{ $store.getters.rainHour }} 
             <span class="text-unit">
-              {{ $t($store.getters.rainUnit) }}
+              {{ $store.getters.t($store.getters.rainUnit) }}
             </span>
           </div>
           <div class="text-small">
-            {{ $t('Per day') }}
+            {{ $store.getters.t('Per day') }}
           </div>
           <div class="wx_parameter">
             {{ $store.getters.rainDay }} 
             <span class="text-unit">
-              {{ $t($store.getters.rainUnit) }}
+              {{ $store.getters.t($store.getters.rainUnit) }}
             </span>
           </div>
         </div>
         <div class="temp-box align-center">
           <div class="text-small space-between" style="height:2em;">
-            {{ $t('Weekly') }} <span class="text-green">
-              {{ $store.getters.rainWeek }} {{ $t($store.getters.rainUnit) }}
+            {{ $store.getters.t('Weekly') }} <span class="text-green">
+              {{ $store.getters.rainWeek }} {{ $store.getters.t($store.getters.rainUnit) }}
             </span>
           </div>
           <div class="text-small space-between" style="height:2em;">
-            {{ $t('Monthly') }} <span class="text-green">
-              {{ $store.getters.rainMonth }} {{ $t($store.getters.rainUnit) }}
+            {{ $store.getters.t('Monthly') }} <span class="text-green">
+              {{ $store.getters.rainMonth }} {{ $store.getters.t($store.getters.rainUnit) }}
             </span>
           </div>
           <div class="text-small space-between" style="height:2em;">
-            {{ $t('Yearly') }} <span class="text-green">
-              {{ $store.getters.rainYear }} {{ $t($store.getters.rainUnit) }}
+            {{ $store.getters.t('Yearly') }} <span class="text-green">
+              {{ $store.getters.rainYear }} {{ $store.getters.t($store.getters.rainUnit) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="params_block_wrapper" v-if="showHydrometry">
+      <div class="link-icon-left chart-link pt-l-4" 
+        @click="showChart('water_temperature')" 
+        :title="$store.getters.t('Show chart')"
+      >
+      </div>
+      <div class="text-small text-white-blue text-bolder">
+        {{ $store.getters.t('Water') }} 
+      </div>
+      <div class="params_block">
+        <div class="temp-box" v-if="!$store.getters.currentIceThickness">
+          <div class="text-small">
+            {{ $store.getters.t('Temperature') }}
+          </div>
+          <div class="wx_parameter">
+            {{ $store.getters.currentWaterTemperature }}
+            <span class="text-unit">
+              {{ $store.getters.t($store.getters.hydrometryUnit('temp')) }}
+            </span>
+          </div>
+          <div class="text-small" v-if="$store.getters.dailyChange('temp') !== null">
+            {{ $store.getters.t('Per day') }}
+            <span class="text-green">
+              {{ signVal($store.getters.dailyChange('temp')) }} {{ $store.getters.t($store.getters.hydrometryUnit('temp')) }}
+            </span>
+          </div>
+          <div class="text-small" v-if="$store.getters.weeklyChange('temp') !== null">
+            {{ $store.getters.t('Per week') }}
+            <span class="text-green">
+              {{ signVal($store.getters.weeklyChange('temp')) }} {{ $store.getters.t($store.getters.hydrometryUnit('temp')) }}
+            </span>
+          </div>
+          <div class="text-small" v-if="$store.getters.monthlyChange('temp') !== null">
+            {{ $store.getters.t('Per month') }}
+            <span class="text-green">
+              {{ signVal($store.getters.monthlyChange('temp')) }} {{ $store.getters.t($store.getters.hydrometryUnit('temp')) }}
+            </span>
+          </div>
+        </div>
+
+        <div class="temp-box" v-else>
+          <div class="text-small">
+            {{ $store.getters.t('Ice thickness') }}
+          </div>
+          <div class="wx_parameter">
+            {{ $store.getters.currentIceThickness }}
+            <span class="text-unit">
+              {{ $store.getters.t($store.getters.hydrometryUnit('ice_thickness')) }}
+            </span>
+          </div>
+          <div class="text-small" v-if="$store.getters.dailyChange('ice_thickness') !== null">
+            {{ $store.getters.t('Per day') }}
+            <span class="text-green">
+              {{ signVal($store.getters.dailyChange('ice_thickness')) }} {{ $store.getters.t($store.getters.hydrometryUnit('ice_thickness')) }}
+            </span>
+          </div>
+          <div class="text-small" v-if="$store.getters.weeklyChange('ice_thickness') !== null">
+            {{ $store.getters.t('Per week') }}
+            <span class="text-green">
+              {{ signVal($store.getters.weeklyChange('ice_thickness')) }} {{ $store.getters.t($store.getters.hydrometryUnit('ice_thickness')) }}
+            </span>
+          </div>
+          <div class="text-small" v-if="$store.getters.monthlyChange('ice_thickness') !== null">
+            {{ $store.getters.t('Per month') }}
+            <span class="text-green">
+              {{ signVal($store.getters.monthlyChange('ice_thickness')) }} 
+              {{ $store.getters.t($store.getters.hydrometryUnit('ice_thickness')) }}
+            </span>
+          </div>
+        </div>
+        <div class="temp-box">
+          <div class="text-small">
+            {{ $store.getters.t('Level') }}
+          </div>
+          <div class="wx_parameter">
+            {{ signVal($store.getters.nplRelative) }}
+            <span class="text-unit">
+              {{ $store.getters.t($store.getters.hydrometryUnit('level')) }}
+            </span>
+          </div>
+          <div class="text-small" v-if="$store.getters.dailyChange('level') !== null">
+            {{ $store.getters.t('Abs headwater') }}
+            <span class="text-green">
+              {{ $store.getters.t($store.getters.currentWaterLevel) }}
+              {{ $store.getters.t($store.getters.hydrometryUnit('level')) }}
+            </span>
+          </div>
+          <div class="text-small" v-if="$store.getters.dailyChange('level') !== null">
+            {{ $store.getters.t('Per day') }}
+            <span class="text-green">
+              {{ signVal($store.getters.dailyChange('level')) }} {{ $store.getters.t($store.getters.hydrometryUnit('level')) }}
+            </span>
+          </div>
+          <div class="text-small" v-if="$store.getters.weeklyChange('level') !== null">
+            {{ $store.getters.t('Per week') }}
+            <span class="text-green">
+              {{ signVal($store.getters.weeklyChange('level')) }} {{ $store.getters.t($store.getters.hydrometryUnit('level')) }}
+            </span>
+          </div>
+          <div class="text-small" v-if="$store.getters.monthlyChange('level') !== null">
+            {{ $store.getters.t('Per month') }}
+            <span class="text-green">
+              {{ signVal($store.getters.monthlyChange('level')) }} {{ $store.getters.t($store.getters.hydrometryUnit('level')) }}
             </span>
           </div>
         </div>
@@ -212,14 +321,15 @@
     </div>
   </div>
 
-     <div class="wrapper" v-if="chartMode">
-        <div class="params_block">
-          <div class="close-button-right" @click="showChart(null)" :title="$t('Close')">
-              <!-- &#65794; --> {{ $t('Close') }}
-          </div>
-          <LineChart :history="historyDataset" style="" />
-        </div>
+  <div class="wrapper" v-if="chartMode">
+    <div class="params_block">
+      <div class="close-button-right" @click="showChart(null)" :title="$store.getters.t('Close')">
+          <!-- &#65794; --> {{ $store.getters.t('Close') }}
+      </div>
+      <LineChart :history="historyDataset" style="" />
     </div>
+  </div>
+
 </template>
 <script>
   const WEATHER_UPDATES_INTERVAL = 150000;  //TODO 5 minutes
@@ -231,7 +341,7 @@
       return {
         timer: '',
         chartMode: false,
-        historyDataset: null
+        historyDataset: null,
       }
     },
     async created() {
@@ -288,6 +398,9 @@
           }
           this.chartMode = true;
         }
+      },
+      signVal(val) {
+        return val > 0 ? '+' + val : val;
       }
     },
     computed: {
@@ -298,6 +411,11 @@
           minute: '2-digit',
           hour12: false
         });
+      },
+      showHydrometry() {
+        return this.$store.getters.currentWaterTemperature ||
+          this.$store.getters.currentWaterLevel ||
+          this.$store.getters.currentIceThickness;
       }
     }
   }
