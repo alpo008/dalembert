@@ -40,4 +40,14 @@ class TuyaThermometer extends TuyaDevice
     public $hum_calibration_time;
     public $temp_correction;
     public $temp_correction_time;
+
+    public $units = [
+    	'temp_current' => '℃',
+		'temp_current_external' => '℃',
+		'humidity_value' => '%',
+		'battery_state' => '',
+	    'temp_calibration' => '℃',
+	    'hum_calibration' => '%',
+	    'temp_correction' => '℃'
+    ];
 }

@@ -79,7 +79,6 @@
         mutation: 'setStickers'
       });
       this.stickers = this.$store.getters.stickersWithAttachment;
-      console.log(this.stickers);
     },
     methods: {
       showSticker(id) {

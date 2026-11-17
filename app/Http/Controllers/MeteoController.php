@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\EcowittWeather;
+use App\Models\Hydrometry;
 
 class MeteoController extends Controller
 {
@@ -20,7 +21,8 @@ class MeteoController extends Controller
             [
                 'status' => 'success',
                 'all' => $wx->all(),        
-                'history' => $wx->history()      
+                'history' => $wx->history(),
+                'hydrometry' => Hydrometry::allData(),
             ], 200);
     }
 

@@ -9,14 +9,16 @@ use Illuminate\Support\Arr;
  *
  * @property string $apiVersion
  * @property string $deviceId
+ * @property array $units
  */
 
 class TuyaDevice
 {
 	protected $apiVersion;
 	protected $deviceId;
+	protected $units;
 
-	public function __construct($params)
+	public function __construct($params =[])
 	{
 		foreach($params as $k => $v) {
 			$this->setProperty($k, $v);
@@ -134,5 +136,15 @@ class TuyaDevice
 			return new $className($params);
 		} 
 		return null;
+	}
+
+	/** Gives measurement unit for param name 
+	 * 
+	 * @param string $paramName
+	 * @return mixed
+	 * */
+	public function unit(string $paramName)
+	{
+		return Arr::get($this->units, $paramName);
 	}
 }

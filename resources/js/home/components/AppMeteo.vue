@@ -235,12 +235,12 @@
       }
     },
     async created() {
-      await this.$store.dispatch('httpRequest', {
+/*      await this.$store.dispatch('httpRequest', {
         url: '/meteo',
         method: 'GET',
         data: null,
         mutation: 'setWeatherData'
-      });
+      });*/
     },
     mounted() {
       this.updateWeather();

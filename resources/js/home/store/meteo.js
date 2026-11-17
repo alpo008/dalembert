@@ -5,6 +5,7 @@ export default {
     history: null,
     ticker: null,
     updatedAt: null,
+
 	},
 	mutations : {
     setWeatherTicker(state, payload) {
