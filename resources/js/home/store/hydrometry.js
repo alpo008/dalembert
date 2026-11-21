@@ -75,6 +75,69 @@ export default {
     },
     hydrometryUpdatedAt(state) {
       return state.updatedAt;
-    }
+    },
+    waterTemperatureHistory(state, getters) {
+      let wth = state.history;
+      let labels = [];
+      let waterTemperatureDataset = [];
+      Object.keys(wth).forEach(key => {
+        if (!isNaN(key)) {
+          let dateTime = getters.findOrFail(wth, key + '.updated_at');
+          let value = getters.findOrFail(wth, key + '.temp_local');
+          labels.push(moment(dateTime).format("DD.MM HH:mm"));
+          waterTemperatureDataset.push(parseFloat(value));
+        }
+      });
+      return {
+        'labels':labels,
+        'datasets': [
+          {
+            data: waterTemperatureDataset,
+            label: getters.t('Water temperature') + ', ' + getters.t('℃'),  
+            borderColor: 'rgb(141, 172, 45)', 
+            backgroundColor: 'rgba(141, 172, 45, 0.3)',
+            pointRadius: 3,
+            spanGaps: true
+          }
+        ]
+      };
+    },
+    waterLevelHistory(state, getters) {
+      let wlh = state.history;
+      let labels = [];
+      let kimLevelDataset = [];
+      let localLevelDataset = [];
+      Object.keys(wlh).forEach(key => {
+        if (!isNaN(key)) {
+          let dateTime = getters.findOrFail(wlh, key + '.created_at');
+          let valueIv = getters.findOrFail(wlh, key + '.level_headwater_iv');
+          let valueLocal = getters.findOrFail(wlh, key + '.level_local');
+          labels.push(moment(dateTime).format("DD.MM HH:mm"));
+          kimLevelDataset.push(valueIv);
+          localLevelDataset.push(valueLocal);
+        }
+      });
+      return {
+        'labels':labels,
+        'datasets': [
+          {
+            data: kimLevelDataset,
+            label: getters.t('Waterworks headwater level') + ', ' + getters.t('CM'),  
+            borderColor: 'rgb(141, 172, 45)', 
+            backgroundColor: 'rgba(141, 172, 45, 0.3)',
+            pointRadius: 3,
+            spanGaps: true
+          },
+          {
+            data: localLevelDataset,
+            label: getters.t('Measured level') + ', ' + getters.t('CM'),  
+            borderColor: 'rgba(250, 235, 215, 0.3)', 
+            backgroundColor: 'rgba(250, 235, 215, 0.2)',
+            pointRadius: 3,
+            spanGaps: true
+          }
+        ]
+      };
+    },
 	}
 }
