@@ -23,10 +23,7 @@ export default {
         }
       }
       if (typeof state.current?.updated_at !== 'undefined') {
-        state.updatedAt = {
-          date: moment(state.current.updated_at).format('DD.MM.YYYY'),
-          time: moment(state.current.updated_at).format('HH:mm')
-        }
+        state.updatedAt =  moment(state.current.updated_at).format('DD.MM.YYYY HH:mm');
       }
       state.history = payload?.history ?? null;
       state.stats = payload?.stats ?? null;
@@ -75,6 +72,9 @@ export default {
     },
     nplRelative(state) {
       return state.nplRelative;
+    },
+    hydrometryUpdatedAt(state) {
+      return state.updatedAt;
     }
 	}
 }
