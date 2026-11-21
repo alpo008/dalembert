@@ -139,5 +139,42 @@ export default {
         ]
       };
     },
+    iceThicknessHistory(state, getters) {
+      let ith = state.history;
+      let labels = [];
+      let extThicknessDataset = [];
+      let localThicknessDataset = [];
+      Object.keys(ith).forEach(key => {
+        if (!isNaN(key)) {
+          let dateTime = getters.findOrFail(ith, key + '.created_at');
+          let valueExternal = getters.findOrFail(ith, key + '.ice_thickness_ext');
+          let valueLocal = getters.findOrFail(ith, key + '.ice_thickness_local');
+          labels.push(moment(dateTime).format("DD.MM HH:mm"));
+          extThicknessDataset.push(valueExternal);
+          localThicknessDataset.push(valueLocal);
+        }
+      });
+      return {
+        'labels':labels,
+        'datasets': [
+          {
+            data: extThicknessDataset,
+            label: getters.t('Third party thickness') + ', ' + getters.t('mm'),  
+            borderColor: 'rgb(141, 172, 45)', 
+            backgroundColor: 'rgba(141, 172, 45, 0.3)',
+            pointRadius: 3,
+            spanGaps: true
+          },
+          {
+            data: localThicknessDataset,
+            label: getters.t('Measured thickness') + ', ' + getters.t('mm'),  
+            borderColor: 'rgba(250, 235, 215, 0.3)', 
+            backgroundColor: 'rgba(250, 235, 215, 0.2)',
+            pointRadius: 3,
+            spanGaps: true
+          }
+        ]
+      };
+    }
 	}
 }

@@ -216,8 +216,9 @@
         {{ $store.getters.t('Water') }} 
       </div>
       <div class="params_block">
-        <div class="temp-box" v-if="!$store.getters.currentIceThickness">
-          <div class="link-icon-left chart-link pt-l-4" 
+        <div class="temp-box" v-if="$store.getters.currentWaterTemperature !== null">
+          <div class="link-icon-left chart-link pt-l-4"
+            style="top:-25px; left: 0;" 
             @click="showChart('water_temperature')" 
             :title="$store.getters.t('Show chart')"
           >
@@ -252,6 +253,12 @@
         </div>
 
         <div class="temp-box" v-else>
+          <div class="link-icon-left chart-link pt-l-4" 
+            style="top:-25px; left:0;" 
+            @click="showChart('ice_thickness')" 
+            :title="$store.getters.t('Show chart')"
+          >
+          </div>
           <div class="text-small">
             {{ $store.getters.t('Ice thickness') }}
           </div>
@@ -282,7 +289,8 @@
           </div>
         </div>
         <div class="temp-box">
-          <div class="link-icon-right chart-link pt-l-4" 
+          <div class="link-icon-right chart-link pt-l-4"
+            style="top:-25px;"  
             @click="showChart('water_level')" 
             :title="$store.getters.t('Show chart')"
           >
@@ -406,6 +414,9 @@
               break;
             case "water_level":
               this.historyDataset = this.$store.getters.waterLevelHistory;
+              break;
+            case "ice_thickness":
+              this.historyDataset = this.$store.getters.iceThicknessHistory;
               break;
             default:
               this.historyDataset = this.$store.getters.temperatureHistory;
