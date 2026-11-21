@@ -41,6 +41,8 @@ class Hydrometry extends Model
         $tz = config('app.timezone');
         $today = static::where
             ('created_at', 'like', Carbon::now($tz)->format('Y-m-d') . '%')->first();
+        $latest = static::whereNotNull('level_headwater_iv')->orWhereNotNull('level_local')
+            ->orderBy('created_at', 'DESC')->first();
         $yesterday = static::where
             ('created_at', 'like', Carbon::yesterday($tz)->format('Y-m-d') . '%')->first();
         $weekAgo = static::where
@@ -50,25 +52,40 @@ class Hydrometry extends Model
 
         $perDay = ($today instanceof static && $yesterday instanceof static) ?
             [
-                'level' => $today->getWaterLevel() - $yesterday->getWaterLevel(),
+                'level' => ($today->getWaterLevel() && $yesterday->getWaterLevel()) ? 
+                    $today->getWaterLevel() - $yesterday->getWaterLevel() : 
+                    null,
                 'temp' => round($today->temp_local - $yesterday->temp_local, 1),
                 'ice_thickness' => $today->getIceThickness() - $yesterday->getIceThickness()
             ] : null;
         $perWeek = ($today instanceof static && $weekAgo instanceof static) ?
             [
-                'level' => $today->getWaterLevel() - $weekAgo->getWaterLevel(),
+                'level' => ($today->getWaterLevel() && $weekAgo->getWaterLevel()) ? 
+                    $today->getWaterLevel() - $weekAgo->getWaterLevel() : 
+                    null,
                 'temp' => round($today->temp_local - $weekAgo->temp_local, 1),
                 'ice_thickness' => $today->getIceThickness() - $weekAgo->getIceThickness()
             ] : null;
         $perMonth = ($today instanceof static && $monthAgo instanceof static) ?
             [
-                'level' => $today->getWaterLevel() - $monthAgo->getWaterLevel(),
+                'level' => ($today->getWaterLevel() && $monthAgo->getWaterLevel()) ? 
+                    $today->getWaterLevel() - $monthAgo->getWaterLevel() : 
+                    null,
                 'temp' => round($today->temp_local - $monthAgo->temp_local, 1),
                 'ice_thickness' => $today->getIceThickness() - $monthAgo->getIceThickness()
             ] : null;
-        $nplRelative = ($today instanceof static) ? $today->getWaterLevel() - static::IV_NORMAL_POOL_LVL : null;
+
+        if($today instanceof static && $level = $today->getWaterLevel()) {
+            $nplRelative = $level - static::IV_NORMAL_POOL_LVL;
+        } elseif ($latest instanceof static && $level = $latest->getWaterLevel()) {
+            $nplRelative = $level - static::IV_NORMAL_POOL_LVL;
+        } else {
+            $nplRelative = null;
+        }
+
         return [
             'current' => $today,
+            'latest' => $latest,
             'perDay' => $perDay, 
             'perWeek' => $perWeek, 
             'perMonth' => $perMonth,

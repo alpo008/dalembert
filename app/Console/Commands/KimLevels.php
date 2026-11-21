@@ -64,6 +64,7 @@ class KimLevels extends Command
                 $is_new = true;
             }
             
+            // Update parameter if null
             if (is_null($hydrometry->level_headwater_iv) && !empty($level_headwater_iv)) {
                 $hydrometry->level_headwater_iv = $level_headwater_iv * 100;
             }

@@ -218,7 +218,7 @@
       >
       </div>
       <div class="text-small text-white-blue text-bolder">
-        {{ $store.getters.t('Water') }}  {{ $store.getters.hydrometryUpdatedAt }} 
+        {{ $store.getters.t('Water') }} 
       </div>
       <div class="params_block">
         <div class="temp-box" v-if="!$store.getters.currentIceThickness">
@@ -317,6 +317,9 @@
             </span>
           </div>
         </div>
+      </div>
+      <div class="text-small text-white-blue text-bolder">
+        {{ $store.getters.t('Updated') }} : {{ $store.getters.hydrometryUpdatedAt }}
       </div>
     </div>
   </div>
