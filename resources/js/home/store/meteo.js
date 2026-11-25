@@ -135,7 +135,31 @@ export default {
       if (isNaN(getters.windDirection)) {
         return "";
       }
-      let rumb = (getters.windDirection / 1) + 11.25;
+      return getters.dirToRumb(getters.windDirection);
+    },
+    rainHour(state, getters) {
+      return getters.findOrFail(state, 'current.rainfall')['1_hour']?.value ?? null;
+    },
+    rainDay(state, getters) {
+      return getters.findOrFail(state, 'current.rainfall.daily.value') ?? null;
+    },
+    rainEvent(state, getters) {
+      return getters.findOrFail(state, 'current.rainfall.event.value') ?? null;
+    },
+    rainWeek(state, getters) {
+      return getters.findOrFail(state, 'current.rainfall.weekly.value') ?? null;
+    },
+    rainMonth(state, getters) {
+      return getters.findOrFail(state, 'current.rainfall.monthly.value') ?? null;
+    },
+    rainYear(state, getters) {
+      return getters.findOrFail(state, 'current.rainfall.yearly.value') ?? null;
+    },
+    rainUnit(state, getters) {
+      return getters.findOrFail(state, 'current.rainfall.daily.unit') ?? '';
+    },
+    dirToRumb:(state, getters) => (dir) => {
+      let rumb = (dir / 1) + 11.25;
       if (rumb > 360) {
         rumb = rumb - 360;
       }
@@ -158,27 +182,6 @@ export default {
         15 : 'NNW'
       };
       return rumbs[Math.floor(rumb / 22.5)];
-    },
-    rainHour(state, getters) {
-      return getters.findOrFail(state, 'current.rainfall')['1_hour']?.value ?? null;
-    },
-    rainDay(state, getters) {
-      return getters.findOrFail(state, 'current.rainfall.daily.value') ?? null;
-    },
-    rainEvent(state, getters) {
-      return getters.findOrFail(state, 'current.rainfall.event.value') ?? null;
-    },
-    rainWeek(state, getters) {
-      return getters.findOrFail(state, 'current.rainfall.weekly.value') ?? null;
-    },
-    rainMonth(state, getters) {
-      return getters.findOrFail(state, 'current.rainfall.monthly.value') ?? null;
-    },
-    rainYear(state, getters) {
-      return getters.findOrFail(state, 'current.rainfall.yearly.value') ?? null;
-    },
-    rainUnit(state, getters) {
-      return getters.findOrFail(state, 'current.rainfall.daily.unit') ?? '';
     },
     temperatureHistory(state, getters) {
       let temperatureHistory = getters.findOrFail(getters.weatherHistory, 'outdoor.temperature.list');
@@ -206,7 +209,7 @@ export default {
             pointHoverBackgroundColor: '#ffffff',
             segment: {
               borderColor: (ctx) => {
-                // Проверяем начальную и конечную точку отрезка
+                
                 const y0 = ctx.p0.parsed.y;
                 const y1 = ctx.p1.parsed.y;
                 return (y0 < 0 || y1 < 0) ? '#38bdf8' : '#eab308';
@@ -280,25 +283,32 @@ export default {
     windHistory(state, getters) {
       let windHistory = getters.findOrFail(getters.weatherHistory, 'wind.wind_speed.list');
       let windGustsHistory = getters.findOrFail(getters.weatherHistory, 'wind.wind_gust.list');
+      let windDirectionsHistory = getters.findOrFail(getters.weatherHistory, 'wind.wind_direction.list');
       let labels = [];
       let windDataset = [];
       let windGustsDataset = [];
+      let directionsDataset = [];
+      let rumbsDataset = [];
       Object.keys(windHistory).forEach(key => {
         if (!isNaN(key)) {
           labels.push(moment.unix(key).format("DD.MM HH:mm"));
           windDataset.push(parseFloat(windHistory[key]));
           windGustsDataset.push(parseFloat(windGustsHistory[key]));
+          directionsDataset.push(parseFloat(windDirectionsHistory[key]));
+          rumbsDataset.push(getters.dirToRumb(windDirectionsHistory[key]));
         }
       });
       return {
         'labels':labels,
         'datasets': [
           {
-            data:windDataset,
+            data: windDataset,
+            directions: directionsDataset,
+            rumbs: rumbsDataset,
             label: getters.t('Wind') + ', ' + getters.t('m/s'), 
-            borderColor: '#60a5fa',       // Спокойный стальной синий
+            borderColor: '#60a5fa',       
             backgroundColor: 'rgba(96, 165, 250, 0.16)',
-            fill: true,                   // Заливка только под базовым ветром
+            fill: true,                   
             borderWidth: 2,
             tension: 0.25,
             pointRadius: 0,
@@ -309,11 +319,11 @@ export default {
           {
             data:windGustsDataset,
             label: getters.t('Wind gust') + ', ' + getters.t('m/s'), 
-            borderColor: '#f43f5e',       // Сигнальный кораллово-розовый
+            borderColor: '#f43f5e',       
             backgroundColor: 'transparent',
-            fill: false,                  // Без заливки, чтобы не перекрывать синий фон
-            borderWidth: 1.5,             // Чуть тоньше основной линии, чтобы не утяжелять график
-            borderDash: Array.of(4, 3),   // Легкий пунктир — отлично читается на острых пиках
+            fill: false,                  
+            borderWidth: 1.5,             
+            borderDash: Array.of(4, 3),   
             tension: 0.2,
             pointRadius: 0,
             pointHoverRadius: 5,
@@ -339,10 +349,10 @@ export default {
           {
             data:rainfallDataset,
             label: getters.t('Rain') + ', ' + getters.t('mm'),  
-            borderColor: '#38bdf8',                 // Насыщенный дождевой голубой
-            backgroundColor: 'rgba(56, 189, 248, 0.20)', // Чуть более плотная заливка для ступенек
+            borderColor: '#38bdf8',                 //
+            backgroundColor: 'rgba(56, 189, 248, 0.20)', 
             fill: true,
-            stepped: true,                          // Чёткие ступеньки вместо сглаживания
+            stepped: true,                          
             borderWidth: 2,
             pointRadius: 0,
             pointHoverRadius: 5,

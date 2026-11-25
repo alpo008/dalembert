@@ -342,9 +342,9 @@
   <div class="wrapper" v-if="chartMode">
     <div class="params_block">
       <div class="close-button-right" @click="showChart(null)" :title="$store.getters.t('Close')">
-          <!-- &#65794; --> {{ $store.getters.t('Close') }}
+          {{ $store.getters.t('Close') }}
       </div>
-      <LineChart :history="historyDataset" style="" />
+      <LineChart :history="historyDataset" :type="chartType" style="" />
     </div>
   </div>
 
@@ -360,6 +360,7 @@
         timer: '',
         chartMode: false,
         historyDataset: null,
+        chartType: 'default'
       }
     },
     async created() {
@@ -392,6 +393,7 @@
         if (param === null) {
           this.chartMode = false;
         } else {
+          this.chartType = param ?? 'default';
           switch (param) {
             case 'temperature' :
               this.historyDataset = this.$store.getters.temperatureHistory;
