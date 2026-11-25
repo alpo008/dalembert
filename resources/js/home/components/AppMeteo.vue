@@ -212,7 +212,9 @@
     </div>
 
     <div class="params_block_wrapper" v-if="showHydrometry">
-      <div class="text-small text-white-blue text-bolder">
+      <div class="text-small text-white-blue text-bolder"
+          style="position:relative;top:20px;" 
+      >
         {{ $store.getters.t('Water') }} 
       </div>
       <div class="params_block">
