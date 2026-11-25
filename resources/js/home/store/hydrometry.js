@@ -94,9 +94,14 @@ export default {
           {
             data: waterTemperatureDataset,
             label: getters.t('Water temperature') + ', ' + getters.t('℃'),  
-            borderColor: 'rgb(141, 172, 45)', 
-            backgroundColor: 'rgba(141, 172, 45, 0.3)',
-            pointRadius: 3,
+            borderColor: '#06b6d4',               
+            backgroundColor: 'rgba(6, 182, 212, 0.15)',
+            fill: true,                          
+            borderWidth: 2,                      
+            tension: 0.35,                       
+            pointRadius: 0,                      
+            pointHoverRadius: 5,                 
+            pointHoverBackgroundColor: '#ffffff',
             spanGaps: true
           }
         ]
@@ -123,17 +128,26 @@ export default {
           {
             data: kimLevelDataset,
             label: getters.t('Waterworks headwater level') + ', ' + getters.t('CM'),  
-            borderColor: 'rgb(141, 172, 45)', 
-            backgroundColor: 'rgba(141, 172, 45, 0.3)',
-            pointRadius: 3,
-            spanGaps: true
+            borderColor: '#a78bfa',               // Мягкий лавандово-сиреневый (отлично контрастирует с голубым)
+            backgroundColor: 'transparent',       // Без заливки, чтобы не перекрывать голубой фон
+            fill: false,
+            borderWidth: 2,
+            borderDash: [6, 4],                   // Аккуратный пунктир визуально подчеркнет, что это внешний ориентир
+            tension: 0.3,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            spanGaps: 1000 * 60 * 60 * 72 
           },
           {
             data: localLevelDataset,
             label: getters.t('Measured level') + ', ' + getters.t('CM'),  
-            borderColor: 'rgba(250, 235, 215, 0.3)', 
-            backgroundColor: 'rgba(250, 235, 215, 0.2)',
-            pointRadius: 3,
+            borderColor: '#38bdf8',               // Яркий небесно-голубой
+            backgroundColor: 'rgba(56, 189, 248, 0.14)',
+            fill: true,                           // Заливка только у основного графика
+            borderWidth: 2.5,
+            tension: 0.3,
+            pointRadius: 0,
+            pointHoverRadius: 5,
             spanGaps: true
           }
         ]

@@ -1,4 +1,5 @@
 import moment from "moment/dist/moment";
+
 export default {
 	state : {
     current: null,
@@ -195,9 +196,27 @@ export default {
           {
             data:temperatureDataset,
             label: getters.t('Temperature') + ', ' + getters.t('℃'),  
-            borderColor: 'rgb(141, 172, 45)', 
-            backgroundColor: 'rgba(141, 172, 45, 0.3)',
-            pointRadius: 3
+            borderColor: '#eab308',               
+            backgroundColor: 'rgba(234, 179, 8, 0.12)',
+            fill: true,                          
+            borderWidth: 2,                      
+            tension: 0.35,                       
+            pointRadius: 0,                      
+            pointHoverRadius: 5,                 
+            pointHoverBackgroundColor: '#ffffff',
+            segment: {
+              borderColor: (ctx) => {
+                // Проверяем начальную и конечную точку отрезка
+                const y0 = ctx.p0.parsed.y;
+                const y1 = ctx.p1.parsed.y;
+                return (y0 < 0 || y1 < 0) ? '#38bdf8' : '#eab308';
+              },
+              backgroundColor: (ctx) => {
+                const y0 = ctx.p0.parsed.y;
+                const y1 = ctx.p1.parsed.y;
+                return (y0 < 0 || y1 < 0) ? 'rgba(56, 189, 248, 0.18)' : 'rgba(234, 179, 8, 0.14)';
+              }
+            }
           }
         ]
       };
@@ -218,9 +237,14 @@ export default {
           {
             data:humidityDataset,
             label: getters.t('Humidity')  + ', ' + getters.t('%'), 
-            borderColor: 'rgb(141, 172, 45)', 
-            backgroundColor: 'rgba(141, 172, 45, 0.3)',
-            pointRadius: 3
+            borderColor: '#2dd4bf',               
+            backgroundColor: 'rgba(45, 212, 191, 0.14)',
+            fill: true,                          
+            borderWidth: 2,                      
+            tension: 0.35,                       
+            pointRadius: 0,                      
+            pointHoverRadius: 5,                 
+            pointHoverBackgroundColor: '#ffffff'
           }
         ]
       };
@@ -241,21 +265,29 @@ export default {
           {
             data:pressureDataset,
             label: getters.t('Pressure') + ', ' + getters.t('mmHg'), 
-            borderColor: 'rgb(141, 172, 45)', 
-            backgroundColor: 'rgba(141, 172, 45, 0.3)',
-            pointRadius: 3
+            borderColor: '#34d399',               
+            backgroundColor: 'rgba(52, 211, 153, 0.14)',
+            fill: true,                          
+            borderWidth: 2,                      
+            tension: 0.35,                       
+            pointRadius: 0,                      
+            pointHoverRadius: 5,                 
+            pointHoverBackgroundColor: '#ffffff'
           }
         ]
       };
     },
     windHistory(state, getters) {
       let windHistory = getters.findOrFail(getters.weatherHistory, 'wind.wind_speed.list');
+      let windGustsHistory = getters.findOrFail(getters.weatherHistory, 'wind.wind_gust.list');
       let labels = [];
       let windDataset = [];
+      let windGustsDataset = [];
       Object.keys(windHistory).forEach(key => {
         if (!isNaN(key)) {
           labels.push(moment.unix(key).format("DD.MM HH:mm"));
           windDataset.push(parseFloat(windHistory[key]));
+          windGustsDataset.push(parseFloat(windGustsHistory[key]));
         }
       });
       return {
@@ -264,9 +296,29 @@ export default {
           {
             data:windDataset,
             label: getters.t('Wind') + ', ' + getters.t('m/s'), 
-            borderColor: 'rgb(141, 172, 45)', 
-            backgroundColor: 'rgba(141, 172, 45, 0.3)',
-            pointRadius: 3
+            borderColor: '#60a5fa',       // Спокойный стальной синий
+            backgroundColor: 'rgba(96, 165, 250, 0.16)',
+            fill: true,                   // Заливка только под базовым ветром
+            borderWidth: 2,
+            tension: 0.25,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#ffffff',
+            order: 2
+          },
+          {
+            data:windGustsDataset,
+            label: getters.t('Wind gust') + ', ' + getters.t('m/s'), 
+            borderColor: '#f43f5e',       // Сигнальный кораллово-розовый
+            backgroundColor: 'transparent',
+            fill: false,                  // Без заливки, чтобы не перекрывать синий фон
+            borderWidth: 1.5,             // Чуть тоньше основной линии, чтобы не утяжелять график
+            borderDash: Array.of(4, 3),   // Легкий пунктир — отлично читается на острых пиках
+            tension: 0.2,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#f43f5e',
+            order: 1  
           }
         ]
       };
@@ -287,9 +339,14 @@ export default {
           {
             data:rainfallDataset,
             label: getters.t('Rain') + ', ' + getters.t('mm'),  
-            borderColor: 'rgb(141, 172, 45)', 
-            backgroundColor: 'rgba(141, 172, 45, 0.3)',
-            pointRadius: 3
+            borderColor: '#38bdf8',                 // Насыщенный дождевой голубой
+            backgroundColor: 'rgba(56, 189, 248, 0.20)', // Чуть более плотная заливка для ступенек
+            fill: true,
+            stepped: true,                          // Чёткие ступеньки вместо сглаживания
+            borderWidth: 2,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#ffffff'
           }
         ]
       };
@@ -312,9 +369,14 @@ export default {
           {
             data:solarDataset,
             label: getters.t('Illumination') + ', ' + getters.t('lx'), 
-            borderColor: 'rgb(141, 172, 45)', 
-            backgroundColor: 'rgba(141, 172, 45, 0.3)',
-            pointRadius: 3
+            borderColor: '#fb923c',
+            backgroundColor: 'rgba(251, 146, 60, 0.16)',
+            fill: true,
+            borderWidth: 2,
+            tension: 0.2,
+            pointRadius: 0,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: '#ffffff'
           }
         ]
       };
