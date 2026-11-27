@@ -20,7 +20,7 @@
       <div class="col-md-4 mb-5" v-for="sticker in stickers">
         <div class="card bg-dark text-white sticker-link" @click="showSticker(sticker.id)">
           <img :src="previewPath(sticker.id)" class="card-img" alt="...">
-          <div class="card-img-overlay text-center">
+          <div class="card-img-overlay text-center align-content-center">
             <h5 class="card-title">{{ sticker.contact_name }}</h5>
           </div>
         </div>

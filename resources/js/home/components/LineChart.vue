@@ -65,7 +65,7 @@
                 // Если датчик не передал направление в этой точке — ничего не выводим
                 if (direction == null && rumb == null) return '';
 
-                return this.$store.getters.t('Direction') + ' : ' + rumb + ', (' + direction +
+                return this.$store.getters.t('Direction') + ' : ' + rumb + ' (' + direction +
                   ' ' + this.$store.getters.t(this.$store.getters.windDirectionUnit) + ')';
               }
             };
@@ -95,8 +95,9 @@
 </script>
 
 <style scoped>
-  #history_chart {
-    max-height: -webkit-fill-available;
-    background-image: radial-gradient(circle, #4A4A4A 0%, #414151 70%, #0D0D0D 100%);
-  }
+#history_chart {
+  width: 100% !important;
+  max-height: calc(100dvh - 100px); 
+  background-image: radial-gradient(circle, #4A4A4A 0%, #414151 70%, #0D0D0D 100%);
+}
 </style>

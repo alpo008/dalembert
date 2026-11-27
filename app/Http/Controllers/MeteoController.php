@@ -23,6 +23,7 @@ class MeteoController extends Controller
                 'all' => $wx->all(),        
                 'history' => $wx->history(),
                 'hydrometry' => Hydrometry::allData(),
+                'description' => $wx->description(),
             ], 200);
     }
 

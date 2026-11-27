@@ -4,7 +4,8 @@ export default {
     topPriority: [],
     mediumPriority: [],
     lowPriority: [],
-    withAttachment: []
+    withAttachment: [],
+    emergency: []
 	},
 	mutations : {
     setStickers(state, payload) {
@@ -13,6 +14,7 @@ export default {
       state.mediumPriority = _.filter(payload.all_stickers, ['priority', 2]);
       state.lowPriority = _.filter(payload.all_stickers, ['priority', 3]);
       state.withAttachment = _.filter(payload.all_stickers, (st) => {return !!st.attachments.length});
+      state.emergency = payload.active_stickers;
     }
 	},
 	actions : {
@@ -27,6 +29,12 @@ export default {
         'medium' : state.mediumPriority,
         'low' : state.lowPriority
       }
+    },
+    emergencyStickers(state) {
+      return state.emergency;
+    },
+    emergencyStickersWithoutAttachments(state) {
+      return _.filter(state.emergency, (st) => {return !st.attachments.length});
     },
     stickersWithAttachment(state) {
       return state.withAttachment;

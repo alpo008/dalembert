@@ -76,10 +76,24 @@
     <footer class="py-1 bg-with-gradient">
       <div>
         <div class="marquee-container">
-          <div id="dynamicMarquee" class="marquee-track">
-            <span class="marquee-item px-4 text-white">
-              {{ this.$store.getters.weatherTicker }}
-            </span>
+          <div
+            id="dynamicMarquee" 
+            class="marquee-track" 
+            :class="{ 'is-emergency': hasEmergency }" 
+            :style="marqueeStyle"
+          >
+          <!-- Проходим 2 круга для бесшовной CSS-анимации -->
+            <template v-for="copy in 2" :key="copy">
+              <span
+                v-for="(item, index) in tickerItems"
+                :key="`${copy}-${index}`"
+                :aria-hidden="copy > 1 ? 'true' : undefined"
+                class="marquee-item px-4"
+                :class="item.type === 'alert' ? 'text-warning fw-bold' : 'text-white'"
+              >
+                {{ item.text }}
+              </span>
+            </template>
           </div>
         </div>
       </div>
@@ -90,6 +104,7 @@
 <script>
   import Modal from "./Modal.vue";
   import { Collapse } from 'bootstrap';
+  const MARQUEE_ANIMATION_SPEED = 0.18;
   export default {
     components: { Modal },
     data: function () {
@@ -98,7 +113,9 @@
         genericError: false,
         networkError: false,
         collapseInstance: null,
-        dateString: ''
+        dateString: '',
+        tickerItems: [],
+        tickerLength: 0
       }
     },
     async created() {
@@ -126,7 +143,6 @@
         {toggle: false});
       }
       this.collapseInstance.hide();
-      this.setupSeamlessMarquee();
     },
     methods: {
       refreshDate() {
@@ -150,23 +166,31 @@
         }
         return result;
       },
-      setupSeamlessMarquee() {
-        const track = document.getElementById('dynamicMarquee');
-        if (!track) return;
-        const items = Array.from(track.children);
-        items.forEach(item => {
-          const clone = item.cloneNode(true);
-          // Optional: add a class or attribute to identify clones if needed
-          clone.setAttribute('aria-hidden', 'true'); 
-          track.appendChild(clone);
-          if (items.length >= 32) { //TODO
-            track.firstElementChild.remove();
-          }
-        });
+      setTicker() {
+        const emergency = this.$store.getters.emergencyStickersWithoutAttachments;
+        const weather = this.$store.getters.weatherTicker;
+        this.tickerItems = [];
+        this.tickerLength = 0;
+
+        if (typeof emergency !== 'undefined' && emergency.length > 0) {
+          emergency.forEach((st) => {
+            this.tickerItems.push({ type: 'alert', text: `⚠️ ${st.contact_name} : ${st.message}` });
+            this.tickerLength += (st.contact_name.length + st.message.length);
+          });
+        }
+        if (typeof weather === 'string') {
+          this.tickerLength += weather.length;
+          this.tickerItems.push({ type: 'weather', text: weather });
+        }
       }
     },
     computed: {
-
+      hasEmergency() {
+        return this.$store.getters.emergencyStickers.length > 0;
+      },
+      marqueeStyle() {
+        return 'animation-duration:' + this.tickerLength * MARQUEE_ANIMATION_SPEED + 's;';
+      }
     },
     watch: {
       $route(to, from) {
@@ -179,6 +203,12 @@
       },
       '$store.state.general.httpErrors.generic' (val) {
         this.genericError = val;
+      },
+      '$store.state.stickers.active' (val) {
+        this.setTicker();
+      },
+      '$store.state.meteo.current' (val) {
+        this.setTicker();
       }
     }
   }
@@ -249,7 +279,9 @@
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: scroll-left 20s linear infinite;
+  animation-name: scroll-left;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 
 .marquee-track:hover {

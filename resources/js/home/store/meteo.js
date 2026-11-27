@@ -19,6 +19,9 @@ export default {
       if (typeof payload.hydrometry !== 'undefined') {
         this.commit('setHydrometry', payload.hydrometry);
       }
+      if (typeof payload.description !== 'undefined') {
+        this.commit('setWeatherTicker', payload);
+      }
     }
 	},
 	actions : {
@@ -184,7 +187,7 @@ export default {
       return rumbs[Math.floor(rumb / 22.5)];
     },
     temperatureHistory(state, getters) {
-      let temperatureHistory = getters.findOrFail(getters.weatherHistory, 'outdoor.temperature.list');
+      let temperatureHistory = getters.findOrFail(getters.weatherHistory, 'outdoor.temperature.list') ?? {};
       let labels = [];
       let temperatureDataset = [];
       Object.keys(temperatureHistory).forEach(key => {
